@@ -1,0 +1,1952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RetinaX Care | Closing the Loop in Diabetic Eye Care</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-shell">
+
+    <!-- Global Minimalist Header Topbar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <div class="brand" id="brandHomeBtn" role="button" tabindex="0" aria-label="RetinaX Care Home">
+          <div class="brand-mark">
+            <svg class="brand-eye-icon" viewBox="0 0 32 32" fill="none">
+              <circle cx="16" cy="16" r="14" stroke="currentColor" stroke-width="2" stroke-dasharray="3 3"/>
+              <circle cx="16" cy="16" r="9" fill="currentColor" fill-opacity="0.2" stroke="currentColor" stroke-width="2"/>
+              <circle cx="16" cy="16" r="4" fill="currentColor"/>
+              <path d="M16 4v4M16 24v4M4 16h4M24 16h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <span class="brand-rx">RX</span>
+          </div>
+          <div class="brand-title">RetinaX <span>Care</span></div>
+        </div>
+
+        <!-- Primary Navigation (3 Core Items) -->
+        <nav class="top-nav-tabs" role="tablist">
+          <button class="nav-tab-btn active" id="navOverviewBtn" data-target="screen-overview" role="tab">Overview</button>
+          <button class="nav-tab-btn" id="navPatientsBtn" data-target="screen-patients" role="tab">Patients</button>
+          <button class="nav-tab-btn" id="navFollowupsBtn" data-target="screen-followups" role="tab">Follow-Ups</button>
+        </nav>
+      </div>
+
+      <!-- Topbar Right Controls -->
+      <div class="top-controls">
+        <!-- "More" Dropdown Menu for Secondary Tools -->
+        <div class="more-menu-wrapper">
+          <button class="more-menu-btn" id="moreMenuBtn" aria-label="More Features" aria-haspopup="true" aria-expanded="false" title="More Modules">
+            <span class="grid-icon">⠿</span> More ▾
+          </button>
+          <div class="more-dropdown-menu" id="moreDropdownMenu" role="menu">
+            <div class="dropdown-item" data-target="screen-journeys" role="menuitem" tabindex="0">
+              <span class="item-icon">🔄</span> Care Journeys
+            </div>
+            <div class="dropdown-item" data-target="screen-reviews" role="menuitem" tabindex="0">
+              <span class="item-icon">🩺</span> Specialist Reviews
+            </div>
+            <div class="dropdown-item" data-target="screen-documents" role="menuitem" tabindex="0">
+              <span class="item-icon">📁</span> Documents
+            </div>
+            <div class="dropdown-item" data-target="screen-analytics" role="menuitem" tabindex="0">
+              <span class="item-icon">📊</span> Continuity Insights
+            </div>
+            <div class="dropdown-item" data-target="screen-outreach" role="menuitem" tabindex="0">
+              <span class="item-icon">📱</span> Field Outreach Mode
+            </div>
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-item" id="menuResetDemoBtn" role="menuitem" tabindex="0">
+              <span class="item-icon">↺</span> Reset Demo Data
+            </div>
+          </div>
+        </div>
+
+        <button id="themeToggle" class="header-icon-btn" type="button" title="Toggle Theme" aria-label="Toggle Dark/Light Mode">☼</button>
+        
+        <!-- Interactive Demo Profile Button & Popover -->
+        <div class="user-profile-wrapper">
+          <button class="user-profile-btn" id="userProfileBtn" aria-label="User profile and demo role menu" aria-haspopup="true" aria-expanded="false" tabindex="0">
+            <div class="user-avatar-sm" id="topUserAvatar">AS</div>
+            <span class="user-name-sm" id="topUserName">Dr. Sharma</span>
+            <span class="profile-caret">▾</span>
+          </button>
+
+          <!-- Profile Popover Dropdown -->
+          <div class="profile-popover-menu" id="profilePopoverMenu" role="menu">
+            <div class="popover-profile-header">
+              <div class="popover-avatar" id="popoverAvatar">AS</div>
+              <div class="popover-user-info">
+                <div class="popover-name" id="popoverName">Dr. Ananya Sharma</div>
+                <div class="popover-role" id="popoverRole">Care Coordinator</div>
+              </div>
+            </div>
+            
+            <div class="popover-badge-row">
+              <span class="demo-role-pill">DEMO ROLE: <strong id="popoverRoleBadge">Care Coordinator</strong></span>
+            </div>
+
+            <div class="popover-divider"></div>
+
+            <div class="popover-menu-item" id="menuOpenProfileBtn" role="menuitem" tabindex="0">
+              <span class="popover-item-icon">👤</span>
+              <span class="popover-item-text">View Profile</span>
+            </div>
+
+            <div class="popover-menu-item" id="menuEditProfileBtn" role="menuitem" tabindex="0">
+              <span class="popover-item-icon">✏️</span>
+              <span class="popover-item-text">Edit Profile</span>
+            </div>
+
+            <div class="popover-menu-item" id="menuSwitchRoleBtn" role="menuitem" tabindex="0">
+              <span class="popover-item-icon">🔄</span>
+              <span class="popover-item-text">Switch Demo Role</span>
+              <span class="popover-item-arrow">›</span>
+            </div>
+
+            <div class="popover-menu-item" id="menuOpenPreferencesBtn" role="menuitem" tabindex="0">
+              <span class="popover-item-icon">⚙️</span>
+              <span class="popover-item-text">Preferences</span>
+            </div>
+
+            <div class="popover-divider"></div>
+
+            <div class="popover-menu-item" id="menuAboutBtn" role="menuitem" tabindex="0">
+              <span class="popover-item-icon">ℹ️</span>
+              <span class="popover-item-text">About RetinaX Care</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Screens Container -->
+    <main>
+
+      <!-- =========================================================================
+           SCREEN 1: CLEAN HERO HOME (OVERVIEW)
+           ========================================================================= -->
+      <section id="screen-overview" class="screen active-screen">
+        
+        <!-- LEVEL 1: Minimalist Hero Banner -->
+        <div class="home-hero-card">
+          <div class="home-hero-content">
+            <span class="home-eyebrow">RETINAX CARE</span>
+            <h1 class="home-hero-title">
+              Closing the Loop in<br />
+              <span class="highlight-text">Diabetic Eye Care</span>
+            </h1>
+            <p class="home-hero-copy">
+              From retinal screening to specialist review and follow-up — keep every patient connected.
+            </p>
+
+            <div class="home-hero-actions">
+              <button class="btn-primary-lg" id="heroViewPatientsBtn">
+                View Patients &rarr;
+              </button>
+            </div>
+          </div>
+
+          <!-- Symbolic 3D Continuity Sphere (Clean, No text labels) -->
+          <div class="home-hero-visual">
+            <div class="symbolic-retina-sphere">
+              <div class="sphere-core">
+                <div class="sphere-inner-glow"></div>
+                <div class="sphere-symbol">RX</div>
+              </div>
+              
+              <!-- Orbital Rings & Clean Icon Nodes -->
+              <div class="symbolic-orbit orbit-1">
+                <div class="symbolic-node node-1" title="Screening">📸</div>
+              </div>
+              <div class="symbolic-orbit orbit-2">
+                <div class="symbolic-node node-2" title="Specialist Review">🩺</div>
+              </div>
+              <div class="symbolic-orbit orbit-3">
+                <div class="symbolic-node node-3" title="Follow-Up">🎯</div>
+              </div>
+              <div class="symbolic-orbit orbit-4">
+                <div class="symbolic-node node-4" title="Care Loop Closed">✅</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- LEVEL 2: WHAT WOULD YOU LIKE TO DO? (6 Spacious Feature Cards) -->
+        <div class="home-section-header">
+          <h2 class="home-section-title">What would you like to do?</h2>
+        </div>
+
+        <div class="home-cards-grid">
+          
+          <!-- Card 1: Patients -->
+          <div class="home-action-card" id="cardGoPatients" tabindex="0" role="button" aria-label="View Patients">
+            <div class="card-head-row">
+              <div class="card-icon-wrap bg-blue-soft">👥</div>
+              <span class="card-stat-pill" id="homeCardPatientsStat">12 patients</span>
+            </div>
+            <div class="card-main-content">
+              <h3 class="card-title">Patients</h3>
+              <p class="card-description">Find patients and view their care journey.</p>
+            </div>
+            <div class="card-footer-action">
+              <span class="action-link">View Patients <span class="action-arrow">&rarr;</span></span>
+            </div>
+          </div>
+
+          <!-- Card 2: Care Journeys -->
+          <div class="home-action-card" id="cardGoJourneys" tabindex="0" role="button" aria-label="Explore Journeys">
+            <div class="card-head-row">
+              <div class="card-icon-wrap bg-purple-soft">🔄</div>
+              <span class="card-stat-pill text-purple">Interactive Twin</span>
+            </div>
+            <div class="card-main-content">
+              <h3 class="card-title">Care Journeys</h3>
+              <p class="card-description">See where each patient is in their retinal-care journey.</p>
+            </div>
+            <div class="card-footer-action">
+              <span class="action-link">Explore Journeys <span class="action-arrow">&rarr;</span></span>
+            </div>
+          </div>
+
+          <!-- Card 3: Follow-Ups -->
+          <div class="home-action-card" id="cardGoFollowups" tabindex="0" role="button" aria-label="View Follow-Ups">
+            <div class="card-head-row">
+              <div class="card-icon-wrap bg-emerald-soft">🎯</div>
+              <span class="card-stat-pill text-emerald" id="homeCardFollowupsStat">9 pending</span>
+            </div>
+            <div class="card-main-content">
+              <h3 class="card-title">Follow-Ups</h3>
+              <p class="card-description">Coordinate clinician-directed follow-up.</p>
+            </div>
+            <div class="card-footer-action">
+              <span class="action-link">View Follow-Ups <span class="action-arrow">&rarr;</span></span>
+            </div>
+          </div>
+
+          <!-- Card 4: Documents -->
+          <div class="home-action-card" id="cardGoDocuments" tabindex="0" role="button" aria-label="Open Documents">
+            <div class="card-head-row">
+              <div class="card-icon-wrap bg-cyan-soft">📁</div>
+              <span class="card-stat-pill text-cyan">12 records</span>
+            </div>
+            <div class="card-main-content">
+              <h3 class="card-title">Documents</h3>
+              <p class="card-description">Access retinal screening reports and care records.</p>
+            </div>
+            <div class="card-footer-action">
+              <span class="action-link">Open Documents <span class="action-arrow">&rarr;</span></span>
+            </div>
+          </div>
+
+          <!-- Card 5: Specialist Reviews -->
+          <div class="home-action-card" id="cardGoReviews" tabindex="0" role="button" aria-label="View Specialist Reviews">
+            <div class="card-head-row">
+              <div class="card-icon-wrap bg-amber-soft">🩺</div>
+              <span class="card-stat-pill text-amber" id="homeCardReviewsStat">3 awaiting review</span>
+            </div>
+            <div class="card-main-content">
+              <h3 class="card-title">Specialist Reviews</h3>
+              <p class="card-description">Coordinate healthcare-professional review.</p>
+            </div>
+            <div class="card-footer-action">
+              <span class="action-link">View Reviews <span class="action-arrow">&rarr;</span></span>
+            </div>
+          </div>
+
+          <!-- Card 6: Continuity Insights -->
+          <div class="home-action-card" id="cardGoInsights" tabindex="0" role="button" aria-label="View Continuity Insights">
+            <div class="card-head-row">
+              <div class="card-icon-wrap bg-indigo-soft">📊</div>
+              <span class="card-stat-pill text-indigo">Analytics</span>
+            </div>
+            <div class="card-main-content">
+              <h3 class="card-title">Continuity Insights</h3>
+              <p class="card-description">Understand where care journeys are getting stuck.</p>
+            </div>
+            <div class="card-footer-action">
+              <span class="action-link">View Insights <span class="action-arrow">&rarr;</span></span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- LEVEL 3: TODAY SECTION (4 Compact Numbers) -->
+        <div class="home-section-header" style="margin-top: 3.5rem;">
+          <h2 class="home-section-title">Today</h2>
+        </div>
+
+        <div class="today-summary-grid">
+          <div class="today-stat-card" data-filter="awaiting_review" id="todayCardReview">
+            <div class="today-number text-amber" id="today-awaiting-review">3</div>
+            <div class="today-label">Awaiting Review</div>
+          </div>
+
+          <div class="today-stat-card" data-filter="followup_pending" id="todayCardFollowup">
+            <div class="today-number text-purple" id="today-followups">9</div>
+            <div class="today-label">Follow-Ups</div>
+          </div>
+
+          <div class="today-stat-card" data-filter="unable_to_contact" id="todayCardContact">
+            <div class="today-number text-red" id="today-uncontacted">2</div>
+            <div class="today-label">Unable to Contact</div>
+          </div>
+
+          <div class="today-stat-card" data-filter="completed" id="todayCardClosed">
+            <div class="today-number text-emerald" id="today-loop-closed">1</div>
+            <div class="today-label">Care Loop Closed</div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- =========================================================================
+           SCREEN 2: PATIENTS (SEARCH, CARDS & TABLE)
+           ========================================================================= -->
+      <section id="screen-patients" class="screen">
+        <div class="screen-header-bar">
+          <div>
+            <h1 class="screen-title">Patients</h1>
+            <p class="screen-subtitle">Diabetic eye-care journeys</p>
+          </div>
+          <div class="header-action-group">
+            <div class="view-mode-toggle">
+              <button class="view-btn active" id="viewModeCardsBtn" title="Card Grid View">Cards</button>
+              <button class="view-btn" id="viewModeTableBtn" title="Table View">Table</button>
+            </div>
+            <button class="btn-primary" id="dirRegisterPatientBtn">+ Patient</button>
+          </div>
+        </div>
+
+        <!-- Clean, Single-Line Search & Filter Toolbar -->
+        <div class="filter-toolbar">
+          <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="patientSearchInput" placeholder="Search by name or patient ID..." />
+            <button id="clearSearchBtn" class="clear-search-btn" title="Clear search">✕</button>
+          </div>
+
+          <div class="filter-pills-row">
+            <button class="filter-pill active" data-filter="all">All (<span id="count-all">12</span>)</button>
+            <button class="filter-pill" data-filter="needs_attention">Needs Attention (<span id="count-needs-attention">10</span>)</button>
+            <button class="filter-pill" data-filter="followup_pending">Follow-Up (<span id="count-followup-pending">9</span>)</button>
+            <button class="filter-pill" data-filter="completed">Completed (<span id="count-completed">1</span>)</button>
+
+            <!-- More Filters Dropdown Menu -->
+            <div class="more-filters-dropdown-wrapper">
+              <button class="filter-pill more-filters-btn" id="moreFiltersBtn" aria-haspopup="true" aria-expanded="false" title="More filter categories">
+                <span id="moreFiltersLabel">More</span> ▾
+              </button>
+              <div class="more-filters-menu" id="moreFiltersMenu" role="menu">
+                <div class="more-filter-item" data-filter="awaiting_review" role="menuitem" tabindex="0">
+                  <span class="status-dot status-amber"></span> Awaiting Specialist Review (<span id="count-awaiting-review">3</span>)
+                </div>
+                <div class="more-filter-item" data-filter="unable_to_contact" role="menuitem" tabindex="0">
+                  <span class="status-dot status-red"></span> Unable to Contact (<span id="count-unable-contact">2</span>)
+                </div>
+                <div class="more-filter-item" data-filter="pending_screening" role="menuitem" tabindex="0">
+                  <span class="status-dot status-blue"></span> Screening Pending (<span id="count-pending-screening">2</span>)
+                </div>
+                <div class="more-filter-item" data-filter="report_missing" role="menuitem" tabindex="0">
+                  <span class="status-dot status-amber"></span> Record Reconciliation (<span id="count-report-missing">1</span>)
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Patients Cards Grid View -->
+        <div class="patient-cards-grid" id="patientsCardGrid">
+          <!-- Injected via JavaScript -->
+        </div>
+
+        <!-- Patients Table View -->
+        <div class="patient-table-wrapper" id="patientsTableContainer" style="display: none;">
+          <table class="patient-table">
+            <thead>
+              <tr>
+                <th>Patient</th>
+                <th>Facility & Clinician</th>
+                <th>Journey Status</th>
+                <th>Specialist Review</th>
+                <th>Next Workflow Action</th>
+                <th>Owner</th>
+                <th>Due Date</th>
+                <th>Completeness</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="patientTableBody">
+              <!-- Injected via JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- =========================================================================
+           SCREEN 3: CARE JOURNEYS (DIRECTORY & PATIENT JOURNEY TWIN)
+           ========================================================================= -->
+      <section id="screen-journeys" class="screen">
+        
+        <!-- View 1: Care Journeys Directory (Default) -->
+        <div id="journeysDirectoryView">
+          <div class="screen-header-bar">
+            <div>
+              <h1 class="screen-title">Care Journeys</h1>
+              <p class="screen-subtitle">Choose a patient to view their diabetic eye-care journey.</p>
+            </div>
+          </div>
+
+          <!-- Clean Single-Line Search & Filter Toolbar -->
+          <div class="filter-toolbar">
+            <div class="search-box">
+              <span class="search-icon">🔍</span>
+              <input type="text" id="journeySearchInput" placeholder="Search by patient name or ID..." />
+              <button id="clearJourneySearchBtn" class="clear-search-btn" title="Clear search">✕</button>
+            </div>
+
+            <div class="filter-pills-row">
+              <button class="filter-pill active" data-journey-filter="all">All (<span id="count-journey-all">12</span>)</button>
+              <button class="filter-pill" data-journey-filter="needs_attention">Needs Attention (<span id="count-journey-needs-attention">10</span>)</button>
+              <button class="filter-pill" data-journey-filter="followup_pending">Follow-Up (<span id="count-journey-followup">9</span>)</button>
+              <button class="filter-pill" data-journey-filter="completed">Completed (<span id="count-journey-completed">1</span>)</button>
+
+              <!-- More Filters Dropdown Menu -->
+              <div class="more-filters-dropdown-wrapper">
+                <button class="filter-pill more-filters-btn" id="journeyMoreFiltersBtn" aria-haspopup="true" aria-expanded="false" title="More filter categories">
+                  <span id="journeyMoreFiltersLabel">More</span> ▾
+                </button>
+                <div class="more-filters-menu" id="journeyMoreFiltersMenu" role="menu">
+                  <div class="more-filter-item" data-journey-filter="awaiting_review" role="menuitem" tabindex="0">
+                    <span class="status-dot status-amber"></span> Awaiting Specialist Review (<span id="count-journey-awaiting-review">3</span>)
+                  </div>
+                  <div class="more-filter-item" data-journey-filter="unable_to_contact" role="menuitem" tabindex="0">
+                    <span class="status-dot status-red"></span> Unable to Contact (<span id="count-journey-unable-contact">2</span>)
+                  </div>
+                  <div class="more-filter-item" data-journey-filter="pending_screening" role="menuitem" tabindex="0">
+                    <span class="status-dot status-blue"></span> Screening Pending (<span id="count-journey-pending-screening">2</span>)
+                  </div>
+                  <div class="more-filter-item" data-journey-filter="report_missing" role="menuitem" tabindex="0">
+                    <span class="status-dot status-amber"></span> Record Reconciliation (<span id="count-journey-report-missing">1</span>)
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Care Journeys Cards Grid -->
+          <div class="patient-cards-grid" id="journeyCardsGrid">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+
+        <!-- View 2: Patient-Specific Care Journey Workspace (Opened upon card selection) -->
+        <div id="journeyDetailWorkspaceView" style="display: none;">
+          <div class="patient-detail-topbar">
+            <button class="btn-back" id="backToJourneysDirBtn">&larr; Back to Care Journeys</button>
+            <div class="detail-top-actions">
+              <select id="journeyPatientSelect" class="form-select" style="max-width: 240px;" aria-label="Change Patient">
+                <!-- Populated dynamically -->
+              </select>
+            </div>
+          </div>
+
+          <!-- Primary Journey Hero Card for Single Patient -->
+          <div class="patient-primary-card">
+            <div class="patient-primary-header">
+              <div class="d-flex align-items-center gap-3">
+                <div class="patient-avatar-box" id="twinAvatar">MF</div>
+                <div>
+                  <div class="d-flex align-items-center gap-2">
+                    <h1 class="detail-patient-name" id="twinPatientName">Mohammad Farooq</h1>
+                    <span class="patient-id-badge" id="twinPatientId">RX-1003</span>
+                  </div>
+                  <div class="detail-demographics-text" id="twinPatientSub">
+                    62 yrs &bull; Male &bull; Type 2 DM &bull; City Endocrine Centre
+                  </div>
+                </div>
+              </div>
+              <span class="stage-badge" id="twinStatusPill">Awaiting Specialist Review</span>
+            </div>
+
+            <div class="patient-key-actions-row">
+              <div class="key-action-col">
+                <span class="key-lbl">Current Journey Step</span>
+                <span class="key-val text-amber" id="twinCurrentStepVal">Specialist Review</span>
+              </div>
+              <div class="key-action-col">
+                <span class="key-lbl">Next Workflow Action</span>
+                <span class="key-val" id="twinNextActionVal">Coordinate specialist review</span>
+              </div>
+              <div class="key-action-col">
+                <span class="key-lbl">Owner</span>
+                <span class="key-val" id="twinAssignedToVal">Ophthalmology Team</span>
+              </div>
+            </div>
+
+            <!-- 8-Step Interactive Operational Stepper -->
+            <div class="stepper-track-wrap">
+              <div class="stepper-track" id="twinStepperTrack">
+                <!-- Rendered dynamically -->
+              </div>
+            </div>
+
+            <!-- Node Detail Inspection Card -->
+            <div class="node-inspection-panel mt-3" id="nodeInspectPanel">
+              <div class="node-inspect-header">
+                <span class="node-inspect-step-badge" id="inspectStepBadge">Step 5 of 8</span>
+                <h3 class="node-inspect-title" id="inspectTitle">Specialist Review</h3>
+                <span class="node-inspect-status" id="inspectStatus">In Progress</span>
+              </div>
+              <p class="node-inspect-desc" id="inspectDesc">
+                Retinal screening report uploaded. Awaiting specialist ophthalmologist clinical review and follow-up plan entry.
+              </p>
+              <div class="node-inspect-meta-row">
+                <div class="inspect-meta-item">
+                  <span class="meta-label">Action Owner:</span>
+                  <span class="meta-val" id="inspectActor">Ophthalmology Team</span>
+                </div>
+                <div class="inspect-meta-item">
+                  <span class="meta-label">Due Date:</span>
+                  <span class="meta-val" id="inspectDue">Today</span>
+                </div>
+                <div class="inspect-meta-item">
+                  <span class="meta-label">Source:</span>
+                  <span class="meta-val" id="inspectSource">Document Hub</span>
+                </div>
+              </div>
+              <div class="node-inspect-actions" id="inspectActionButtons"></div>
+            </div>
+
+            <!-- Why This Needs Attention (Focused on this ONE patient) -->
+            <div class="why-attention-card mt-3" id="journeyWhyAttentionCard">
+              <div class="d-flex align-items-center gap-2 mb-1">
+                <span class="font-size-16">⚠️</span>
+                <strong class="font-size-13 text-ink">Why This Journey Needs Attention</strong>
+              </div>
+              <p class="font-size-12 text-muted mb-0" id="journeyWhyAttentionText">
+                Retinal screening report is available and has been awaiting ophthalmologist review for 6 days.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- =========================================================================
+           SCREEN 4: SPECIALIST REVIEWS (QUEUE & CLINICIAN WORKSPACE)
+           ========================================================================= -->
+      <section id="screen-reviews" class="screen">
+        
+        <!-- View 1: Specialist Review Queue (Default) -->
+        <div id="reviewsQueueView">
+          <div class="screen-header-bar">
+            <div>
+              <h1 class="screen-title">Specialist Reviews</h1>
+              <p class="screen-subtitle">Choose a patient whose retinal-screening record is awaiting review.</p>
+            </div>
+          </div>
+
+          <!-- Clean Single-Line Search & Filter Toolbar -->
+          <div class="filter-toolbar">
+            <div class="search-box">
+              <span class="search-icon">🔍</span>
+              <input type="text" id="reviewSearchInput" placeholder="Search by patient name or ID..." />
+              <button id="clearReviewSearchBtn" class="clear-search-btn" title="Clear search">✕</button>
+            </div>
+
+            <div class="filter-pills-row">
+              <button class="filter-pill active" data-review-filter="awaiting_review">Awaiting Review (<span id="count-rev-awaiting">3</span>)</button>
+              <button class="filter-pill" data-review-filter="in_review">In Review (<span id="count-rev-in-review">0</span>)</button>
+              <button class="filter-pill" data-review-filter="completed">Completed (<span id="count-rev-completed">1</span>)</button>
+              <button class="filter-pill" data-review-filter="all">All (<span id="count-rev-all">12</span>)</button>
+              
+              <!-- More Filters Dropdown for Review Queue -->
+              <div class="more-filters-dropdown-wrapper">
+                <button class="filter-pill more-filters-btn" id="reviewMoreFiltersBtn" aria-haspopup="true" aria-expanded="false" title="More filter categories">
+                  <span id="reviewMoreFiltersLabel">More</span> ▾
+                </button>
+                <div class="more-filters-menu" id="reviewMoreFiltersMenu" role="menu">
+                  <div class="more-filter-item" data-review-filter="reconciliation" role="menuitem" tabindex="0">
+                    <span class="status-dot status-amber"></span> Record Reconciliation Required (<span id="count-rev-reconcile">1</span>)
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Specialist Review Queue Cards Grid -->
+          <div class="patient-cards-grid" id="reviewsQueueGrid">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+
+        <!-- View 2: Specialist Review Workspace (Opened upon card selection) -->
+        <div id="reviewWorkspaceView" style="display: none;">
+          <div class="patient-detail-topbar">
+            <button class="btn-back" id="backToReviewsQueueBtn">&larr; Back to Specialist Reviews</button>
+            <div class="detail-top-actions">
+              <button class="btn-outline btn-sm" id="reviewGoJourneyBtn">View Care Journey &rarr;</button>
+            </div>
+          </div>
+
+          <!-- Top Patient Bar -->
+          <div class="patient-primary-card mb-3" style="padding: 18px 24px;">
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+              <div class="d-flex align-items-center gap-3">
+                <div class="patient-avatar-box" id="revWsAvatar">MF</div>
+                <div>
+                  <div class="d-flex align-items-center gap-2">
+                    <h2 class="detail-patient-name font-size-18" id="revWsPatientName">Mohammad Farooq</h2>
+                    <span class="patient-id-badge" id="revWsPatientId">RX-1003</span>
+                  </div>
+                  <div class="detail-demographics-text font-size-12" id="revWsDemographics">
+                    62 yrs &bull; Male &bull; Type 2 DM &bull; City Endocrine Centre
+                  </div>
+                </div>
+              </div>
+              <span class="stage-badge" id="revWsStatusBadge">Awaiting Review</span>
+            </div>
+          </div>
+
+          <!-- Role Notice Banner (Shown when non-clinician role is active) -->
+          <div class="role-notice-banner" id="wsRoleNoticeBanner" style="display: none;">
+            <div class="role-notice-icon">ℹ️</div>
+            <div class="role-notice-text">
+              <strong>Clinical Assessment Restricted</strong>
+              <p>Clinical assessment and follow-up directives are entered by licensed healthcare professionals.</p>
+            </div>
+            <button class="btn-outline btn-sm" id="wsRoleNoticeSwitchBtn">Switch to Specialist Demo Role</button>
+          </div>
+
+          <!-- Submission Confirmation Card (Shown after review is submitted) -->
+          <div class="review-success-banner mb-3" id="wsReviewSuccessBanner" style="display: none;">
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+              <div>
+                <strong class="font-size-14 text-emerald">✓ REVIEW COMPLETED</strong>
+                <p class="font-size-12 text-muted mb-0" id="wsSuccessTaskNotice">
+                  FOLLOW-UP COORDINATION CREATED &bull; Source: Clinician Instruction &bull; Status: Pending
+                </p>
+              </div>
+              <button class="btn-primary btn-sm" id="wsReturnQueueBtn">Return to Review Queue</button>
+            </div>
+          </div>
+
+          <!-- Two-Column Workspace -->
+          <div class="specialist-review-workspace">
+            
+            <!-- Left Column: Read-Only Source Records -->
+            <div class="review-doc-col">
+              <div class="panel-header">
+                <h3>Source Records &amp; Fundus Preview</h3>
+                <span class="doc-badge" id="wsReviewDocTitle">Screening_Report_RX1003.pdf</span>
+              </div>
+              
+              <div class="fundus-preview-window">
+                <div class="mock-report-sheet">
+                  <div class="sheet-header">
+                    <h4>RETINAL SCREENING REPORT &bull; DIGITAL FUNDUS PHOTOGRAPHY</h4>
+                    <span class="sheet-date" id="wsSheetDate">Acquired: 2026-09-28 &bull; Mobile Camp</span>
+                  </div>
+                  <div class="mock-fundus-images-row">
+                    <div class="fundus-img-box">
+                      <div class="fundus-visual-circle o-d"></div>
+                      <span>Right Eye (OD)</span>
+                    </div>
+                    <div class="fundus-img-box">
+                      <div class="fundus-visual-circle o-s"></div>
+                      <span>Left Eye (OS)</span>
+                    </div>
+                  </div>
+                  <div class="mock-report-meta">
+                    <p><strong>Device:</strong> Non-Mydriatic Fundus Camera</p>
+                    <p><strong>Quality:</strong> Adequate for clinical evaluation</p>
+                    <p class="mt-1 font-size-11 text-muted"><strong>Source Record:</strong> Uploaded mobile screening capture (read-only).</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Supporting Lab / Clinical Context -->
+              <div class="supporting-docs-box mt-3">
+                <div class="section-sub-label">Baseline Clinical Context:</div>
+                <div class="d-flex justify-content-between p-2 bg-subtle border-radius-sm font-size-12 mb-1">
+                  <span>HbA1c Lab Result:</span>
+                  <strong id="wsContextHbA1c">8.2%</strong>
+                </div>
+                <div class="d-flex justify-content-between p-2 bg-subtle border-radius-sm font-size-12">
+                  <span>Diabetes Duration:</span>
+                  <strong id="wsContextDuration">7 years</strong>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Column: Clinician Review Entry & Provenance -->
+            <div class="review-form-col">
+              <div class="clinician-form-header">
+                <span class="clinician-badge">CLINICIAN-ENTERED INFORMATION</span>
+                <h3>Specialist Ophthalmologist Review</h3>
+                <p class="font-size-12 text-muted">Clinical assessment entered by healthcare professional.</p>
+                <div class="active-clinician-chip mt-2">
+                  <span class="font-size-12 text-muted">Evaluating Clinician:</span>
+                  <strong id="wsClinicianProfileName">Dr. Suresh Chandran, MS</strong> &bull;
+                  <span id="wsClinicianProfileSpecialty" class="text-muted">Ophthalmology</span> &bull;
+                  <span id="wsClinicianProfileFacility" class="text-muted">District Eye Hospital</span>
+                </div>
+              </div>
+
+              <!-- Recorded Review View (If Completed) -->
+              <div class="review-recorded-card" id="wsReviewRecordedCard" style="display: none;">
+                <div class="clinician-entered-info-card">
+                  <div class="clinician-info-header">
+                    <span class="clinician-badge">CLINICIAN-ENTERED INFORMATION</span>
+                    <span class="recorded-time" id="wsRevCardRecordedTime">Recorded</span>
+                  </div>
+                  
+                  <div class="clinician-meta-grid mt-2">
+                    <div><span class="meta-label">Entered by:</span><br/><strong id="wsRevCardClinicianName">Dr. Suresh Chandran</strong></div>
+                    <div><span class="meta-label">Specialty:</span><br/><strong id="wsRevCardSpecialty">Ophthalmology</strong></div>
+                    <div><span class="meta-label">Facility:</span><br/><span id="wsRevCardFacility">District Eye Hospital</span></div>
+                    <div id="wsRevCardRegBox"><span class="meta-label">Registration:</span><br/><span id="wsRevCardRegNum" class="font-size-12">MCI-2016-849201</span> <span class="text-muted font-size-10">(Self-entered demo info)</span></div>
+                  </div>
+
+                  <div class="clinician-assessment-section mt-3">
+                    <div class="section-sub-label">Clinical Assessment:</div>
+                    <div class="assessment-text p-2 bg-subtle border-radius-sm font-size-13" id="wsRevCardAssessment"></div>
+                  </div>
+
+                  <div class="clinician-directive-section mt-3">
+                    <div class="section-sub-label">Management Directive &amp; Coordinator Instructions:</div>
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                      <span class="stage-badge badge-followup" id="wsRevCardDisposition">Hospital Follow-Up (6 Months)</span>
+                      <span class="font-size-12 text-muted" id="wsRevCardDueDate">Due: 2027-04-01</span>
+                    </div>
+                    <div class="instruction-text p-2 bg-subtle border-radius-sm font-size-12 text-muted mt-1" id="wsRevCardInstructions"></div>
+                  </div>
+
+                  <!-- Operational Provenance Chain -->
+                  <div class="provenance-chain-box mt-3">
+                    <div class="provenance-chain-title">OPERATIONAL PROVENANCE CHAIN</div>
+                    <div class="provenance-flow-steps">
+                      <div class="prov-step-item">
+                        <span class="prov-step-icon">👨‍⚕️</span>
+                        <span class="prov-step-label" id="wsProvClinicianLabel">Clinician</span>
+                      </div>
+                      <span class="prov-step-arrow">→</span>
+                      <div class="prov-step-item">
+                        <span class="prov-step-icon">📋</span>
+                        <span class="prov-step-label">Clinical Directive</span>
+                      </div>
+                      <span class="prov-step-arrow">→</span>
+                      <div class="prov-step-item">
+                        <span class="prov-step-icon">⚙️</span>
+                        <span class="prov-step-label">RetinaX Care</span>
+                      </div>
+                      <span class="prov-step-arrow">→</span>
+                      <div class="prov-step-item">
+                        <span class="prov-step-icon">🎯</span>
+                        <span class="prov-step-label">Follow-Up Task</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="d-flex justify-content-end mt-3">
+                    <button class="btn-outline btn-sm" id="wsBtnEditReview">Edit Review</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Form for Entering Review (When Pending or Editing) -->
+              <form id="wsSpecialistReviewForm" class="review-entry-form">
+                <div class="form-group mb-3">
+                  <label class="form-label" for="wsReviewAssessment">Clinical Assessment *</label>
+                  <textarea id="wsReviewAssessment" class="form-textarea" rows="3" placeholder="Enter clinical assessment based on visual inspection..." required></textarea>
+                </div>
+
+                <div class="form-group mb-3">
+                  <label class="form-label" for="wsReviewReferral">Referral Determination *</label>
+                  <select id="wsReviewReferral" class="form-select" required>
+                    <option value="Hospital Follow-Up (6 Months)">Hospital Follow-Up (6 Months)</option>
+                    <option value="Routine Screening (12 Months)">Routine Annual Retinal Screening (12 Months)</option>
+                    <option value="Comprehensive Eye Center Evaluation">Comprehensive Eye Center Evaluation (Urgent)</option>
+                    <option value="Laser/Surgical Referral">Laser / Vitreoretinal Referral</option>
+                    <option value="No DR Detected - Annual Recall">No DR Detected — Annual Recall</option>
+                  </select>
+                </div>
+
+                <div class="form-group mb-3">
+                  <label class="form-label" for="wsReviewInstructions">Follow-Up Instructions &amp; Management Plan *</label>
+                  <textarea id="wsReviewInstructions" class="form-textarea" rows="2" placeholder="Enter clinician-directed follow-up instructions..." required></textarea>
+                </div>
+
+                <div class="form-group mb-3">
+                  <label class="form-label" for="wsReviewFollowupDate">Target Follow-Up Due Date</label>
+                  <input type="date" id="wsReviewFollowupDate" class="form-input" />
+                </div>
+
+                <div class="form-group mb-3">
+                  <label class="form-label" for="wsReviewNotes">Clinical Notes (Optional)</label>
+                  <input type="text" id="wsReviewNotes" class="form-input" placeholder="Optional notes for care coordination team..." />
+                </div>
+
+                <div class="d-flex gap-2 justify-content-end mt-3">
+                  <button type="button" class="btn-outline" id="wsSaveDraftReviewBtn">Save Draft</button>
+                  <button type="submit" class="btn-primary" id="wsSubmitReviewBtn">✓ Submit Review</button>
+                </div>
+              </form>
+
+            </div>
+
+          </div>
+        </div>
+
+      </section>
+
+      <!-- =========================================================================
+           SCREEN 4: FOLLOW-UPS
+           ========================================================================= -->
+      <section id="screen-followups" class="screen">
+        <div class="screen-header-bar">
+          <div>
+            <h1 class="screen-title">Follow-Ups</h1>
+            <p class="screen-subtitle">Coordinate clinician-directed follow-up, patient reminders, and community outreach.</p>
+          </div>
+          <div class="header-action-group">
+            <button class="btn-outline" id="fuGoOutreachBtn">📱 Open Field Outreach Mode</button>
+          </div>
+        </div>
+
+        <!-- Follow-Up Worklist Tabs -->
+        <div class="followup-tabs-bar">
+          <button class="followup-tab-btn active" data-category="due_today">
+            Due Today (<span id="count-fu-today">0</span>)
+          </button>
+          <button class="followup-tab-btn" data-category="upcoming">
+            Upcoming (<span id="count-fu-upcoming">0</span>)
+          </button>
+          <button class="followup-tab-btn" data-category="unable_to_contact">
+            Unable to Contact (<span id="count-fu-uncontacted">2</span>)
+          </button>
+          <button class="followup-tab-btn" data-category="completed">
+            Care Loop Closed (<span id="count-fu-completed">1</span>)
+          </button>
+        </div>
+
+        <!-- Follow-Up Action Cards List -->
+        <div class="followup-cards-container" id="followupCardsContainer">
+          <!-- Populated dynamically -->
+        </div>
+      </section>
+
+      <!-- =========================================================================
+           SCREEN 5: DOCUMENTS
+           ========================================================================= -->
+      <section id="screen-documents" class="screen">
+        <div class="screen-header-bar">
+          <div>
+            <h1 class="screen-title">Documents</h1>
+            <p class="screen-subtitle">Access retinal screening reports, lab records, and mobile camp exceptions.</p>
+          </div>
+          <div class="header-action-group">
+            <button class="btn-outline" id="openReconciliationModalBtn">
+              <span>⚠️</span> Record Reconciliation (<span id="reconcileCountBadge">1</span>)
+            </button>
+            <button class="btn-primary" id="openDocUploadModalBtn">
+              <span>+</span> Upload Document
+            </button>
+          </div>
+        </div>
+
+        <!-- Document Hub Categories & Grid -->
+        <div class="doc-category-toolbar">
+          <button class="doc-filter-btn active" data-doc-type="all">All Documents</button>
+          <button class="doc-filter-btn" data-doc-type="Retinal Screening Report">Retinal Reports</button>
+          <button class="doc-filter-btn" data-doc-type="Lab Report">Lab Reports</button>
+          <button class="doc-filter-btn" data-doc-type="Referral Letter">Referral Letters</button>
+        </div>
+
+        <div class="document-cards-grid" id="documentCardsGrid">
+          <!-- Populated dynamically -->
+        </div>
+      </section>
+
+      <!-- =========================================================================
+           SCREEN 6: CONTINUITY INSIGHTS
+           ========================================================================= -->
+      <section id="screen-analytics" class="screen">
+        <div class="screen-header-bar">
+          <div>
+            <h1 class="screen-title">Continuity Insights</h1>
+            <p class="screen-subtitle">Understand where care journeys are getting stuck and monitor turnaround benchmarks.</p>
+          </div>
+        </div>
+
+        <!-- Funnel Visualization & Bottleneck Radar Grid -->
+        <div class="analytics-grid-layout">
+          
+          <div class="analytics-card">
+            <div class="card-header">
+              <h3>Diabetic Retinopathy Screening Drop-Off Funnel</h3>
+              <span class="card-sub">Progression across 12 patients</span>
+            </div>
+            <div class="funnel-container" id="funnelContainer"></div>
+          </div>
+
+          <div class="analytics-card">
+            <div class="card-header">
+              <h3>Workflow Bottlenecks & Operational Delays</h3>
+              <span class="card-sub">Stages with longest waiting times</span>
+            </div>
+            <div class="bottlenecks-list" id="bottlenecksList"></div>
+          </div>
+
+        </div>
+
+        <div class="analytics-grid-layout" style="margin-top: 1.5rem;">
+          
+          <div class="analytics-card">
+            <div class="card-header">
+              <h3>Turnaround Time Benchmarks</h3>
+              <span class="card-sub">Average elapsed days between milestones</span>
+            </div>
+            <div class="turnaround-kpis-grid" id="turnaroundGrid"></div>
+          </div>
+
+          <div class="analytics-card">
+            <div class="card-header">
+              <h3>Action Ownership by Role</h3>
+              <span class="card-sub">Pending tasks distribution</span>
+            </div>
+            <div class="team-workload-list" id="teamWorkloadList"></div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- =========================================================================
+           SCREEN 7: FIELD OUTREACH MODE
+           ========================================================================= -->
+      <section id="screen-outreach" class="screen">
+        <div class="screen-header-bar">
+          <div>
+            <h1 class="screen-title">Field Outreach Mode</h1>
+            <p class="screen-subtitle">Offline-ready interface for community health workers and field visits.</p>
+          </div>
+          <div class="header-action-group">
+            <div class="connectivity-switch-box">
+              <span class="connectivity-label">Connection:</span>
+              <button class="conn-mode-btn active-conn" id="connOnlineBtn">🟢 Online</button>
+              <button class="conn-mode-btn" id="connOfflineBtn">🔴 Offline</button>
+            </div>
+            <button class="btn-primary" id="syncOfflineQueueBtn" disabled>
+              <span>🔄</span> Sync Queue (<span id="offlineQueueCount">0</span>)
+            </button>
+          </div>
+        </div>
+
+        <div class="outreach-field-banner" id="outreachFieldBanner">
+          <div class="banner-status-icon">📶</div>
+          <div class="banner-status-text">
+            <strong id="bannerStatusTitle">Network Connected</strong>
+            <span id="bannerStatusDesc">Field visit logs sync automatically with central server.</span>
+          </div>
+        </div>
+
+        <div class="home-section-header" style="margin-top: 1.5rem;">
+          <h2 class="home-section-title">Today's Assigned Field Follow-Ups</h2>
+        </div>
+
+        <div class="field-tasks-grid" id="fieldTasksGrid"></div>
+      </section>
+
+      <!-- =========================================================================
+           SCREEN 8: PATIENT PROFILE (PROGRESSIVE DISCLOSURE)
+           ========================================================================= -->
+      <section id="screen-patient-detail" class="screen">
+        <div class="patient-detail-topbar">
+          <button class="btn-back" id="backToWorklistBtn">&larr; Back to Patients</button>
+          <div class="detail-top-actions">
+            <button class="btn-outline btn-sm" id="detailCarePassportBtn">🪪 Care Passport</button>
+            <button class="btn-outline btn-sm" id="detailSendReminderBtn">💬 Send Reminder</button>
+            <button class="btn-primary btn-sm" id="detailLogContactBtn">📞 Log Contact</button>
+          </div>
+        </div>
+
+        <!-- Primary Profile Card: Focused on Essentials -->
+        <div class="patient-primary-card">
+          <div class="patient-primary-header">
+            <div class="d-flex align-items-center gap-3">
+              <div class="patient-avatar-box" id="detailAvatar">MF</div>
+              <div>
+                <div class="d-flex align-items-center gap-2">
+                  <h1 class="detail-patient-name" id="detailPatientName">Mohammad Farooq</h1>
+                  <span class="patient-id-badge" id="detailPatientId">RX-1003</span>
+                </div>
+                <div class="detail-demographics-text" id="detailDemographics">
+                  62 yrs &bull; Male &bull; City Endocrine Centre &bull; +91 98234 56789
+                </div>
+              </div>
+            </div>
+            <span class="stage-badge" id="detailStageBadge">Awaiting Review</span>
+          </div>
+
+          <div class="patient-key-actions-row">
+            <div class="key-action-col">
+              <span class="key-lbl">Current Journey Step</span>
+              <span class="key-val text-amber" id="detailCurrentStep">Specialist Review</span>
+            </div>
+            <div class="key-action-col">
+              <span class="key-lbl">Next Workflow Action</span>
+              <span class="key-val" id="detailNextAction">Coordinate specialist review</span>
+            </div>
+            <div class="key-action-col">
+              <span class="key-lbl">Owner</span>
+              <span class="key-val" id="detailAssignedTo">Ophthalmology Team</span>
+            </div>
+          </div>
+
+          <!-- Embedded Care Journey Twin Stepper -->
+          <div class="patient-stepper-box" id="patientDetailStepperBox"></div>
+        </div>
+
+        <!-- Secondary Detail Tabs -->
+        <div class="detail-nav-tabs">
+          <button class="detail-tab active" data-tab="overview">Overview</button>
+          <button class="detail-tab" data-tab="review">Specialist Review</button>
+          <button class="detail-tab" data-tab="documents">Documents</button>
+          <button class="detail-tab" data-tab="followup">Follow-Up & Outreach</button>
+          <button class="detail-tab" data-tab="activity">Activity Log</button>
+        </div>
+
+        <!-- Secondary Tab 1: Overview & Completeness -->
+        <div class="detail-tab-content active-tab" id="tab-overview">
+          <div class="journey-summary-layout">
+            <div class="summary-score-card">
+              <h3>Record Completeness</h3>
+              <div class="completeness-circle-wrap">
+                <div class="completeness-score-num" id="summaryScoreNum">83%</div>
+                <div class="completeness-score-lbl">Checklist Completed</div>
+              </div>
+              <p class="summary-score-desc">
+                Rules-based operational audit for retinal screening readiness and follow-up data.
+              </p>
+            </div>
+
+            <div class="summary-checklist-card">
+              <h3>Operational Checklist</h3>
+              <div class="checklist-items" id="summaryChecklistItems"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Secondary Tab 2: Specialist Review (Role-Aware 2-Column Workspace) -->
+        <div class="detail-tab-content" id="tab-review">
+          
+          <!-- Role Notice Banner (Shown when non-clinician role is active) -->
+          <div class="role-notice-banner" id="specialistRoleNotice" style="display: none;">
+            <div class="role-notice-icon">ℹ️</div>
+            <div class="role-notice-text">
+              <strong>Clinical Assessment Restricted</strong>
+              <p>Clinical assessment and follow-up directives are entered by licensed healthcare professionals.</p>
+            </div>
+            <button class="btn-outline btn-sm" id="roleNoticeSwitchBtn">Switch to Specialist Demo Role</button>
+          </div>
+
+          <div class="specialist-review-workspace">
+            
+            <div class="review-doc-col">
+              <div class="panel-header">
+                <h3>Uploaded Retinal Screening Report</h3>
+                <span class="doc-badge" id="reviewDocTitle">Screening_Report_RX1003.pdf</span>
+              </div>
+              <div class="fundus-preview-window">
+                <div class="mock-report-sheet">
+                  <div class="sheet-header">
+                    <h4>RETINAL SCREENING REPORT &bull; DIGITAL FUNDUS PHOTOGRAPHY</h4>
+                    <span class="sheet-date" id="sheetDate">Acquired: 2026-09-28 &bull; Mobile Camp</span>
+                  </div>
+                  <div class="mock-fundus-images-row">
+                    <div class="fundus-img-box">
+                      <div class="fundus-visual-circle o-d"></div>
+                      <span>Right Eye (OD)</span>
+                    </div>
+                    <div class="fundus-img-box">
+                      <div class="fundus-visual-circle o-s"></div>
+                      <span>Left Eye (OS)</span>
+                    </div>
+                  </div>
+                  <div class="mock-report-meta">
+                    <p><strong>Device:</strong> Non-Mydriatic Fundus Camera</p>
+                    <p><strong>Quality:</strong> Adequate for clinical evaluation</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="review-form-col">
+              <div class="clinician-form-header">
+                <span class="clinician-badge" id="clinicianFormBadge">CLINICIAN-ENTERED INFORMATION</span>
+                <h3 id="clinicianFormHeading">Specialist Ophthalmologist Review</h3>
+                <p id="clinicianFormSubtext">Record your clinical assessment and follow-up plan. Submitting generates operational coordinator tasks.</p>
+              </div>
+
+              <!-- Recorded Review Display Card (Shown when review is completed) -->
+              <div class="review-recorded-card" id="reviewRecordedCard" style="display: none;">
+                <div class="clinician-entered-info-card">
+                  <div class="clinician-info-header">
+                    <span class="clinician-badge">CLINICIAN-ENTERED INFORMATION</span>
+                    <span class="recorded-time" id="revCardRecordedTime">Recorded: 2026-10-03 10:32</span>
+                  </div>
+                  
+                  <div class="clinician-meta-grid mt-2">
+                    <div><span class="meta-label">Entered by:</span><br/><strong id="revCardClinicianName">Dr. Suresh Chandran, MS</strong></div>
+                    <div><span class="meta-label">Specialty:</span><br/><strong id="revCardSpecialty">Ophthalmology</strong></div>
+                    <div><span class="meta-label">Facility:</span><br/><span id="revCardFacility">District Eye Hospital</span></div>
+                    <div id="revCardRegBox"><span class="meta-label">Registration:</span><br/><span id="revCardRegNum" class="font-size-12">MCI-2018-987654</span> <span class="text-muted font-size-10">(Self-entered demo info)</span></div>
+                  </div>
+
+                  <div class="clinician-assessment-section mt-3">
+                    <div class="section-sub-label">Clinical Assessment:</div>
+                    <div class="assessment-text p-2 bg-subtle border-radius-sm font-size-13" id="revCardAssessment"></div>
+                  </div>
+
+                  <div class="clinician-directive-section mt-3">
+                    <div class="section-sub-label">Management Directive & Coordinator Instructions:</div>
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                      <span class="stage-badge badge-followup" id="revCardDisposition">Hospital Follow-Up (6 Months)</span>
+                      <span class="font-size-12 text-muted" id="revCardDueDate">Due: 2027-04-01</span>
+                    </div>
+                    <div class="instruction-text p-2 bg-subtle border-radius-sm font-size-12 text-muted mt-1" id="revCardInstructions"></div>
+                  </div>
+
+                  <!-- Operational Provenance Chain -->
+                  <div class="provenance-chain-box mt-3">
+                    <div class="provenance-chain-title">OPERATIONAL PROVENANCE CHAIN</div>
+                    <div class="provenance-flow-steps">
+                      <div class="prov-step-item">
+                        <span class="prov-step-icon">👨‍⚕️</span>
+                        <span class="prov-step-label" id="provClinicianLabel">Clinician</span>
+                      </div>
+                      <span class="prov-step-arrow">→</span>
+                      <div class="prov-step-item">
+                        <span class="prov-step-icon">📋</span>
+                        <span class="prov-step-label">Clinical Directive</span>
+                      </div>
+                      <span class="prov-step-arrow">→</span>
+                      <div class="prov-step-item">
+                        <span class="prov-step-icon">⚙️</span>
+                        <span class="prov-step-label">RetinaX Care</span>
+                      </div>
+                      <span class="prov-step-arrow">→</span>
+                      <div class="prov-step-item">
+                        <span class="prov-step-icon">🎯</span>
+                        <span class="prov-step-label text-success">Operational Task</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="mt-3 text-right">
+                    <button type="button" class="btn-outline btn-sm" id="btnEditSpecialistReview">✏️ Revise Clinical Assessment</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Input Form for Clinician Assessment -->
+              <form id="specialistReviewForm" class="specialist-form">
+                <div class="form-group">
+                  <label for="reviewClinicianName">Evaluating Clinician:</label>
+                  <input type="text" id="reviewClinicianName" class="form-input" value="Dr. Suresh Chandran, MS (Ophthalmology)" required />
+                </div>
+
+                <div class="form-group">
+                  <label for="reviewAssessment">Clinical Assessment *</label>
+                  <textarea id="reviewAssessment" class="form-textarea" rows="3" placeholder="Enter clinician assessment findings..." required></textarea>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="reviewReferral">Disposition:</label>
+                    <select id="reviewReferral" class="form-select">
+                      <option value="Routine Follow-Up (12 Months)">Routine Follow-Up (12 Months)</option>
+                      <option value="Hospital Follow-Up (6 Months)" selected>Hospital Follow-Up (6 Months)</option>
+                      <option value="Urgent Vitreoretinal Referral (2 Weeks)">Urgent Referral (2 Weeks)</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="reviewFollowupDate">Follow-Up Date:</label>
+                    <input type="date" id="reviewFollowupDate" class="form-input" />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="reviewInstructions">Follow-Up Instructions for Coordinator:</label>
+                  <textarea id="reviewInstructions" class="form-textarea" rows="2" placeholder="Instructions for coordinator..."></textarea>
+                </div>
+
+                <div class="form-actions">
+                  <button type="submit" class="btn-primary" id="submitReviewBtn">
+                    ✓ Submit Review & Generate Task
+                  </button>
+                </div>
+              </form>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Secondary Tab 3: Documents -->
+        <div class="detail-tab-content" id="tab-documents">
+          <div class="tab-header-row">
+            <h3>Patient Documents</h3>
+            <button class="btn-primary btn-sm" id="detailUploadDocBtn">+ Attach Document</button>
+          </div>
+          <div class="patient-documents-grid" id="detailDocumentsGrid"></div>
+        </div>
+
+        <!-- Secondary Tab 4: Follow-Up -->
+        <div class="detail-tab-content" id="tab-followup">
+          <div class="followup-detail-layout">
+            <div class="followup-status-card">
+              <h3>Follow-Up Management</h3>
+              <div class="form-group">
+                <label>Status:</label>
+                <select id="detailFollowupStatusSelect" class="form-select">
+                  <option value="Pending">Pending</option>
+                  <option value="Scheduled">Scheduled</option>
+                  <option value="Unable to Contact">Unable to Contact</option>
+                  <option value="Completed">Completed (Care Loop Closed)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Target Date:</label>
+                <input type="date" id="detailFollowupTargetDate" class="form-input" />
+              </div>
+
+              <div class="form-group">
+                <label>Responsible Staff:</label>
+                <input type="text" id="detailFollowupStaff" class="form-input" />
+              </div>
+
+              <div class="form-group">
+                <label>Coordination Notes:</label>
+                <textarea id="detailFollowupNotes" class="form-textarea" rows="2"></textarea>
+              </div>
+
+              <div class="form-actions">
+                <button class="btn-primary" id="saveFollowupStatusBtn">Save Follow-Up Status</button>
+                <button class="btn-success" id="closeCareLoopBtn">✓ Mark Care Loop Completed</button>
+              </div>
+            </div>
+
+            <div class="contact-history-card">
+              <div class="tab-header-row">
+                <h3>Contact History</h3>
+                <button class="btn-outline btn-sm" id="detailAddContactAttemptBtn">+ Log Contact</button>
+              </div>
+              <div class="contact-attempts-list" id="detailContactAttemptsList"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Secondary Tab 5: Activity Log -->
+        <div class="detail-tab-content" id="tab-activity">
+          <div class="tab-header-row">
+            <h3>Longitudinal Activity Log</h3>
+            <button class="btn-primary btn-sm" id="detailAddTimelineEventBtn">+ Log Event</button>
+          </div>
+          <div class="timeline-trail" id="detailTimelineTrail"></div>
+        </div>
+
+      </section>
+
+      <!-- =========================================================================
+           SCREEN 9: GUIDED DEMO STORY (MOHAMMAD FAROOQ RX-1003)
+           ========================================================================= -->
+      <section id="screen-demo-story" class="screen">
+        <div class="demo-story-container">
+          <div class="demo-story-header">
+            <span class="story-badge">GUIDED DEMO</span>
+            <h1 class="story-title">Closing the Loop for Mohammad Farooq</h1>
+            <p class="story-subtitle">
+              Follow this 6-step walkthrough showing how RetinaX Care moves a patient from an unreviewed report to specialist assessment, coordinator action, bilingual outreach, and care loop completion.
+            </p>
+          </div>
+
+          <div class="demo-stepper-nav" id="demoStepperNav">
+            <div class="demo-step-pill active" data-step="1">1. Identify Gap</div>
+            <div class="demo-step-pill" data-step="2">2. View Document</div>
+            <div class="demo-step-pill" data-step="3">3. Specialist Review</div>
+            <div class="demo-step-pill" data-step="4">4. Task Created</div>
+            <div class="demo-step-pill" data-step="5">5. Bilingual Reminder</div>
+            <div class="demo-step-pill" data-step="6">6. Close Care Loop</div>
+          </div>
+
+          <div class="demo-step-content-card" id="demoStepContent"></div>
+
+          <div class="demo-nav-bottom-bar">
+            <button class="btn-outline" id="demoPrevStepBtn" disabled>&larr; Previous</button>
+            <span class="demo-step-indicator" id="demoStepIndicator">Step 1 of 6</span>
+            <button class="btn-primary" id="demoNextStepBtn">Next Step &rarr;</button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- LEVEL 4: Minimal Safety Footer -->
+    <footer class="app-footer">
+      <div class="footer-inner">
+        <span class="footer-safety-text">
+          Assistive workflow platform. Clinical interpretation and medical decisions remain with qualified healthcare professionals.
+        </span>
+        <div class="footer-links">
+          <span>RetinaX Care &bull; Care Continuity</span>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Toast Notification Banner -->
+    <div class="app-toast" id="appToast" role="status" aria-live="polite"></div>
+
+    <!-- =========================================================================
+         MODALS
+         ========================================================================= -->
+
+    <!-- Modal: First-Time Experience Setup -->
+    <div class="modal" id="firstTimeProfileModal">
+      <div class="modal-dialog modal-md">
+        <div class="modal-header">
+          <h3 class="modal-title">Welcome to RetinaX Care</h3>
+          <button class="modal-close" data-modal="firstTimeProfileModal">✕</button>
+        </div>
+        <div class="modal-body text-center p-4">
+          <div class="brand-mark mb-3" style="width: 52px; height: 52px; font-size: 18px; margin: 0 auto; display: flex; align-items: center; justify-content: center;">RX</div>
+          <h2 style="font-size: 20px; font-weight: 800; margin-bottom: 6px;">WELCOME TO RETINAX CARE</h2>
+          <p class="font-size-13 text-muted mb-4" style="max-width: 460px; margin: 0 auto 20px auto; line-height: 1.5;">
+            Set up your profile to personalize your workspace and configure role-based coordination views.
+          </p>
+
+          <div class="welcome-action-box mb-4">
+            <button type="button" class="btn-primary-lg w-100" id="welcomeCreateProfileBtn">
+              + Create Your Profile
+            </button>
+          </div>
+
+          <div class="divider-text mb-3" style="position: relative; text-align: center; margin: 18px 0;">
+            <span style="background: var(--surface); padding: 0 10px; font-size: 11.5px; color: var(--muted); text-transform: uppercase; font-weight: 600;">or quick-start with a demo preset</span>
+          </div>
+
+          <div class="preset-pills-row" style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;">
+            <button type="button" class="btn-preset-pill" data-preset="coordinator">
+              <span class="pill-avatar bg-blue-soft">AS</span>
+              <span>Care Coordinator</span>
+            </button>
+            <button type="button" class="btn-preset-pill" data-preset="specialist">
+              <span class="pill-avatar bg-amber-soft">SC</span>
+              <span>Ophthalmologist</span>
+            </button>
+            <button type="button" class="btn-preset-pill" data-preset="admin">
+              <span class="pill-avatar bg-indigo-soft">PV</span>
+              <span>Program Admin</span>
+            </button>
+          </div>
+
+          <div class="mt-4 p-2 bg-subtle border-radius-sm font-size-11 text-muted text-left">
+            ℹ️ <strong>Demo Profile Setup:</strong> Self-entered demo profile information for testing care coordination workflows. No external medical license or credential verification is claimed or performed.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Create / Edit User & Clinician Profile -->
+    <div class="modal" id="profileFormModal">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <h3 class="modal-title" id="profileFormModalTitle">Create Your Profile</h3>
+          <button class="modal-close" data-modal="profileFormModal">✕</button>
+        </div>
+        <form id="userProfileForm">
+          <div class="modal-body">
+            <!-- Live Avatar / Initials Preview Row -->
+            <div class="profile-avatar-setup-row mb-3">
+              <div class="avatar-preview-box" id="formAvatarPreview">AS</div>
+              <div class="avatar-info-box">
+                <strong id="formAvatarNamePreview">Dr. Ananya Sharma</strong>
+                <span class="font-size-12 text-muted" id="formAvatarRolePreview">Care Coordinator</span>
+              </div>
+            </div>
+
+            <!-- Basic Info: Title & Full Name -->
+            <div class="form-row">
+              <div class="form-group" style="flex: 0 0 100px;">
+                <label for="formProfTitle">Title</label>
+                <select id="formProfTitle" class="form-select">
+                  <option value="Dr.">Dr.</option>
+                  <option value="Prof.">Prof.</option>
+                  <option value="Mr.">Mr.</option>
+                  <option value="Ms.">Ms.</option>
+                  <option value="">None</option>
+                </select>
+              </div>
+              <div class="form-group" style="flex: 1;">
+                <label for="formFullName">Full Name *</label>
+                <input type="text" id="formFullName" class="form-input" required placeholder="e.g., Ananya Sharma" />
+              </div>
+            </div>
+
+            <!-- Role Selection -->
+            <div class="form-group">
+              <label for="formRoleSelect">Role *</label>
+              <select id="formRoleSelect" class="form-select">
+                <option value="coordinator">Care Coordinator</option>
+                <option value="specialist">Ophthalmologist / Eye-Care Specialist</option>
+                <option value="admin">Program Administrator</option>
+              </select>
+            </div>
+
+            <!-- Clinician-Specific Fields (Visible for Ophthalmologist / Specialist) -->
+            <div id="clinicianFieldsGroup" class="role-specific-group" style="display: none;">
+              <div class="form-group">
+                <label for="formSpecialty">Specialty *</label>
+                <input type="text" id="formSpecialty" class="form-input" value="Ophthalmology" placeholder="e.g., Ophthalmology" />
+              </div>
+            </div>
+
+            <!-- Department & Facility -->
+            <div class="form-row">
+              <div class="form-group">
+                <label for="formDept" id="lblFormDept">Department</label>
+                <input type="text" id="formDept" class="form-input" placeholder="e.g., Department of Ophthalmology" />
+              </div>
+              <div class="form-group">
+                <label for="formFacility" id="lblFormFacility">Facility / Hospital *</label>
+                <input type="text" id="formFacility" class="form-input" required placeholder="e.g., District Eye Hospital" />
+              </div>
+            </div>
+
+            <!-- Collapsible: More Professional Details -->
+            <div class="mt-2">
+              <button type="button" class="btn-toggle-collapse" id="toggleMoreDetailsBtn" aria-expanded="false">
+                <span id="toggleDetailsArrow">▾</span> More professional details
+              </button>
+              <div class="collapsed-fields" id="moreDetailsSection" style="display: none; margin-top: 10px;">
+                <div class="form-group">
+                  <label for="formRegNumber">Professional Registration / License Number <span class="text-muted font-size-11">(Optional)</span></label>
+                  <input type="text" id="formRegNumber" class="form-input" placeholder="e.g., MCI-2018-987654" />
+                  <span class="field-subtext font-size-11 text-muted" style="display: block; margin-top: 3px;">Registration Number &bull; Self-entered demo profile information (RetinaX Care does not perform automated external credential verification).</span>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="formEmail">Email <span class="text-muted font-size-11">(Optional)</span></label>
+                    <input type="email" id="formEmail" class="form-input" placeholder="clinician@eyecare.org" />
+                  </div>
+                  <div class="form-group">
+                    <label for="formPhone">Phone <span class="text-muted font-size-11">(Optional)</span></label>
+                    <input type="text" id="formPhone" class="form-input" placeholder="+91 98765 43210" />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="formLangPref">Preferred Language</label>
+                  <select id="formLangPref" class="form-select">
+                    <option value="en">English</option>
+                    <option value="hi">हिन्दी (Hindi)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="font-size-11 text-muted p-2 mt-3 bg-subtle border-radius-sm">
+              ℹ️ <strong>Demo Profile Notice:</strong> Profile information is saved locally to personalize clinician provenance on reviews and coordinator follow-up tasks.
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn-outline modal-close" data-modal="profileFormModal">Cancel</button>
+            <button type="submit" class="btn-primary">Save Profile</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal: Switch Demo Role -->
+    <div class="modal" id="roleSwitcherModal">
+      <div class="modal-dialog modal-md">
+        <div class="modal-header">
+          <h3 class="modal-title">Switch Demo Role</h3>
+          <button class="modal-close" data-modal="roleSwitcherModal">✕</button>
+        </div>
+        <div class="modal-body">
+          <p class="modal-desc">
+            Select a prototype preset or create your own custom clinician / coordinator profile.
+          </p>
+
+          <div class="role-cards-grid">
+            <!-- Role 1: Care Coordinator -->
+            <div class="role-select-card active-role" id="roleOptionCoordinator" data-role="coordinator">
+              <div class="role-card-header">
+                <div class="role-avatar-badge bg-blue-soft">AS</div>
+                <div>
+                  <h4 class="role-name">Dr. Ananya Sharma</h4>
+                  <span class="role-title-text">Care Coordinator</span>
+                </div>
+              </div>
+              <p class="role-card-desc">
+                Primary workflow: Patient intake, scheduling, care journeys, follow-up coordination, bilingual reminders, and document management.
+              </p>
+              <div class="role-capabilities-tags">
+                <span class="cap-tag">Patients</span>
+                <span class="cap-tag">Follow-Ups</span>
+                <span class="cap-tag">Reminders</span>
+                <span class="cap-tag">Outreach</span>
+              </div>
+            </div>
+
+            <!-- Role 2: Specialist Ophthalmologist -->
+            <div class="role-select-card" id="roleOptionSpecialist" data-role="specialist">
+              <div class="role-card-header">
+                <div class="role-avatar-badge bg-amber-soft">SC</div>
+                <div>
+                  <h4 class="role-name">Dr. Suresh Chandran, MS</h4>
+                  <span class="role-title-text">Attending Ophthalmologist</span>
+                </div>
+              </div>
+              <p class="role-card-desc">
+                Primary workflow: Clinical review queue, fundus imaging inspection, clinician-entered findings, follow-up directives, and task generation.
+              </p>
+              <div class="role-capabilities-tags">
+                <span class="cap-tag">Review Queue</span>
+                <span class="cap-tag">Clinical Assessment</span>
+                <span class="cap-tag">Task Creation</span>
+              </div>
+            </div>
+
+            <!-- Role 3: Program Administrator -->
+            <div class="role-select-card" id="roleOptionAdmin" data-role="admin">
+              <div class="role-card-header">
+                <div class="role-avatar-badge bg-indigo-soft">PV</div>
+                <div>
+                  <h4 class="role-name">Priya Varma</h4>
+                  <span class="role-title-text">Program Administrator</span>
+                </div>
+              </div>
+              <p class="role-card-desc">
+                Primary workflow: Drop-off funnel analytics, bottleneck radar, turnaround KPIs, team workload metrics, and care loop oversight.
+              </p>
+              <div class="role-capabilities-tags">
+                <span class="cap-tag">Insights</span>
+                <span class="cap-tag">Bottlenecks</span>
+                <span class="cap-tag">KPIs</span>
+              </div>
+            </div>
+
+            <!-- Option 4: + Create Custom Profile -->
+            <div class="role-select-card custom-create-card" id="roleOptionCustomCreate">
+              <div class="role-card-header">
+                <div class="role-avatar-badge bg-emerald-soft">+</div>
+                <div>
+                  <h4 class="role-name">+ Create Your Profile</h4>
+                  <span class="role-title-text text-success">Personalize Clinician Identity</span>
+                </div>
+              </div>
+              <p class="role-card-desc">
+                Set up your own custom clinician or coordinator profile to associate your name and hospital with specialist reviews and tasks.
+              </p>
+              <div class="role-capabilities-tags">
+                <span class="cap-tag">Custom Clinician</span>
+                <span class="cap-tag">Hospital / Facility</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-primary modal-close" data-modal="roleSwitcherModal">Done</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Demo Profile View -->
+    <div class="modal" id="demoProfileModal">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <h3 class="modal-title">Demo User Profile</h3>
+          <button class="modal-close" data-modal="demoProfileModal">✕</button>
+        </div>
+        <div class="modal-body">
+          <div class="profile-demo-banner mb-3">
+            <span class="demo-badge">PROTOTYPE DEMO PROFILE</span>
+            <p class="font-size-12 mt-1 mb-0">Self-entered demo profile information used for workflow attribution & provenance.</p>
+          </div>
+
+          <div class="d-flex align-items-center gap-3 mb-3 p-3 bg-subtle border-radius-md">
+            <div class="user-avatar-lg" id="profileViewAvatar">AS</div>
+            <div>
+              <h3 style="font-size: 17px; font-weight: 800; margin-bottom: 2px;" id="profileViewFullName">Dr. Ananya Sharma</h3>
+              <span class="stage-badge badge-review font-size-12" id="profileViewRoleBadge">Care Coordinator</span>
+            </div>
+          </div>
+
+          <div class="profile-details-list">
+            <div class="profile-detail-row" id="rowProfileSpecialty">
+              <span class="detail-key">Specialty:</span>
+              <strong class="detail-val" id="profileViewSpecialty">Ophthalmology</strong>
+            </div>
+            <div class="profile-detail-row">
+              <span class="detail-key">Department:</span>
+              <span class="detail-val" id="profileViewDept">Care Continuity & Outreach</span>
+            </div>
+            <div class="profile-detail-row">
+              <span class="detail-key">Facility:</span>
+              <span class="detail-val" id="profileViewFacility">District Diabetic Care Centre</span>
+            </div>
+            <div class="profile-detail-row" id="rowProfileRegNum">
+              <span class="detail-key">Registration Number:</span>
+              <span class="detail-val" id="profileViewRegNum">Not Entered <span class="text-muted font-size-11">(Self-entered demo info)</span></span>
+            </div>
+            <div class="profile-detail-row">
+              <span class="detail-key">Preferred Language:</span>
+              <span class="detail-val" id="profileViewLang">English</span>
+            </div>
+          </div>
+
+          <div class="mt-3 p-2 bg-subtle border-radius-sm font-size-11 text-muted">
+            ℹ️ <strong>Demo Verification Notice:</strong> Registration numbers and titles are self-entered for prototype demonstration. RetinaX Care does not perform external medical credential verification.
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-outline" id="profileModalEditBtn">✏️ Edit Profile</button>
+          <button type="button" class="btn-outline" id="profileModalSwitchBtn">Switch Role ›</button>
+          <button type="button" class="btn-primary modal-close" data-modal="demoProfileModal">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Preferences -->
+    <div class="modal" id="preferencesModal">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <h3 class="modal-title">Preferences</h3>
+          <button class="modal-close" data-modal="preferencesModal">✕</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Color Theme:</label>
+            <select id="prefThemeSelect" class="form-select">
+              <option value="light">Light Theme</option>
+              <option value="dark">Dark Theme</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Interface Language:</label>
+            <select id="prefLanguageSelect" class="form-select">
+              <option value="en">English</option>
+              <option value="hi">हिन्दी (Hindi)</option>
+            </select>
+          </div>
+
+          <div class="form-group mt-3">
+            <label class="d-flex align-items-center gap-2" style="cursor: pointer;">
+              <input type="checkbox" id="prefReducedMotion" />
+              <span>Reduced Motion (Disable 3D Orbital Animations)</span>
+            </label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-primary modal-close" data-modal="preferencesModal">Save Preferences</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: About RetinaX Care -->
+    <div class="modal" id="aboutModal">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <h3 class="modal-title">About RetinaX Care</h3>
+          <button class="modal-close" data-modal="aboutModal">✕</button>
+        </div>
+        <div class="modal-body">
+          <div class="d-flex align-items-center gap-3 mb-3">
+            <div class="brand-mark">RX</div>
+            <div>
+              <h3 style="font-size: 17px; font-weight: 800;">RetinaX Care</h3>
+              <span class="text-muted font-size-12">Closing the Loop in Diabetic Eye Care</span>
+            </div>
+          </div>
+
+          <p class="font-size-13 text-muted mb-3" style="line-height: 1.5;">
+            RetinaX Care is a diabetic eye-screening coordination and follow-up platform designed to keep diabetes-care teams connected with patients across every step: screening identification &rarr; scheduling &rarr; retinal scans &rarr; specialist review &rarr; outreach &rarr; care loop completion.
+          </p>
+
+          <div class="bottleneck-card mb-2 font-size-12">
+            <strong>Safety & Scope Notice:</strong><br />
+            RetinaX Care is strictly an assistive care coordination platform. All clinical assessments and medical determinations remain the sole responsibility of qualified healthcare professionals.
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-primary modal-close" data-modal="aboutModal">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal 1: Register New Patient -->
+    <div class="modal" id="registerModal">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <h3 class="modal-title">Register New Diabetic Patient</h3>
+          <button class="modal-close" data-modal="registerModal">✕</button>
+        </div>
+        <form id="registerPatientForm">
+          <div class="modal-body">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Patient Full Name *</label>
+                <input type="text" id="regName" class="form-input" required placeholder="e.g., Ananya Deshmukh" />
+              </div>
+              <div class="form-group">
+                <label>Age *</label>
+                <input type="number" id="regAge" class="form-input" required value="52" min="1" max="120" />
+              </div>
+              <div class="form-group">
+                <label>Sex *</label>
+                <select id="regSex" class="form-select">
+                  <option value="Female">Female</option>
+                  <option value="Male">Male</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Contact Phone *</label>
+                <input type="text" id="regContact" class="form-input" required placeholder="+91 98765 43210" />
+              </div>
+              <div class="form-group">
+                <label>Facility</label>
+                <input type="text" id="regFacility" class="form-input" value="District Diabetic Care Centre" />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Diabetes Type</label>
+                <select id="regType" class="form-select">
+                  <option value="Type 2 Diabetes Mellitus">Type 2 DM</option>
+                  <option value="Type 1 Diabetes Mellitus">Type 1 DM</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Duration</label>
+                <input type="text" id="regDuration" class="form-input" placeholder="e.g., 6 years" />
+              </div>
+              <div class="form-group">
+                <label>Last HbA1c</label>
+                <input type="text" id="regHbA1c" class="form-input" placeholder="e.g., 8.1%" />
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn-outline modal-close" data-modal="registerModal">Cancel</button>
+            <button type="submit" class="btn-primary">Register Patient</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal 2: Care Passport -->
+    <div class="modal" id="carePassportModal">
+      <div class="modal-dialog modal-md">
+        <div class="modal-header">
+          <h3 class="modal-title">Patient Care Passport</h3>
+          <button class="modal-close" data-modal="carePassportModal">✕</button>
+        </div>
+        <div class="modal-body" id="passportBody"></div>
+        <div class="modal-footer">
+          <button type="button" class="btn-outline" onclick="window.print()">🖨️ Print</button>
+          <button type="button" class="btn-primary modal-close" data-modal="carePassportModal">Done</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal 3: Bilingual Reminder -->
+    <div class="modal" id="bilingualReminderModal">
+      <div class="modal-dialog modal-md">
+        <div class="modal-header">
+          <h3 class="modal-title">Bilingual Patient Reminder</h3>
+          <button class="modal-close" data-modal="bilingualReminderModal">✕</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Reminder Type:</label>
+            <select id="remindTypeSelect" class="form-select">
+              <option value="Follow-Up Attendance">Follow-Up Attendance Reminder</option>
+              <option value="Screening Appointment">Screening Appointment Confirmation</option>
+              <option value="Bring Previous Records">Bring Previous Records</option>
+              <option value="Contact Attempt Notice">Contact Attempt Notice (Missed Call)</option>
+            </select>
+          </div>
+
+          <div class="bilingual-preview-boxes">
+            <div class="preview-box">
+              <div class="preview-header">
+                <span class="preview-lang">ENGLISH (SMS / WhatsApp)</span>
+                <button class="btn-copy-sm" id="copyEnReminderBtn">Copy</button>
+              </div>
+              <div class="preview-content" id="reminderTextEn">Loading preview...</div>
+            </div>
+
+            <div class="preview-box">
+              <div class="preview-header">
+                <span class="preview-lang">HINDI / हिन्दी (SMS / WhatsApp)</span>
+                <button class="btn-copy-sm" id="copyHiReminderBtn">Copy</button>
+              </div>
+              <div class="preview-content" id="reminderTextHi">Loading preview...</div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-outline modal-close" data-modal="bilingualReminderModal">Cancel</button>
+          <button type="button" class="btn-primary" id="confirmSendReminderBtn">Log & Send Simulated Reminder</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal 4: Log Contact Attempt -->
+    <div class="modal" id="contactAttemptModal">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <h3 class="modal-title">Log Contact Attempt</h3>
+          <button class="modal-close" data-modal="contactAttemptModal">✕</button>
+        </div>
+        <form id="contactAttemptForm">
+          <div class="modal-body">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Method:</label>
+                <select id="contactMethod" class="form-select">
+                  <option value="Phone Call">Phone Call</option>
+                  <option value="WhatsApp">WhatsApp Message</option>
+                  <option value="SMS">SMS Text</option>
+                  <option value="ASHA Home Visit">ASHA Home Visit</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Staff Name:</label>
+                <input type="text" id="contactStaff" class="form-input" value="Care Coordinator" required />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Outcome:</label>
+              <select id="contactOutcome" class="form-select">
+                <option value="Spoke with patient - Confirmed appointment">Spoke with patient - Confirmed appointment</option>
+                <option value="Spoke with family member - Will relay message">Spoke with family member - Will relay message</option>
+                <option value="No answer / Switched off">No answer / Switched off</option>
+                <option value="Home visit completed - Patient counselled">Home visit completed - Patient counselled</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Notes:</label>
+              <textarea id="contactNotes" class="form-textarea" rows="2"></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn-outline modal-close" data-modal="contactAttemptModal">Cancel</button>
+            <button type="submit" class="btn-primary">Save Contact Log</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal 5: Record Reconciliation Resolver -->
+    <div class="modal" id="reconciliationModal">
+      <div class="modal-dialog modal-md">
+        <div class="modal-header">
+          <h3 class="modal-title">Record Reconciliation</h3>
+          <button class="modal-close" data-modal="reconciliationModal">✕</button>
+        </div>
+        <div class="modal-body">
+          <div class="reconciliation-list" id="reconciliationExceptionsList"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-primary modal-close" data-modal="reconciliationModal">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal 6: Upload Document -->
+    <div class="modal" id="uploadDocModal">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <h3 class="modal-title">Upload Patient Document</h3>
+          <button class="modal-close" data-modal="uploadDocModal">✕</button>
+        </div>
+        <form id="uploadDocForm">
+          <div class="modal-body">
+            <div class="form-group">
+              <label>Document Title *</label>
+              <input type="text" id="docTitle" class="form-input" required placeholder="e.g., Fundus Photography Report" />
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Category *</label>
+                <select id="docType" class="form-select">
+                  <option value="Retinal Screening Report">Retinal Screening Report</option>
+                  <option value="Lab Report">Lab Report</option>
+                  <option value="Referral Letter">Referral Letter</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Source</label>
+                <input type="text" id="docSource" class="form-input" value="Mobile Eye Unit" />
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn-outline modal-close" data-modal="uploadDocModal">Cancel</button>
+            <button type="submit" class="btn-primary">Upload Document</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal 7: Add Timeline Event -->
+    <div class="modal" id="addEventModal">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <h3 class="modal-title">Log Timeline Event</h3>
+          <button class="modal-close" data-modal="addEventModal">✕</button>
+        </div>
+        <form id="addEventForm">
+          <div class="modal-body">
+            <div class="form-group">
+              <label>Stage / Name *</label>
+              <input type="text" id="eventStage" class="form-input" required placeholder="e.g., Follow-Up Reminder Sent" />
+            </div>
+            <div class="form-group">
+              <label>Note</label>
+              <textarea id="eventNote" class="form-textarea" rows="2"></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn-outline modal-close" data-modal="addEventModal">Cancel</button>
+            <button type="submit" class="btn-primary">Save Event</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div> <!-- end app-shell -->
+
+  <script src="app.js"></script>
+</body>
+</html>

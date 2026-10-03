@@ -1,0 +1,1679 @@
+[
+  {
+    "id": "RX-1001",
+    "name": "Ramesh Kumar",
+    "age": 54,
+    "sex": "Male",
+    "contact": "+91 98451 23001",
+    "facility": "Primary Health Centre - Ramanagara",
+    "clinician": "Dr. Ananya Rao",
+    "registration_date": "2026-08-14",
+    "diabetes_profile": {
+      "type": "Type 2 Diabetes Mellitus",
+      "duration_recorded": "7 years",
+      "last_hba1c": "8.4%",
+      "hba1c_date": "2026-08-14",
+      "current_medications": "Metformin 1000mg BD, Glimepiride 2mg OD",
+      "last_retinal_screening": "None documented",
+      "next_planned_screening": "2026-10-12"
+    },
+    "workflow_status": {
+      "overall_stage": "Screening Scheduled",
+      "screening_workflow": "Scheduled",
+      "screening_appointment_date": "2026-10-12",
+      "document_status": "Pending Screening",
+      "specialist_review": "Not Started",
+      "followup_status": "Pending",
+      "care_loop_completed": false,
+      "next_workflow_action": "Send appointment reminder & confirm camp attendance",
+      "assigned_to": "Coordinator Rajesh V",
+      "due_date": "2026-10-10",
+      "last_contact_date": "2026-09-28",
+      "last_contact_method": "Phone Call (Confirmed date)"
+    },
+    "timeline": [
+      {
+        "id": "evt-1",
+        "stage": "Patient Registered",
+        "timestamp": "2026-08-14 10:30",
+        "source": "Outpatient Desk",
+        "actor": "Staff Nurse Priya",
+        "status": "Completed",
+        "note": "Patient enrolled in diabetes eye care tracking program."
+      },
+      {
+        "id": "evt-2",
+        "stage": "Screening Requested",
+        "timestamp": "2026-08-14 11:15",
+        "source": "Clinical Consultation",
+        "actor": "Dr. Ananya Rao",
+        "status": "Completed",
+        "note": "Annual retinal screening ordered per diabetes care protocol."
+      },
+      {
+        "id": "evt-3",
+        "stage": "Appointment Scheduled",
+        "timestamp": "2026-09-28 14:00",
+        "source": "Care Coordinator Portal",
+        "actor": "Coordinator Rajesh V",
+        "status": "Completed",
+        "note": "Fundus photography appointment booked at PHC camp for Oct 12, 2026."
+      }
+    ],
+    "documents": [
+      {
+        "id": "doc-101",
+        "title": "Initial Diabetes Intake & Lab Summary",
+        "doc_type": "Laboratory Report",
+        "upload_date": "2026-08-14",
+        "source": "PHC Lab",
+        "review_status": "Filed",
+        "file_name": "lab_summary_rx1001.pdf",
+        "size_kb": 340
+      }
+    ],
+    "specialist_review": {
+      "completed": false,
+      "clinician_name": null,
+      "review_timestamp": null,
+      "clinical_assessment": "",
+      "followup_instructions": "",
+      "referral_status": "Pending Screening",
+      "notes": ""
+    },
+    "pending_tasks": [
+      {
+        "id": "tsk-101",
+        "title": "Screening Appointment Confirmation",
+        "description": "Send pre-screening preparation notification and verify appointment attendance.",
+        "assigned_to": "Coordinator Rajesh V",
+        "due_date": "2026-10-10",
+        "status": "Open",
+        "priority": "Medium",
+        "created_at": "2026-09-28"
+      }
+    ],
+    "followup": {
+      "status": "Pending",
+      "planned_date": "2026-10-12",
+      "responsible_staff": "Coordinator Rajesh V",
+      "contact_attempts": [
+        {
+          "date": "2026-09-28",
+          "method": "Phone Call",
+          "result": "Confirmed appointment date with patient",
+          "staff": "Rajesh V"
+        }
+      ],
+      "completion_timestamp": null,
+      "notes": "Patient informed of screening camp slot."
+    },
+    "reminders": [
+      {
+        "id": "rem-1",
+        "type": "Screening Appointment",
+        "language": "en",
+        "text": "Dear Ramesh Kumar, your retinal screening appointment is scheduled for 12-Oct-2026 at PHC Ramanagara. Please arrive 15 mins prior.",
+        "text_hi": "प्रिय रमेश कुमार, आपकी रेटिनल स्क्रीनिंग 12-Oct-2026 को PHC रामनगर में निर्धारित है। कृपया 15 मिनट पहले पहुंचें।",
+        "sent_status": "Scheduled",
+        "scheduled_for": "2026-10-10"
+      }
+    ]
+  },
+  {
+    "id": "RX-1002",
+    "name": "Sunita Devi",
+    "age": 48,
+    "sex": "Female",
+    "contact": "+91 94482 11902",
+    "facility": "Community Health Centre - Channapatna",
+    "clinician": "Dr. Vikas Hegde",
+    "registration_date": "2026-07-20",
+    "diabetes_profile": {
+      "type": "Type 2 Diabetes Mellitus",
+      "duration_recorded": "4 years",
+      "last_hba1c": "7.8%",
+      "hba1c_date": "2026-07-20",
+      "current_medications": "Metformin 500mg BD",
+      "last_retinal_screening": "2026-09-30",
+      "next_planned_screening": "TBD"
+    },
+    "workflow_status": {
+      "overall_stage": "Report Missing",
+      "screening_workflow": "Completed",
+      "screening_appointment_date": "2026-09-30",
+      "document_status": "Report Missing",
+      "specialist_review": "Blocked by Missing Document",
+      "followup_status": "Pending",
+      "care_loop_completed": false,
+      "next_workflow_action": "Retrieve fundus scan from mobile van unit and upload",
+      "assigned_to": "Coordinator Sneha Patil",
+      "due_date": "2026-10-04",
+      "last_contact_date": "2026-10-01",
+      "last_contact_method": "SMS Notice"
+    },
+    "timeline": [
+      {
+        "id": "evt-201",
+        "stage": "Patient Registered",
+        "timestamp": "2026-07-20 09:45",
+        "source": "Outpatient Desk",
+        "actor": "Staff Nurse Lakshmi",
+        "status": "Completed",
+        "note": "Patient registered during NCD program."
+      },
+      {
+        "id": "evt-202",
+        "stage": "Screening Requested",
+        "timestamp": "2026-07-20 10:20",
+        "source": "Physician Order",
+        "actor": "Dr. Vikas Hegde",
+        "status": "Completed",
+        "note": "Routine diabetic eye evaluation ordered."
+      },
+      {
+        "id": "evt-203",
+        "stage": "Appointment Scheduled",
+        "timestamp": "2026-09-15 11:00",
+        "source": "Coordinator Portal",
+        "actor": "Coordinator Sneha Patil",
+        "status": "Completed",
+        "note": "Slot booked for mobile tele-ophthalmology van."
+      },
+      {
+        "id": "evt-204",
+        "stage": "Screening Completed",
+        "timestamp": "2026-09-30 15:30",
+        "source": "Mobile Van Unit",
+        "actor": "Technician Anand K",
+        "status": "Completed",
+        "note": "Bilateral fundus photography acquired. Digital sync pending."
+      }
+    ],
+    "documents": [],
+    "specialist_review": {
+      "completed": false,
+      "clinician_name": null,
+      "review_timestamp": null,
+      "clinical_assessment": "",
+      "followup_instructions": "",
+      "referral_status": "Awaiting Document",
+      "notes": ""
+    },
+    "pending_tasks": [
+      {
+        "id": "tsk-201",
+        "title": "Upload Screening Report & Fundus Scans",
+        "description": "Obtain digital fundus report file from Mobile Van unit and attach to patient profile.",
+        "assigned_to": "Coordinator Sneha Patil",
+        "due_date": "2026-10-04",
+        "status": "Open",
+        "priority": "High",
+        "created_at": "2026-10-01"
+      }
+    ],
+    "followup": {
+      "status": "Pending",
+      "planned_date": null,
+      "responsible_staff": "Coordinator Sneha Patil",
+      "contact_attempts": [],
+      "completion_timestamp": null,
+      "notes": "Follow-up workflow pending report upload and specialist assessment."
+    },
+    "reminders": [
+      {
+        "id": "rem-2",
+        "type": "Missing Document Alert",
+        "language": "en",
+        "text": "Dear Sunita Devi, your retinal photography at the screening camp is completed. Your report is currently being synchronized with your health record.",
+        "text_hi": "प्रिय सुनीता देवी, आपकी रेटिनल फोटोग्राफी पूरी हो गई है। आपकी रिपोर्ट आपके स्वास्थ्य रिकॉर्ड से जोड़ी जा रही है।",
+        "sent_status": "Sent",
+        "scheduled_for": "2026-10-01"
+      }
+    ]
+  },
+  {
+    "id": "RX-1003",
+    "name": "Mohammad Farooq",
+    "age": 62,
+    "sex": "Male",
+    "contact": "+91 97310 88234",
+    "facility": "Urban Primary Health Centre - Padarayanapura",
+    "clinician": "Dr. Farzana Parveen",
+    "registration_date": "2026-06-10",
+    "diabetes_profile": {
+      "type": "Type 2 Diabetes Mellitus",
+      "duration_recorded": "12 years",
+      "last_hba1c": "9.1%",
+      "hba1c_date": "2026-09-18",
+      "current_medications": "Inj. Insulin Glargine 18U HS, Metformin 1000mg BD",
+      "last_retinal_screening": "2026-10-01",
+      "next_planned_screening": "TBD"
+    },
+    "workflow_status": {
+      "overall_stage": "Awaiting Specialist Review",
+      "screening_workflow": "Completed",
+      "screening_appointment_date": "2026-10-01",
+      "document_status": "Report Available",
+      "specialist_review": "Pending Review",
+      "followup_status": "Pending",
+      "care_loop_completed": false,
+      "next_workflow_action": "Ophthalmologist review of uploaded fundus report required",
+      "assigned_to": "Dr. Suresh Chandran (Ophthalmology)",
+      "due_date": "2026-10-05",
+      "last_contact_date": "2026-10-01",
+      "last_contact_method": "SMS (Screening Completed)"
+    },
+    "timeline": [
+      {
+        "id": "evt-301",
+        "stage": "Patient Registered",
+        "timestamp": "2026-06-10 11:00",
+        "source": "Outpatient Desk",
+        "actor": "Staff Nurse Shweta",
+        "status": "Completed",
+        "note": "Registered under diabetes care initiative."
+      },
+      {
+        "id": "evt-302",
+        "stage": "Screening Requested",
+        "timestamp": "2026-06-10 11:35",
+        "source": "Clinical Consultation",
+        "actor": "Dr. Farzana Parveen",
+        "status": "Completed",
+        "note": "Diabetic eye screening scheduled per protocol."
+      },
+      {
+        "id": "evt-303",
+        "stage": "Appointment Scheduled",
+        "timestamp": "2026-09-20 16:10",
+        "source": "Coordinator Portal",
+        "actor": "Coordinator Imran Khan",
+        "status": "Completed",
+        "note": "Scheduled for October 01 at District Tele-ophthalmology Desk."
+      },
+      {
+        "id": "evt-304",
+        "stage": "Screening Completed",
+        "timestamp": "2026-10-01 11:20",
+        "source": "Tele-Ophthal Desk",
+        "actor": "Optometrist Deepa",
+        "status": "Completed",
+        "note": "Macula-centered and disc-centered fundus scans captured."
+      },
+      {
+        "id": "evt-305",
+        "stage": "Report Uploaded",
+        "timestamp": "2026-10-01 13:45",
+        "source": "Document Hub",
+        "actor": "Coordinator Imran Khan",
+        "status": "Completed",
+        "note": "Fundus photography report and acquisition metadata attached to record."
+      }
+    ],
+    "documents": [
+      {
+        "id": "doc-301",
+        "title": "Fundus Screening Report - Bilateral",
+        "doc_type": "Retinal Screening Report",
+        "upload_date": "2026-10-01",
+        "source": "Tele-Ophthalmology Centre",
+        "review_status": "Awaiting Specialist Review",
+        "file_name": "retinal_report_farooq_oct26.pdf",
+        "size_kb": 1250
+      },
+      {
+        "id": "doc-302",
+        "title": "HbA1c & Renal Function Profile",
+        "doc_type": "Laboratory Report",
+        "upload_date": "2026-09-18",
+        "source": "District Central Lab",
+        "review_status": "Filed",
+        "file_name": "lab_farooq_sep26.pdf",
+        "size_kb": 420
+      }
+    ],
+    "specialist_review": {
+      "completed": false,
+      "clinician_name": null,
+      "review_timestamp": null,
+      "clinical_assessment": "",
+      "followup_instructions": "",
+      "referral_status": "Unreviewed",
+      "notes": ""
+    },
+    "pending_tasks": [
+      {
+        "id": "tsk-301",
+        "title": "Specialist Ophthalmologist Review",
+        "description": "Ophthalmologist to review uploaded fundus screening report and manually record clinical assessment & referral determination.",
+        "assigned_to": "Dr. Suresh Chandran (Ophthalmology)",
+        "due_date": "2026-10-05",
+        "status": "Open",
+        "priority": "High",
+        "created_at": "2026-10-01"
+      }
+    ],
+    "followup": {
+      "status": "Pending",
+      "planned_date": null,
+      "responsible_staff": "Coordinator Imran Khan",
+      "contact_attempts": [],
+      "completion_timestamp": null,
+      "notes": "Awaiting specialist clinical instructions."
+    },
+    "reminders": [
+      {
+        "id": "rem-3",
+        "type": "Screening Completed Update",
+        "language": "en",
+        "text": "Dear Mohammad Farooq, your retinal photographs are uploaded. Specialist ophthalmologist review is currently in progress.",
+        "text_hi": "प्रिय मोहम्मद फारूक, आपकी रेटिनल तस्वीरें अपलोड हो गई हैं। विशेषज्ञ नेत्र चिकित्सक द्वारा समीक्षा जारी है।",
+        "sent_status": "Sent",
+        "scheduled_for": "2026-10-01"
+      }
+    ]
+  },
+  {
+    "id": "RX-1004",
+    "name": "Kavitha Sundaram",
+    "age": 51,
+    "sex": "Female",
+    "contact": "+91 98801 45678",
+    "facility": "General Hospital - Hoskote",
+    "clinician": "Dr. Arvind Swamy",
+    "registration_date": "2026-05-18",
+    "diabetes_profile": {
+      "type": "Type 2 Diabetes Mellitus",
+      "duration_recorded": "9 years",
+      "last_hba1c": "8.7%",
+      "hba1c_date": "2026-09-05",
+      "current_medications": "Metformin 1000mg BD, Teneligliptin 20mg OD",
+      "last_retinal_screening": "2026-09-22",
+      "next_planned_screening": "2027-03-22"
+    },
+    "workflow_status": {
+      "overall_stage": "Follow-Up Pending",
+      "screening_workflow": "Completed",
+      "screening_appointment_date": "2026-09-22",
+      "document_status": "Report Available",
+      "specialist_review": "Completed",
+      "followup_status": "Pending",
+      "care_loop_completed": false,
+      "next_workflow_action": "Coordinate 6-month hospital revisit booking for March 2027",
+      "assigned_to": "Coordinator Meera N",
+      "due_date": "2026-10-15",
+      "last_contact_date": "2026-09-26",
+      "last_contact_method": "Phone Call (Patient acknowledged)"
+    },
+    "timeline": [
+      {
+        "id": "evt-401",
+        "stage": "Patient Registered",
+        "timestamp": "2026-05-18 09:15",
+        "source": "NCD Registry",
+        "actor": "Staff Nurse Bhavana",
+        "status": "Completed",
+        "note": "Registered at NCD clinic Hoskote."
+      },
+      {
+        "id": "evt-402",
+        "stage": "Screening Requested",
+        "timestamp": "2026-05-18 10:00",
+        "source": "Clinical Order",
+        "actor": "Dr. Arvind Swamy",
+        "status": "Completed",
+        "note": "Routine diabetic eye check requested."
+      },
+      {
+        "id": "evt-403",
+        "stage": "Appointment Scheduled",
+        "timestamp": "2026-09-10 11:30",
+        "source": "Coordinator Desk",
+        "actor": "Coordinator Meera N",
+        "status": "Completed",
+        "note": "Appointment confirmed for Sept 22."
+      },
+      {
+        "id": "evt-404",
+        "stage": "Screening Completed",
+        "timestamp": "2026-09-22 10:45",
+        "source": "Ophthal Clinic",
+        "actor": "Optometrist Ravi T",
+        "status": "Completed",
+        "note": "Non-mydriatic fundus exam completed."
+      },
+      {
+        "id": "evt-405",
+        "stage": "Report Uploaded",
+        "timestamp": "2026-09-22 14:00",
+        "source": "EHR Connector",
+        "actor": "Coordinator Meera N",
+        "status": "Completed",
+        "note": "Screening imagery and field report attached."
+      },
+      {
+        "id": "evt-406",
+        "stage": "Specialist Review Completed",
+        "timestamp": "2026-09-24 16:30",
+        "source": "Specialist Portal",
+        "actor": "Dr. Manjunath Shenoy (Ophthalmologist)",
+        "status": "Completed",
+        "note": "Review completed by ophthalmologist. Clinical note & 6-month follow-up requested."
+      },
+      {
+        "id": "evt-e5ddaf",
+        "stage": "Follow-Up Status: Pending",
+        "timestamp": "2026-10-03 16:26",
+        "source": "Care Coordination Desk",
+        "actor": "Coordinator Meera N",
+        "status": "Updated",
+        "note": "Patient acknowledged follow-up requirement."
+      }
+    ],
+    "documents": [
+      {
+        "id": "doc-401",
+        "title": "Fundus Screening Photo & Optometry Form",
+        "doc_type": "Retinal Screening Report",
+        "upload_date": "2026-09-22",
+        "source": "Hoskote Eye Unit",
+        "review_status": "Reviewed by Specialist",
+        "file_name": "retinal_kavitha_sep26.pdf",
+        "size_kb": 980
+      },
+      {
+        "id": "doc-402",
+        "title": "Specialist Consultation Note - Dr. Shenoy",
+        "doc_type": "Consultation Record",
+        "upload_date": "2026-09-24",
+        "source": "Department of Ophthalmology",
+        "review_status": "Signed Off",
+        "file_name": "specialist_note_kavitha.pdf",
+        "size_kb": 510
+      }
+    ],
+    "specialist_review": {
+      "completed": true,
+      "clinician_name": "Dr. Manjunath Shenoy, MS (Ophthalmology)",
+      "review_timestamp": "2026-09-24 16:30",
+      "clinical_assessment": "Clinically visible microvascular changes noted in right eye. No high-risk proliferative features or center-involving edema documented on visual review.",
+      "followup_instructions": "Repeat dilated fundus examination at hospital ophthal unit in 6 months. Maintain strict glycemic control with treating physician.",
+      "referral_status": "Routine Hospital Follow-Up (6 Months)",
+      "notes": "Clinical assessment entered manually by healthcare professional."
+    },
+    "pending_tasks": [
+      {
+        "id": "tsk-401",
+        "title": "6-Month Follow-Up Booking & Care Coordination",
+        "description": "Schedule 6-month ophthalmology revisit appointment for March 2027 and communicate clinical plan with patient.",
+        "assigned_to": "Coordinator Meera N",
+        "due_date": "2026-10-15",
+        "status": "Open",
+        "priority": "Medium",
+        "created_at": "2026-09-25"
+      }
+    ],
+    "followup": {
+      "status": "Pending",
+      "planned_date": "2027-03-22",
+      "responsible_staff": "Coordinator Meera N",
+      "contact_attempts": [
+        {
+          "date": "2026-09-26",
+          "method": "Phone Call",
+          "result": "Explained specialist note to patient; reminded to attend follow-up in March.",
+          "staff": "Meera N"
+        }
+      ],
+      "completion_timestamp": null,
+      "notes": "Patient acknowledged follow-up requirement."
+    },
+    "reminders": [
+      {
+        "id": "rem-4",
+        "type": "Follow-Up Coordination",
+        "language": "en",
+        "text": "Dear Kavitha Sundaram, your care team has requested you to attend your scheduled follow-up eye examination in March 2027.",
+        "text_hi": "प्रिय कविता सुंदरम, आपकी केयर टीम ने मार्च 2027 में आपकी निर्धारित नेत्र जांच में भाग लेने का अनुरोध किया है।",
+        "sent_status": "Sent",
+        "scheduled_for": "2026-09-26"
+      }
+    ]
+  },
+  {
+    "id": "RX-1005",
+    "name": "Gurpreet Singh",
+    "age": 58,
+    "sex": "Male",
+    "contact": "+91 98140 33452",
+    "facility": "Sub-District Hospital - Devanahalli",
+    "clinician": "Dr. Harpreet Kaur",
+    "registration_date": "2026-04-05",
+    "diabetes_profile": {
+      "type": "Type 2 Diabetes Mellitus",
+      "duration_recorded": "5 years",
+      "last_hba1c": "7.2%",
+      "hba1c_date": "2026-08-10",
+      "current_medications": "Metformin 500mg BD",
+      "last_retinal_screening": "2026-08-15",
+      "next_planned_screening": "2027-08-15"
+    },
+    "workflow_status": {
+      "overall_stage": "Care Loop Completed",
+      "screening_workflow": "Completed",
+      "screening_appointment_date": "2026-08-15",
+      "document_status": "All Documents Archived",
+      "specialist_review": "Completed",
+      "followup_status": "Completed",
+      "care_loop_completed": true,
+      "next_workflow_action": "Care cycle completed & closed for 2026",
+      "assigned_to": "Coordinator Anil Kumar",
+      "due_date": "2027-08-15",
+      "last_contact_date": "2026-08-20",
+      "last_contact_method": "In-Person Counseling"
+    },
+    "timeline": [
+      {
+        "id": "evt-501",
+        "stage": "Patient Registered",
+        "timestamp": "2026-04-05 10:00",
+        "source": "Outpatient Desk",
+        "actor": "Staff Nurse Deepa",
+        "status": "Completed",
+        "note": "Registered for comprehensive diabetic care."
+      },
+      {
+        "id": "evt-502",
+        "stage": "Screening Requested",
+        "timestamp": "2026-04-05 10:45",
+        "source": "Clinical Consultation",
+        "actor": "Dr. Harpreet Kaur",
+        "status": "Completed",
+        "note": "Annual retinal screening requested."
+      },
+      {
+        "id": "evt-503",
+        "stage": "Appointment Scheduled",
+        "timestamp": "2026-08-01 11:20",
+        "source": "Coordinator Portal",
+        "actor": "Coordinator Anil Kumar",
+        "status": "Completed",
+        "note": "Appointment confirmed for Aug 15."
+      },
+      {
+        "id": "evt-504",
+        "stage": "Screening Completed",
+        "timestamp": "2026-08-15 11:00",
+        "source": "Devanahalli Eye Clinic",
+        "actor": "Optometrist Sunita",
+        "status": "Completed",
+        "note": "Retinal photography completed successfully."
+      },
+      {
+        "id": "evt-505",
+        "stage": "Report Uploaded",
+        "timestamp": "2026-08-15 15:30",
+        "source": "Document Hub",
+        "actor": "Coordinator Anil Kumar",
+        "status": "Completed",
+        "note": "Fundus image and optometrist assessment recorded."
+      },
+      {
+        "id": "evt-506",
+        "stage": "Specialist Review Completed",
+        "timestamp": "2026-08-18 14:00",
+        "source": "Specialist Review Portal",
+        "actor": "Dr. Rashmi Desai (Ophthalmologist)",
+        "status": "Completed",
+        "note": "Clinical assessment manually recorded: No diabetic retinopathy changes observed."
+      },
+      {
+        "id": "evt-507",
+        "stage": "Follow-Up Action Recorded",
+        "timestamp": "2026-08-18 14:30",
+        "source": "Care Coordination Desk",
+        "actor": "Coordinator Anil Kumar",
+        "status": "Completed",
+        "note": "Annual follow-up date logged for August 2027."
+      },
+      {
+        "id": "evt-508",
+        "stage": "Care Loop Completed",
+        "timestamp": "2026-08-20 16:00",
+        "source": "Care Loop Engine",
+        "actor": "Coordinator Anil Kumar",
+        "status": "Completed",
+        "note": "All workflow actions satisfied, patient counseling completed, care loop closed for 2026 cycle."
+      }
+    ],
+    "documents": [
+      {
+        "id": "doc-501",
+        "title": "Annual Retinal Screening Report (2026)",
+        "doc_type": "Retinal Screening Report",
+        "upload_date": "2026-08-15",
+        "source": "Eye Clinic",
+        "review_status": "Reviewed & Closed",
+        "file_name": "screening_gurpreet_2026.pdf",
+        "size_kb": 890
+      },
+      {
+        "id": "doc-502",
+        "title": "Ophthalmologist Final Sign-Off Sheet",
+        "doc_type": "Consultation Record",
+        "upload_date": "2026-08-18",
+        "source": "Specialist Review",
+        "review_status": "Signed Off",
+        "file_name": "signoff_gurpreet.pdf",
+        "size_kb": 310
+      }
+    ],
+    "specialist_review": {
+      "completed": true,
+      "clinician_name": "Dr. Rashmi Desai, DO, DNB",
+      "review_timestamp": "2026-08-18 14:00",
+      "clinical_assessment": "Clear media, normal optic discs and maculae bilaterally. No microaneurysms or vascular changes identified upon manual review.",
+      "followup_instructions": "Routine annual screening in 12 months (August 2027). Continue routine diabetes monitoring with primary care physician.",
+      "referral_status": "Routine Annual Re-screening",
+      "notes": "Clinical assessment entered manually by healthcare professional."
+    },
+    "pending_tasks": [],
+    "followup": {
+      "status": "Completed",
+      "planned_date": "2027-08-15",
+      "responsible_staff": "Coordinator Anil Kumar",
+      "contact_attempts": [
+        {
+          "date": "2026-08-20",
+          "method": "In-Person Counseling",
+          "result": "Patient provided with report copy and advised on 2027 annual re-screening schedule.",
+          "staff": "Anil Kumar"
+        }
+      ],
+      "completion_timestamp": "2026-08-20 16:00",
+      "notes": "Care cycle successfully completed."
+    },
+    "reminders": [
+      {
+        "id": "rem-5",
+        "type": "Care Loop Completion Notice",
+        "language": "en",
+        "text": "Dear Gurpreet Singh, your annual eye care loop for this year is complete. Your next routine screening is due in August 2027.",
+        "text_hi": "प्रिय गुरप्रीत सिंह, इस वर्ष के लिए आपकी वार्षिक नेत्र देखभाल प्रक्रिया पूरी हो गई है। आपकी अगली स्क्रीनिंग अगस्त 2027 में होगी।",
+        "sent_status": "Completed",
+        "scheduled_for": "2026-08-20"
+      }
+    ]
+  },
+  {
+    "id": "RX-1006",
+    "name": "Lakshmi Narayanan",
+    "age": 67,
+    "sex": "Female",
+    "contact": "",
+    "facility": "Primary Health Centre - Nelamangala",
+    "clinician": "Dr. Srinivas Murthy",
+    "registration_date": "2026-09-02",
+    "diabetes_profile": {
+      "type": "Type 2 Diabetes Mellitus",
+      "duration_recorded": "Unknown",
+      "last_hba1c": "Not Recorded",
+      "hba1c_date": null,
+      "current_medications": "Self-reported oral antidiabetic pills (exact name unverified)",
+      "last_retinal_screening": "None documented",
+      "next_planned_screening": null
+    },
+    "workflow_status": {
+      "overall_stage": "Unable to Contact",
+      "screening_workflow": "Not Started",
+      "screening_appointment_date": null,
+      "document_status": "Missing Contact & Lab Records",
+      "specialist_review": "Not Started",
+      "followup_status": "Unable to Contact",
+      "care_loop_completed": false,
+      "next_workflow_action": "Re-engage patient via ASHA worker home visit",
+      "assigned_to": "Coordinator Pooja R",
+      "due_date": "2026-10-06",
+      "last_contact_date": "2026-09-10",
+      "last_contact_method": "ASHA Notification"
+    },
+    "timeline": [
+      {
+        "id": "evt-601",
+        "stage": "Patient Registered",
+        "timestamp": "2026-09-02 12:15",
+        "source": "Outreach Camp",
+        "actor": "ASHA Worker Rekha",
+        "status": "Completed",
+        "note": "Registered during village outreach camp. Incomplete contact details recorded."
+      },
+      {
+        "id": "evt-c6864f",
+        "stage": "Patient Reminder Sent",
+        "timestamp": "2026-10-03 16:27",
+        "source": "Communication Engine",
+        "actor": "Automated Care Coordinator",
+        "status": "Delivered",
+        "note": "Simulated Follow-Up Attendance reminder sent (EN). Demo notification — not actually sent."
+      },
+      {
+        "id": "evt-8b5e33",
+        "stage": "Follow-Up Status: Unable to Contact",
+        "timestamp": "2026-10-03 16:27",
+        "source": "Care Coordination Desk",
+        "actor": "Coordinator Pooja R",
+        "status": "Updated",
+        "note": "Workflow paused awaiting updated contact details."
+      }
+    ],
+    "documents": [],
+    "specialist_review": {
+      "completed": false,
+      "clinician_name": null,
+      "review_timestamp": null,
+      "clinical_assessment": "",
+      "followup_instructions": "",
+      "referral_status": "Incomplete Record",
+      "notes": ""
+    },
+    "pending_tasks": [
+      {
+        "id": "tsk-601",
+        "title": "Obtain Primary Contact Number & Guardian Details",
+        "description": "Reach out through local ASHA worker to collect valid mobile contact for appointment notifications.",
+        "assigned_to": "Coordinator Pooja R",
+        "due_date": "2026-10-06",
+        "status": "Open",
+        "priority": "High",
+        "created_at": "2026-09-03"
+      },
+      {
+        "id": "tsk-602",
+        "title": "Baseline Diabetes Profile & HbA1c Lab Order",
+        "description": "Record baseline duration and schedule fasting blood glucose / HbA1c test at PHC.",
+        "assigned_to": "Dr. Srinivas Murthy",
+        "due_date": "2026-10-08",
+        "status": "Open",
+        "priority": "Medium",
+        "created_at": "2026-09-03"
+      }
+    ],
+    "followup": {
+      "status": "Unable to Contact",
+      "planned_date": null,
+      "responsible_staff": "Coordinator Pooja R",
+      "contact_attempts": [
+        {
+          "date": "2026-09-10",
+          "method": "ASHA Notification",
+          "result": "ASHA worker informed to locate patient at Gram Panchayat Nelamangala.",
+          "staff": "Pooja R"
+        }
+      ],
+      "completion_timestamp": null,
+      "notes": "Workflow paused awaiting updated contact details."
+    },
+    "reminders": [
+      {
+        "id": "rem-469fd7",
+        "type": "Follow-Up Attendance",
+        "language": "en",
+        "text": "Dear Lakshmi Narayanan, this is a reminder from your care team at Primary Health Centre - Nelamangala regarding your diabetic eye follow-up on your scheduled date.",
+        "text_hi": "प्रिय Lakshmi Narayanan, Primary Health Centre - Nelamangala में आपकी देखभाल टीम द्वारा आपकी डायबिटिक नेत्र अनुवर्ती जांच (your scheduled date) के संबंध में यह अनुस्मारक है।",
+        "sent_status": "Simulated Sent (Demo notification — not actually sent)",
+        "scheduled_for": "2026-10-03 16:27",
+        "channel": "SMS / WhatsApp (Simulated Preview)"
+      }
+    ]
+  },
+  {
+    "id": "RX-1007",
+    "name": "Ananya Mukherjee",
+    "age": 42,
+    "sex": "Female",
+    "contact": "+91 99002 77112",
+    "facility": "Urban Health Post - Malleshwaram",
+    "clinician": "Dr. Sudha Chandran",
+    "registration_date": "2026-10-01",
+    "diabetes_profile": {
+      "type": "Type 2 Diabetes Mellitus",
+      "duration_recorded": "1 year (Newly diagnosed)",
+      "last_hba1c": "6.9%",
+      "hba1c_date": "2026-09-25",
+      "current_medications": "Lifestyle modification + Metformin 500mg OD",
+      "last_retinal_screening": "None documented",
+      "next_planned_screening": "TBD"
+    },
+    "workflow_status": {
+      "overall_stage": "Screening Not Started",
+      "screening_workflow": "Not Started",
+      "screening_appointment_date": null,
+      "document_status": "Baseline Lab Attached",
+      "specialist_review": "Not Started",
+      "followup_status": "Pending",
+      "care_loop_completed": false,
+      "next_workflow_action": "Initiate screening workflow & schedule baseline appointment",
+      "assigned_to": "Coordinator Imran Khan",
+      "due_date": "2026-10-10",
+      "last_contact_date": "2026-10-02",
+      "last_contact_method": "SMS (Welcome message)"
+    },
+    "timeline": [
+      {
+        "id": "evt-701",
+        "stage": "Patient Registered",
+        "timestamp": "2026-10-01 09:30",
+        "source": "Outpatient Desk",
+        "actor": "Staff Nurse Usha",
+        "status": "Completed",
+        "note": "Newly registered patient with recent diabetes diagnosis."
+      }
+    ],
+    "documents": [
+      {
+        "id": "doc-701",
+        "title": "Baseline Glycemic Evaluation & Lipid Panel",
+        "doc_type": "Laboratory Report",
+        "upload_date": "2026-10-01",
+        "source": "Malleshwaram Diagnostic Centre",
+        "review_status": "Filed",
+        "file_name": "baseline_ananya.pdf",
+        "size_kb": 290
+      }
+    ],
+    "specialist_review": {
+      "completed": false,
+      "clinician_name": null,
+      "review_timestamp": null,
+      "clinical_assessment": "",
+      "followup_instructions": "",
+      "referral_status": "Not Started",
+      "notes": ""
+    },
+    "pending_tasks": [
+      {
+        "id": "tsk-701",
+        "title": "Initiate Retinal Screening Workflow & Schedule Baseline Fundus Exam",
+        "description": "Coordinate with patient to book first retinal screening appointment as per baseline diabetes care protocol.",
+        "assigned_to": "Coordinator Imran Khan",
+        "due_date": "2026-10-10",
+        "status": "Open",
+        "priority": "Medium",
+        "created_at": "2026-10-01"
+      }
+    ],
+    "followup": {
+      "status": "Pending",
+      "planned_date": null,
+      "responsible_staff": "Coordinator Imran Khan",
+      "contact_attempts": [],
+      "completion_timestamp": null,
+      "notes": "Awaiting initial screening workflow initiation."
+    },
+    "reminders": [
+      {
+        "id": "rem-7",
+        "type": "Screening Education & Welcome",
+        "language": "en",
+        "text": "Dear Ananya Mukherjee, welcome to the diabetic eye care program. Annual retinal screening protects your vision. Our coordinator will contact you shortly to schedule your appointment.",
+        "text_hi": "प्रिय अनन्या मुखर्जी, डायबिटिक आई केयर प्रोग्राम में आपका स्वागत है। वार्षिक रेटिनल जांच आपकी दृष्टि की सुरक्षा करती है। हमारा समन्वयक जल्द ही आपसे संपर्क करेगा।",
+        "sent_status": "Sent",
+        "scheduled_for": "2026-10-02"
+      }
+    ]
+  },
+  {
+    "id": "RX-1008",
+    "name": "Babu Lal Patel",
+    "age": 65,
+    "sex": "Male",
+    "contact": "+91 94140 55670",
+    "facility": "District Hospital - Kolar",
+    "clinician": "Dr. Prathap Reddy",
+    "registration_date": "2026-06-15",
+    "diabetes_profile": {
+      "type": "Type 2 Diabetes Mellitus",
+      "duration_recorded": "15 years",
+      "last_hba1c": "8.9%",
+      "hba1c_date": "2026-08-30",
+      "current_medications": "Inj. Mixed Insulin 30/70 24U BD, Metformin 500mg BD",
+      "last_retinal_screening": "2026-09-12",
+      "next_planned_screening": "2026-10-20"
+    },
+    "workflow_status": {
+      "overall_stage": "Follow-Up Pending",
+      "screening_workflow": "Completed",
+      "screening_appointment_date": "2026-09-12",
+      "document_status": "Report & Review Attached",
+      "specialist_review": "Completed",
+      "followup_status": "Scheduled",
+      "care_loop_completed": false,
+      "next_workflow_action": "Confirm transportation & send 48h pre-visit reminder",
+      "assigned_to": "Coordinator Deepesh",
+      "due_date": "2026-10-18",
+      "last_contact_date": "2026-09-16",
+      "last_contact_method": "Phone Call (Daughter confirmed)"
+    },
+    "timeline": [
+      {
+        "id": "evt-801",
+        "stage": "Patient Registered",
+        "timestamp": "2026-06-15 10:15",
+        "source": "Outpatient Desk",
+        "actor": "Staff Nurse Geetha",
+        "status": "Completed",
+        "note": "Registered for diabetes management program."
+      },
+      {
+        "id": "evt-802",
+        "stage": "Screening Requested",
+        "timestamp": "2026-06-15 11:00",
+        "source": "Clinical Consultation",
+        "actor": "Dr. Prathap Reddy",
+        "status": "Completed",
+        "note": "Annual retinal screening ordered."
+      },
+      {
+        "id": "evt-803",
+        "stage": "Appointment Scheduled",
+        "timestamp": "2026-08-28 15:00",
+        "source": "Coordinator Portal",
+        "actor": "Coordinator Deepesh",
+        "status": "Completed",
+        "note": "Appointment booked for Sept 12."
+      },
+      {
+        "id": "evt-804",
+        "stage": "Screening Completed",
+        "timestamp": "2026-09-12 11:30",
+        "source": "Kolar Eye Centre",
+        "actor": "Optometrist Vani",
+        "status": "Completed",
+        "note": "Fundus photography completed bilaterally."
+      },
+      {
+        "id": "evt-805",
+        "stage": "Report Uploaded",
+        "timestamp": "2026-09-12 16:00",
+        "source": "Document Hub",
+        "actor": "Coordinator Deepesh",
+        "status": "Completed",
+        "note": "Retinal images and report uploaded to document repository."
+      },
+      {
+        "id": "evt-806",
+        "stage": "Specialist Review Completed",
+        "timestamp": "2026-09-15 10:30",
+        "source": "Specialist Portal",
+        "actor": "Dr. Jayashree Nayak (Ophthalmologist)",
+        "status": "Completed",
+        "note": "Specialist review recorded. Clinician recommended in-person slit lamp & dilated fundus evaluation at retina clinic on Oct 20."
+      },
+      {
+        "id": "evt-807",
+        "stage": "Follow-Up Action Recorded",
+        "timestamp": "2026-09-16 14:00",
+        "source": "Coordinator Portal",
+        "actor": "Coordinator Deepesh",
+        "status": "Completed",
+        "note": "Follow-up consultation booked for 20-Oct-2026 at District Hospital Retina Clinic."
+      }
+    ],
+    "documents": [
+      {
+        "id": "doc-801",
+        "title": "Digital Retinal Screening Images (Bilateral)",
+        "doc_type": "Retinal Screening Report",
+        "upload_date": "2026-09-12",
+        "source": "Eye Centre",
+        "review_status": "Reviewed by Specialist",
+        "file_name": "retinal_babulal.pdf",
+        "size_kb": 1420
+      },
+      {
+        "id": "doc-802",
+        "title": "Ophthalmology Consultation & Referral Sheet",
+        "doc_type": "Referral Letter",
+        "upload_date": "2026-09-15",
+        "source": "Specialist Clinic",
+        "review_status": "Signed Off",
+        "file_name": "referral_babulal.pdf",
+        "size_kb": 480
+      }
+    ],
+    "specialist_review": {
+      "completed": true,
+      "clinician_name": "Dr. Jayashree Nayak, MS (Ophthal)",
+      "review_timestamp": "2026-09-15 10:30",
+      "clinical_assessment": "Bilateral microvascular abnormalities observed. Macular assessment recommended via dilated biomicroscopy at hospital retina clinic.",
+      "followup_instructions": "Refer patient to District Hospital Retina Clinic for dilated evaluation within 4-6 weeks. Advise patient regarding strict glycemic and blood pressure monitoring.",
+      "referral_status": "Referred to District Hospital Retina Clinic",
+      "notes": "Clinical assessment entered manually by healthcare professional."
+    },
+    "pending_tasks": [
+      {
+        "id": "tsk-801",
+        "title": "Pre-Visit Follow-Up Reminder (48 Hours Prior)",
+        "description": "Trigger reminder notification and confirm patient transportation to District Hospital.",
+        "assigned_to": "Coordinator Deepesh",
+        "due_date": "2026-10-18",
+        "status": "Open",
+        "priority": "High",
+        "created_at": "2026-09-16"
+      }
+    ],
+    "followup": {
+      "status": "Scheduled",
+      "planned_date": "2026-10-20",
+      "responsible_staff": "Coordinator Deepesh",
+      "contact_attempts": [
+        {
+          "date": "2026-09-16",
+          "method": "Phone Call",
+          "result": "Patient agreed to hospital visit on 20-Oct-2026; daughter will accompany him.",
+          "staff": "Deepesh"
+        }
+      ],
+      "completion_timestamp": null,
+      "notes": "Appointment scheduled at District Hospital Retina Clinic."
+    },
+    "reminders": [
+      {
+        "id": "rem-8",
+        "type": "Follow-Up Appointment",
+        "language": "en",
+        "text": "Dear Babu Lal Patel, your follow-up appointment at the District Hospital Retina Clinic is scheduled for 20-Oct-2026 at 10:00 AM. Please bring your previous records.",
+        "text_hi": "प्रिय बाबू लाल पटेल, जिला अस्पताल रेटिना क्लिनिक में आपकी फॉलो-अप अपॉइंटमेंट 20-Oct-2026 को सुबह 10:00 बजे निर्धारित है। कृपया अपने पिछले रिकॉर्ड साथ लाएं।",
+        "sent_status": "Scheduled",
+        "scheduled_for": "2026-10-18"
+      }
+    ]
+  },
+  {
+    "id": "RX-1009",
+    "name": "Fatima Begum",
+    "age": 56,
+    "sex": "Female",
+    "contact": "+91 97400 62119",
+    "facility": "Primary Health Centre - Magadi",
+    "clinician": "Dr. Naveen Kumar",
+    "registration_date": "2026-05-10",
+    "diabetes_profile": {
+      "type": "Type 2 Diabetes Mellitus",
+      "duration_recorded": "8 years",
+      "last_hba1c": "8.1%",
+      "hba1c_date": "2026-07-14",
+      "current_medications": "Metformin 850mg BD, Glimepiride 1mg OD",
+      "last_retinal_screening": "2026-07-28",
+      "next_planned_screening": "2026-09-15"
+    },
+    "workflow_status": {
+      "overall_stage": "Unable to Contact",
+      "screening_workflow": "Completed",
+      "screening_appointment_date": "2026-07-28",
+      "document_status": "Report Available",
+      "specialist_review": "Completed",
+      "followup_status": "Unable to Contact",
+      "care_loop_completed": false,
+      "next_workflow_action": "Re-engage via local ASHA community worker home visit",
+      "assigned_to": "Coordinator Sneha Patil",
+      "due_date": "2026-10-07",
+      "last_contact_date": "2026-09-25",
+      "last_contact_method": "ASHA Alert"
+    },
+    "timeline": [
+      {
+        "id": "evt-901",
+        "stage": "Patient Registered",
+        "timestamp": "2026-05-10 11:30",
+        "source": "Outpatient Desk",
+        "actor": "Staff Nurse Savitha",
+        "status": "Completed",
+        "note": "Registered at PHC Magadi."
+      },
+      {
+        "id": "evt-902",
+        "stage": "Screening Completed",
+        "timestamp": "2026-07-28 14:00",
+        "source": "Screening Camp",
+        "actor": "Optometrist Vani",
+        "status": "Completed",
+        "note": "Screening images captured."
+      },
+      {
+        "id": "evt-903",
+        "stage": "Report Uploaded",
+        "timestamp": "2026-07-29 09:30",
+        "source": "Document Hub",
+        "actor": "Coordinator Sneha Patil",
+        "status": "Completed",
+        "note": "Report filed."
+      },
+      {
+        "id": "evt-904",
+        "stage": "Specialist Review Completed",
+        "timestamp": "2026-08-02 15:45",
+        "source": "Specialist Portal",
+        "actor": "Dr. Suresh Chandran (Ophthalmologist)",
+        "status": "Completed",
+        "note": "Assessment completed: Follow-up visit recommended within 6 weeks."
+      }
+    ],
+    "documents": [
+      {
+        "id": "doc-901",
+        "title": "Retinal Screening Summary - Magadi Camp",
+        "doc_type": "Retinal Screening Report",
+        "upload_date": "2026-07-29",
+        "source": "Magadi Camp",
+        "review_status": "Reviewed by Specialist",
+        "file_name": "retinal_fatima_jul26.pdf",
+        "size_kb": 750
+      }
+    ],
+    "specialist_review": {
+      "completed": true,
+      "clinician_name": "Dr. Suresh Chandran, MS (Ophthalmology)",
+      "review_timestamp": "2026-08-02 15:45",
+      "clinical_assessment": "Mild background vascular changes observed. In-person follow-up evaluation in 6 weeks recommended.",
+      "followup_instructions": "Patient to attend eye clinic for follow-up review by mid-September 2026.",
+      "referral_status": "Hospital Follow-Up Recommended",
+      "notes": "Clinical assessment entered manually by healthcare professional."
+    },
+    "pending_tasks": [
+      {
+        "id": "tsk-901",
+        "title": "Re-engage Patient / Alternate Family Contact",
+        "description": "Previous call attempts unreachable. Connect with local ASHA worker to arrange follow-up visit.",
+        "assigned_to": "Coordinator Sneha Patil",
+        "due_date": "2026-10-07",
+        "status": "Open",
+        "priority": "High",
+        "created_at": "2026-09-18"
+      }
+    ],
+    "followup": {
+      "status": "Unable to Contact",
+      "planned_date": "2026-09-15",
+      "responsible_staff": "Coordinator Sneha Patil",
+      "contact_attempts": [
+        {
+          "date": "2026-08-20",
+          "method": "Phone Call",
+          "result": "Ringing without answer.",
+          "staff": "Sneha Patil"
+        },
+        {
+          "date": "2026-09-10",
+          "method": "Phone Call",
+          "result": "Switched off.",
+          "staff": "Sneha Patil"
+        },
+        {
+          "date": "2026-09-25",
+          "method": "ASHA Alert",
+          "result": "ASHA requested to do home visit in Magadi village.",
+          "staff": "Sneha Patil"
+        }
+      ],
+      "completion_timestamp": null,
+      "notes": "Coordinator actively tracking via community health worker."
+    },
+    "reminders": [
+      {
+        "id": "rem-9",
+        "type": "Follow-Up Overdue Notice",
+        "language": "en",
+        "text": "Dear Fatima Begum, your eye care team has requested you to attend your follow-up eye examination. Please visit your nearest PHC or contact your care coordinator.",
+        "text_hi": "प्रिय फातिमा बेगम, आपकी आई केयर टीम ने आपसे नेत्र जांच कराने का अनुरोध किया है। कृपया अपने नजदीकी PHC जाएं या समन्वयक से संपर्क करें।",
+        "sent_status": "Pending Retry",
+        "scheduled_for": "2026-10-05"
+      }
+    ]
+  },
+  {
+    "id": "RX-1010",
+    "name": "Devendrappa Gowda",
+    "age": 70,
+    "sex": "Male",
+    "contact": "+91 94801 88440",
+    "facility": "Taluk Hospital - Doddaballapur",
+    "clinician": "Dr. Hemalatha Reddy",
+    "registration_date": "2026-08-01",
+    "diabetes_profile": {
+      "type": "Type 2 Diabetes Mellitus",
+      "duration_recorded": "11 years",
+      "last_hba1c": "7.5%",
+      "hba1c_date": "2026-08-01",
+      "current_medications": "Metformin 1000mg BD",
+      "last_retinal_screening": "2026-09-19",
+      "next_planned_screening": "2027-09-19"
+    },
+    "workflow_status": {
+      "overall_stage": "Follow-Up Pending",
+      "screening_workflow": "Completed",
+      "screening_appointment_date": "2026-09-19",
+      "document_status": "Report Available",
+      "specialist_review": "Completed",
+      "followup_status": "Pending",
+      "care_loop_completed": false,
+      "next_workflow_action": "Deliver printed report copy & record annual cycle closure",
+      "assigned_to": "Coordinator Pooja R",
+      "due_date": "2026-10-12",
+      "last_contact_date": "2026-09-23",
+      "last_contact_method": "Phone Call (Patient informed)"
+    },
+    "timeline": [
+      {
+        "id": "evt-1001",
+        "stage": "Patient Registered",
+        "timestamp": "2026-08-01 10:00",
+        "source": "Outpatient Desk",
+        "actor": "Staff Nurse Kavya",
+        "status": "Completed",
+        "note": "Registered during routine diabetes screening."
+      },
+      {
+        "id": "evt-1002",
+        "stage": "Screening Completed",
+        "timestamp": "2026-09-19 11:15",
+        "source": "Hospital Eye Unit",
+        "actor": "Optometrist Harish",
+        "status": "Completed",
+        "note": "Bilateral fundus images obtained."
+      },
+      {
+        "id": "evt-1003",
+        "stage": "Report Uploaded",
+        "timestamp": "2026-09-19 14:20",
+        "source": "Document Hub",
+        "actor": "Coordinator Pooja R",
+        "status": "Completed",
+        "note": "Fundus images attached to record."
+      },
+      {
+        "id": "evt-1004",
+        "stage": "Specialist Review Completed",
+        "timestamp": "2026-09-22 11:00",
+        "source": "Specialist Portal",
+        "actor": "Dr. Manjunath Shenoy (Ophthalmologist)",
+        "status": "Completed",
+        "note": "Specialist reviewed images: Normal retinal vasculature, age-related lens changes. Annual routine follow-up recommended."
+      }
+    ],
+    "documents": [
+      {
+        "id": "doc-1001",
+        "title": "Retinal Screening Photos (OD/OS)",
+        "doc_type": "Retinal Screening Report",
+        "upload_date": "2026-09-19",
+        "source": "Hospital Eye Unit",
+        "review_status": "Reviewed by Specialist",
+        "file_name": "retinal_devendrappa.pdf",
+        "size_kb": 1100
+      }
+    ],
+    "specialist_review": {
+      "completed": true,
+      "clinician_name": "Dr. Manjunath Shenoy, MS (Ophthalmology)",
+      "review_timestamp": "2026-09-22 11:00",
+      "clinical_assessment": "Fundus examination normal bilaterally. Mild early nuclear sclerotic lens changes consistent with age. No evidence of retinal vascular lesions.",
+      "followup_instructions": "Routine annual follow-up in 12 months. Continue regular diabetes and blood pressure check-ups.",
+      "referral_status": "Routine Annual Re-screening",
+      "notes": "Clinical assessment entered manually by healthcare professional."
+    },
+    "pending_tasks": [
+      {
+        "id": "tsk-1001",
+        "title": "Log 12-Month Annual Care Cycle & Deliver Report Copy",
+        "description": "Provide printed summary to patient and record annual review closure.",
+        "assigned_to": "Coordinator Pooja R",
+        "due_date": "2026-10-12",
+        "status": "Open",
+        "priority": "Low",
+        "created_at": "2026-09-23"
+      }
+    ],
+    "followup": {
+      "status": "Pending",
+      "planned_date": "2027-09-19",
+      "responsible_staff": "Coordinator Pooja R",
+      "contact_attempts": [
+        {
+          "date": "2026-09-23",
+          "method": "Phone Call",
+          "result": "Informed patient of normal review findings; advised report pickup.",
+          "staff": "Pooja R"
+        }
+      ],
+      "completion_timestamp": null,
+      "notes": "Pending final task closure to complete care loop."
+    },
+    "reminders": [
+      {
+        "id": "rem-10",
+        "type": "Annual Review Summary",
+        "language": "en",
+        "text": "Dear Devendrappa Gowda, your retinal review is complete. Your next routine eye screening is scheduled for September 2027.",
+        "text_hi": "प्रिय देवेंद्रप्पा गौड़ा, आपकी रेटिनल जांच पूरी हो गई है। आपकी अगली नियमित नेत्र जांच सितंबर 2027 में निर्धारित है।",
+        "sent_status": "Sent",
+        "scheduled_for": "2026-09-23"
+      }
+    ]
+  },
+  {
+    "id": "RX-1011",
+    "name": "Manjula Shankaran",
+    "age": 60,
+    "sex": "Female",
+    "contact": "+91 98450 19283",
+    "facility": "Community Health Centre - Anekal",
+    "clinician": "Dr. Vinayaka Prasad",
+    "registration_date": "2026-07-05",
+    "diabetes_profile": {
+      "type": "Type 2 Diabetes Mellitus",
+      "duration_recorded": "10 years",
+      "last_hba1c": "8.3%",
+      "hba1c_date": "2026-09-10",
+      "current_medications": "Metformin 1000mg BD, Sitagliptin 100mg OD, Telmisartan 40mg OD",
+      "last_retinal_screening": "2026-09-29",
+      "next_planned_screening": "2027-04-01"
+    },
+    "workflow_status": {
+      "overall_stage": "Follow-Up Pending",
+      "screening_workflow": "Completed",
+      "screening_appointment_date": "2026-09-29",
+      "document_status": "Multiple Documents Uploaded",
+      "specialist_review": "Completed",
+      "followup_status": "Pending",
+      "care_loop_completed": false,
+      "next_workflow_action": "Coordinate follow-up (Hospital Follow-Up (6 Months))",
+      "assigned_to": "Dr. Suresh Chandran (Ophthalmology)",
+      "due_date": "2026-10-06",
+      "last_contact_date": "2026-09-30",
+      "last_contact_method": "SMS (Documents Received)"
+    },
+    "timeline": [
+      {
+        "id": "evt-1101",
+        "stage": "Patient Registered",
+        "timestamp": "2026-07-05 09:30",
+        "source": "Outpatient Desk",
+        "actor": "Staff Nurse Nalini",
+        "status": "Completed",
+        "note": "Registered in diabetes and hypertension register."
+      },
+      {
+        "id": "evt-1102",
+        "stage": "Screening Completed",
+        "timestamp": "2026-09-29 11:30",
+        "source": "Anekal Eye Unit",
+        "actor": "Optometrist Vani",
+        "status": "Completed",
+        "note": "Screening completed. Multiple historical records brought by patient."
+      },
+      {
+        "id": "evt-1103",
+        "stage": "Report Uploaded",
+        "timestamp": "2026-09-29 16:15",
+        "source": "Document Hub",
+        "actor": "Coordinator Rajesh V",
+        "status": "Completed",
+        "note": "Organized 4 records: Screening photos, prescription, lab report, previous discharge summary."
+      },
+      {
+        "id": "evt-a4f2be",
+        "stage": "Specialist Review Completed",
+        "timestamp": "2026-10-03 16:26",
+        "source": "Specialist Review Portal",
+        "actor": "Dr. Suresh Chandran, MS • Ophthalmology",
+        "status": "Completed",
+        "note": "Specialist review recorded by Dr. Suresh Chandran, MS (Ophthalmology, District Eye Hospital). Directive: Hospital Follow-Up (6 Months)."
+      }
+    ],
+    "documents": [
+      {
+        "id": "doc-1101",
+        "title": "Fundus Photography Report (Current)",
+        "doc_type": "Retinal Screening Report",
+        "upload_date": "2026-09-29",
+        "source": "Anekal Eye Unit",
+        "review_status": "Reviewed by Specialist",
+        "file_name": "retinal_manjula_sep26.pdf",
+        "size_kb": 1340
+      },
+      {
+        "id": "doc-1102",
+        "title": "Comprehensive Biochemistry & HbA1c Panel",
+        "doc_type": "Laboratory Report",
+        "upload_date": "2026-09-10",
+        "source": "Anekal Diagnostic Lab",
+        "review_status": "Filed",
+        "file_name": "biochem_manjula.pdf",
+        "size_kb": 410
+      },
+      {
+        "id": "doc-1103",
+        "title": "Current Diabetes & Antihypertensive Prescription",
+        "doc_type": "Prescription",
+        "upload_date": "2026-09-10",
+        "source": "CHC Anekal Outpatient",
+        "review_status": "Filed",
+        "file_name": "prescription_manjula.pdf",
+        "size_kb": 220
+      },
+      {
+        "id": "doc-1104",
+        "title": "Historical Ophthalmology OPD Slip (2024)",
+        "doc_type": "Previous Consultation Record",
+        "upload_date": "2026-09-29",
+        "source": "Patient Supplied",
+        "review_status": "Filed",
+        "file_name": "historical_opd_manjula_2024.pdf",
+        "size_kb": 350
+      }
+    ],
+    "specialist_review": {
+      "completed": true,
+      "clinician_name": "Dr. Suresh Chandran, MS",
+      "clinician_title": "Dr.",
+      "clinician_specialty": "Ophthalmology",
+      "clinician_facility": "District Eye Hospital",
+      "registration_number": "MCI-2016-849201",
+      "review_timestamp": "2026-10-03 16:26",
+      "clinical_assessment": "xyz",
+      "followup_instructions": "xyz",
+      "referral_status": "Hospital Follow-Up (6 Months)",
+      "notes": "Clinical assessment entered manually by qualified healthcare professional."
+    },
+    "pending_tasks": [
+      {
+        "id": "tsk-1101",
+        "title": "Specialist Review of Screening & Historical Documents",
+        "description": "Ophthalmologist to review 2026 screening photos against 2024 baseline record and record clinical notes.",
+        "assigned_to": "Dr. Suresh Chandran (Ophthalmology)",
+        "due_date": "2026-10-06",
+        "status": "Completed",
+        "priority": "High",
+        "created_at": "2026-09-30",
+        "completed_at": "2026-10-03 16:26"
+      },
+      {
+        "id": "tsk-434c53",
+        "title": "Follow-Up Coordination (Hospital Follow-Up (6 Months))",
+        "description": "Coordinate patient follow-up per clinician instructions: xyz.",
+        "source": "Clinician Instruction (Dr. Suresh Chandran, MS)",
+        "entered_by": "Dr. Suresh Chandran, MS",
+        "clinician_specialty": "Ophthalmology",
+        "clinician_facility": "District Eye Hospital",
+        "assigned_to": "Care Coordinator",
+        "due_date": "2027-04-01",
+        "status": "Open",
+        "priority": "High",
+        "created_at": "2026-10-03"
+      }
+    ],
+    "followup": {
+      "status": "Pending",
+      "planned_date": "2027-04-01",
+      "responsible_staff": "Coordinator Rajesh V",
+      "contact_attempts": [],
+      "completion_timestamp": null,
+      "notes": "Awaiting specialist clinical instructions."
+    },
+    "reminders": [
+      {
+        "id": "rem-11",
+        "type": "Documents Received",
+        "language": "en",
+        "text": "Dear Manjula Shankaran, your screening records and previous documents have been uploaded to your RetinaX Care profile for specialist review.",
+        "text_hi": "प्रिय मंजुला शंकरन, आपकी स्क्रीनिंग रिपोर्ट और पिछले दस्तावेज विशेषज्ञ समीक्षा के लिए रेटिनाएक्स केयर में अपलोड कर दिए गए हैं।",
+        "sent_status": "Sent",
+        "scheduled_for": "2026-09-30"
+      }
+    ]
+  },
+  {
+    "id": "RX-1012",
+    "name": "Syed Abdul Khader",
+    "age": 64,
+    "sex": "Male",
+    "contact": "+91 98860 77291",
+    "facility": "Primary Health Centre - Bidadi",
+    "clinician": "Dr. Rajeshwari B",
+    "registration_date": "2026-08-20",
+    "diabetes_profile": {
+      "type": "Type 2 Diabetes Mellitus",
+      "duration_recorded": "14 years",
+      "last_hba1c": "9.4%",
+      "hba1c_date": "2026-09-15",
+      "current_medications": "Inj. Insulin Biphasic 30/70 20U morning, 14U evening; Metformin 1000mg BD",
+      "last_retinal_screening": "2026-10-02",
+      "next_planned_screening": "TBD"
+    },
+    "workflow_status": {
+      "overall_stage": "Awaiting Specialist Review",
+      "screening_workflow": "Completed",
+      "screening_appointment_date": "2026-10-02",
+      "document_status": "Report Uploaded Today",
+      "specialist_review": "Pending Review",
+      "followup_status": "Pending",
+      "care_loop_completed": false,
+      "next_workflow_action": "Ophthalmologist review of newly acquired scan",
+      "assigned_to": "Dr. Manjunath Shenoy (Ophthalmology)",
+      "due_date": "2026-10-05",
+      "last_contact_date": "2026-10-02",
+      "last_contact_method": "SMS (Photography confirmed)"
+    },
+    "timeline": [
+      {
+        "id": "evt-1201",
+        "stage": "Patient Registered",
+        "timestamp": "2026-08-20 11:00",
+        "source": "Outpatient Desk",
+        "actor": "Staff Nurse Kamala",
+        "status": "Completed",
+        "note": "Registered under diabetes care tracking."
+      },
+      {
+        "id": "evt-1202",
+        "stage": "Screening Requested",
+        "timestamp": "2026-08-20 11:40",
+        "source": "Clinical Order",
+        "actor": "Dr. Rajeshwari B",
+        "status": "Completed",
+        "note": "Annual screening order recorded per protocol."
+      },
+      {
+        "id": "evt-1203",
+        "stage": "Appointment Scheduled",
+        "timestamp": "2026-09-25 10:00",
+        "source": "Coordinator Portal",
+        "actor": "Coordinator Rajesh V",
+        "status": "Completed",
+        "note": "Fundus photography scheduled for Oct 02 at Bidadi Tele-Clinic."
+      },
+      {
+        "id": "evt-1204",
+        "stage": "Screening Completed",
+        "timestamp": "2026-10-02 10:30",
+        "source": "Tele-Clinic",
+        "actor": "Optometrist Deepa",
+        "status": "Completed",
+        "note": "Color fundus photography completed."
+      },
+      {
+        "id": "evt-1205",
+        "stage": "Report Uploaded",
+        "timestamp": "2026-10-02 12:15",
+        "source": "Document Hub",
+        "actor": "Coordinator Rajesh V",
+        "status": "Completed",
+        "note": "Bilateral fundus image and technical notes uploaded."
+      }
+    ],
+    "documents": [
+      {
+        "id": "doc-1201",
+        "title": "Fundus Photography Scan (Oct 2026)",
+        "doc_type": "Retinal Screening Report",
+        "upload_date": "2026-10-02",
+        "source": "Bidadi Tele-Clinic",
+        "review_status": "Awaiting Specialist Review",
+        "file_name": "fundus_khader_oct26.pdf",
+        "size_kb": 1450
+      },
+      {
+        "id": "doc-1202",
+        "title": "Recent Glycemic & Lipid Lab Report",
+        "doc_type": "Laboratory Report",
+        "upload_date": "2026-09-15",
+        "source": "Bidadi PHC Lab",
+        "review_status": "Filed",
+        "file_name": "lab_khader_sep26.pdf",
+        "size_kb": 380
+      }
+    ],
+    "specialist_review": {
+      "completed": false,
+      "clinician_name": null,
+      "review_timestamp": null,
+      "clinical_assessment": "",
+      "followup_instructions": "",
+      "referral_status": "Unreviewed",
+      "notes": ""
+    },
+    "pending_tasks": [
+      {
+        "id": "tsk-1201",
+        "title": "Specialist Ophthalmologist Review",
+        "description": "Review fundus photos uploaded on Oct 02 and record clinical management recommendations.",
+        "assigned_to": "Dr. Manjunath Shenoy (Ophthalmology)",
+        "due_date": "2026-10-05",
+        "status": "Open",
+        "priority": "High",
+        "created_at": "2026-10-02"
+      }
+    ],
+    "followup": {
+      "status": "Pending",
+      "planned_date": null,
+      "responsible_staff": "Coordinator Rajesh V",
+      "contact_attempts": [],
+      "completion_timestamp": null,
+      "notes": "Awaiting specialist review."
+    },
+    "reminders": [
+      {
+        "id": "rem-12",
+        "type": "Screening Completion Confirmation",
+        "language": "en",
+        "text": "Dear Syed Abdul Khader, your retinal photos from Bidadi Tele-Clinic have been safely recorded. You will be notified once the ophthalmologist completes review.",
+        "text_hi": "प्रिय सैयद अब्दुल कादर, बिदादी टेली-क्लिनिक से आपकी रेटिनल तस्वीरें सुरक्षित रूप से दर्ज कर ली गई हैं। नेत्र रोग विशेषज्ञ की समीक्षा पूरी होने पर आपको सूचित किया जाएगा।",
+        "sent_status": "Sent",
+        "scheduled_for": "2026-10-02"
+      }
+    ]
+  }
+]
