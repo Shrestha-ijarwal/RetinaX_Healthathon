@@ -8,7 +8,7 @@
 
 ---
 
-## 📌 Core Positioning
+##  Core Positioning
 
 > "RetinaX Care helps diabetes-care teams identify incomplete retinal-screening journeys, coordinate specialist review and track clinician-directed follow-up before patients are lost to care."
 
@@ -16,7 +16,7 @@ RetinaX Care is **NOT a diagnostic AI tool**. It is an operational care-coordina
 
 ---
 
-## 🔍 The Problem & Current Care Gap
+##  The Problem & Current Care Gap
 
 Diabetic retinopathy (DR) is a leading cause of preventable blindness among working-age adults. While clinical guidelines recommend annual retinal examinations for all patients with diabetes, in practice:
 
@@ -27,7 +27,7 @@ Diabetic retinopathy (DR) is a leading cause of preventable blindness among work
 
 ---
 
-## 💡 The Solution: RetinaX Care
+##  The Solution: RetinaX Care
 
 RetinaX Care provides an operational backbone that tracks every patient from initial diabetes intake to care loop completion:
 
@@ -47,7 +47,7 @@ CLOSE CARE LOOP
 
 ---
 
-## 👥 Who Uses RetinaX Care?
+##  Who Uses RetinaX Care?
 
 - **Diabetes Care Coordinators & Primary Health Staff:** Identify patients due for screening, schedule camp appointments, upload reports, and track follow-ups.
 - **Consulting Ophthalmologists:** Review organized fundus photography reports and manually document clinical assessments and management instructions.
@@ -55,7 +55,7 @@ CLOSE CARE LOOP
 
 ---
 
-## 🛡️ Health-a-thon Scope & Non-Clinical AI Alignment
+##  Health-a-thon Scope & Non-Clinical AI Alignment
 
 > **EXPLICIT SCOPE ALIGNMENT:**  
 > Designed to align with Health-a-thon's non-clinical AI scope. Automated diagnostic and clinical decision-support functionality from the original RetinaX system is excluded from RetinaX Care.
@@ -69,7 +69,7 @@ CLOSE CARE LOOP
 
 ---
 
-## 🚀 Key Features
+##  Key Features
 
 ### 1. Care Continuity Dashboard (Hero View)
 - Real-time operational metrics answering: *"Which patients currently have an incomplete diabetic eye-care journey?"*
@@ -115,22 +115,9 @@ CLOSE CARE LOOP
 
 ---
 
-## 🎬 Guided Demo Story — Mohammad Farooq (RX-1003 Hero)
 
-RetinaX Care includes an interactive guided walkthrough built around **Mohammad Farooq (RX-1003)**:
 
-1. **Step 1 (Identify Gap):** Care coordinator opens dashboard and sees **Awaiting Specialist Review: 3**. Clicks metric to filter worklist.
-2. **Step 2 (Inspect Journey):** Opens RX-1003. Timeline shows: Screening completed ✓, Report uploaded ✓, Specialist review PENDING. System explains: *"Screening report is available, but specialist review has not yet been recorded."*
-3. **Step 3 (Specialist Review):** Ophthalmologist reviews fundus report and manually enters clinical assessment and 6-month revisit instruction.
-4. **Step 4 (Operational Task Creation):** RetinaX Care automatically generates a follow-up coordination task for the coordinator based on the clinician's instruction.
-5. **Step 5 (Patient Engagement):** Coordinator previews and triggers a simulated SMS notification in Hindi.
-6. **Step 6 (Close Care Loop):** Once follow-up is attended, coordinator completes the task and changes status to **Care Loop Completed**.
-
-*Secondary benchmark:* **Gurpreet Singh (RX-1005)** is available to demonstrate an already closed annual care loop.
-
----
-
-## 🏛️ System Architecture
+##  System Architecture
 
 ```
 RetinaX_Healthathon/
@@ -155,7 +142,7 @@ RetinaX_Healthathon/
 
 ---
 
-## ⚡ Quickstart Guide
+##  Quickstart Guide
 
 ### 1. Install Dependencies
 ```bash
@@ -175,7 +162,7 @@ http://127.0.0.1:5000
 
 ---
 
-## 🔒 Synthetic Data & Privacy Safeguards
+##  Synthetic Data & Privacy Safeguards
 
 - **100% Synthetic Cohort:** All 12 demo patients are entirely fictional with synthetic clinical profiles.
 - **Zero Protected Health Information (PHI):** No real clinical records or identifiable patient data are utilized.
@@ -183,5 +170,5 @@ http://127.0.0.1:5000
 
 ---
 
-## 📜 Event Track Alignment
+##  Event Track Alignment
 Built specifically for **Health-a-thon 2026** under the **Diabetes Care · RSSDI** track to address diabetic retinopathy screening dropouts and maintain care continuity.
