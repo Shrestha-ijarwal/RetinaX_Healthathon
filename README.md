@@ -1,187 +1,160 @@
 # RetinaX Care
 
 ## Closing the Loop in Diabetic Eye Care
-
-**Problem Area:** Diabetic Retinopathy Screening Follow-up & Continuity of Care  
-**Care Area:** Diabetes Care · RSSDI  
-**Platform Scope:** Assistive diabetic eye-screening coordination, record consolidation, and follow-up tracking platform.
+**Diabetic Retinopathy Screening Follow-up & Continuity of Care Platform**  
+*Health-a-thon 2026 Production MVP — Diabetes Care & RSSDI Track*
 
 ---
 
-## 📌 Core Positioning
-
-> "RetinaX Care helps diabetes-care teams identify incomplete retinal-screening journeys, coordinate specialist review and track clinician-directed follow-up before patients are lost to care."
-
-RetinaX Care is **NOT a diagnostic AI tool**. It is an operational care-coordination platform engineered to eliminate dropouts and bridge communication gaps across the diabetes care continuum.
-
----
-
-## 🔍 The Problem & Current Care Gap
-
-Diabetic retinopathy (DR) is a leading cause of preventable blindness among working-age adults. While clinical guidelines recommend annual retinal examinations for all patients with diabetes, in practice:
-
-1. **Fragmented Workflows:** Patients get screened at community camps or primary health centres (PHCs), but fundus images and reports are rarely linked back to their ongoing diabetes health record.
-2. **Specialist Bottlenecks:** Fundus photographs sit in unindexed folders awaiting specialist review with zero workflow visibility into pending cases.
-3. **Lost to Follow-Up:** Clinician-recommended follow-up actions (e.g. 6-month revisit, tertiary retina clinic referral) frequently fail because no operational tracking or patient engagement mechanism exists.
-4. **Care Loop Breakdown:** Care teams lack a unified answer to the basic question: *"Which patients currently have an incomplete diabetic eye-care journey?"*
+> [!IMPORTANT]
+> **ABSOLUTE PROJECT SEPARATION & RESEARCH ISOLATION:**  
+> This repository (**RetinaX Care**, `RetinaX_Healthathon`) is an **operational care-continuity platform**.  
+> It is completely separate from **Project A (Original RetinaX)**, which was an exploratory retinal AI research project.  
+> RetinaX Care strictly excludes automated diagnostic AI, disease grading (DR 0–4), AI risk scores, and clinical decision support. All clinical evaluations remain with qualified medical professionals.
 
 ---
 
-## 💡 The Solution: RetinaX Care
+## 1. Product Identity & Purpose
 
-RetinaX Care provides an operational backbone that tracks every patient from initial diabetes intake to care loop completion:
+Diabetic retinopathy (DR) is a leading cause of preventable blindness among adults. Although clinical guidelines advocate annual retinal examinations for all individuals with diabetes, screening initiatives frequently suffer from catastrophic follow-up dropout:
+- **Screening records remain unindexed** across primary health centres and outreach camps.
+- **Ophthalmologists face unorganized review queues** without clear triage visibility.
+- **Patients fall through care gaps** because clinician-ordered follow-up actions lack tracking and engagement.
 
-```
-IDENTIFY WORKFLOW GAP
-        ↓
-ASSIGN ACTION
-        ↓
-COORDINATE REVIEW (Human-In-The-Loop)
-        ↓
-ENGAGE PATIENT (Bilingual Reminders)
-        ↓
-TRACK FOLLOW-UP
-        ↓
-CLOSE CARE LOOP
-```
+**RetinaX Care** closes this operational loop by providing a full-stack, secure, offline-capable platform that tracks every patient from initial diabetes intake to confirmed follow-up and annual cycle completion.
 
 ---
 
-## 👥 Who Uses RetinaX Care?
+## 2. Upgraded Target Architecture
 
-- **Diabetes Care Coordinators & Primary Health Staff:** Identify patients due for screening, schedule camp appointments, upload reports, and track follow-ups.
-- **Consulting Ophthalmologists:** Review organized fundus photography reports and manually document clinical assessments and management instructions.
-- **ASHA & Community Health Workers:** Receive alerts to re-engage patients with failed phone contacts or missing baseline records.
+RetinaX Care has been upgraded from a legacy single-file prototype into an enterprise full-stack micro-monorepo:
 
----
-
-## 🛡️ Health-a-thon Scope & Non-Clinical AI Alignment
-
-> **EXPLICIT SCOPE ALIGNMENT:**  
-> Designed to align with Health-a-thon's non-clinical AI scope. Automated diagnostic and clinical decision-support functionality from the original RetinaX system is excluded from RetinaX Care.
-
-- ❌ **No automated DR diagnosis:** Does not classify Grade 0–4 severity or predict diabetic retinopathy.
-- ❌ **No autonomous clinical decision support:** Does not recommend clinical treatments or medical interventions.
-- ❌ **No clinical risk scoring:** Does not calculate disease risk percentages or progression predictions.
-- ❌ **No automated image interpretation:** Fundus images are cataloged for physician review, never interpreted by autonomous algorithms.
-- ❌ **No automated referral triggers:** All referrals and re-examination intervals are manually determined and signed off by ophthalmologists.
-- ❌ **Zero dependency on diagnostic models:** `trained_DR_model_v3.mat`, `trained_vessel_segmentation_v4_1.mat`, `dr_model.pth`, and Grad-CAM are completely excluded.
+| Layer | Upgraded Technology | Key Implementations |
+|---|---|---|
+| **Frontend** | Next.js 15+ / React 19 / TypeScript 5.7 | Next.js App Router, responsive design (320px–1440px), accessible healthcare components. |
+| **Offline Layer** | W3C IndexedDB + Service Worker PWA | Offline mutation queue, background sync, conflict resolution ledger, online/offline status bar. |
+| **Backend API** | Python FastAPI / Pydantic V2 | Asynchronous REST endpoints (`/api/v1`), centralized error handling, OpenAPI docs. |
+| **Database** | PostgreSQL 16 / SQLAlchemy 2.0 | Normalized relational schema, cascading deletes, foreign keys, Alembic migrations. |
+| **Authentication** | Argon2id + JWT + HttpOnly Cookies | Cryptographic password hashing, secure session management, backend RBAC dependencies. |
+| **Authorization** | Strict Backend RBAC | `Specialist`, `Care Coordinator`, `Administrator` roles enforced by FastAPI guards. |
+| **Document Storage**| Storage Provider Abstraction | Binary magic-byte validation (`%PDF-`, `\xff\xd8\xff`, `\x89PNG`), authenticated streaming, S3/MinIO. |
+| **Background Jobs** | Celery 5.4 + Redis 7 | Simulated bilingual reminder delivery (English & Hindi), automated milestone reconciliation. |
+| **Containers** | Docker & Docker Compose | Multi-stage Dockerfiles with non-root security users, health checks, persistent volumes. |
+| **Interoperability**| HL7 FHIR R4 Adapter | Mappings for `Patient`, `Task`, and `DocumentReference` operational resources. |
 
 ---
 
-## 🚀 Key Features
+## 3. The Six Primary Modules
 
-### 1. Care Continuity Dashboard (Hero View)
-- Real-time operational metrics answering: *"Which patients currently have an incomplete diabetic eye-care journey?"*
-- Interactive metric cards for instant filtering:
-  - **Total Cohort**
-  - **Screening Not Started**
-  - **Screening Scheduled**
-  - **Screening Completed**
-  - **Report Missing**
-  - **Awaiting Specialist Review**
-  - **Follow-Up Pending**
-  - **Unable to Contact**
-  - **Care Loop Completed**
-
-### 2. Operational Patient Worklist
-- Practical multi-column coordination table: Patient Details, ID, Screening Status, Report Status, Specialist Review, Follow-Up Status, Next Workflow Action, Assigned Staff, Due Date, and Last Contact.
-- One-click filters including **Needs Workflow Attention** (prioritizing operational bottlenecks without clinical risk scoring).
-
-### 3. Longitudinal Patient Journey Timeline
-- Step-by-step visual tracker: Registered &rarr; Screening Ordered &rarr; Appointment Scheduled &rarr; Screening Completed &rarr; Report Uploaded &rarr; Specialist Review &rarr; Follow-Up Action &rarr; Loop Completed.
-- Full audit log with timestamps, actors, departments, and coordination notes.
-
-### 4. Care Journey Summary
-- Factual single-view record summary that saves minutes of clinician search time across physical paper records.
-- Organizes recorded vitals, document attachments, and missing workflow items with zero clinical deductions.
-
-### 5. Document Hub
-- Central repository for fundus images, optometry reports, laboratory panels (HbA1c/lipids), prescriptions, and historical consult slips.
-- Document preview modal with metadata indexing and review status tagging.
-
-### 6. Human-In-The-Loop Specialist Review Portal
-- Interface where ophthalmologists manually enter clinical assessments, follow-up instructions, and referral decisions.
-- **Deterministic Task Generator:** When a clinician enters an instruction (e.g. "Hospital follow-up in 6 months"), the system automatically creates an operational follow-up task assigned to the care coordinator.
-- Prominently labeled: *"Clinical assessment entered by healthcare professional."*
-
-### 7. Pending Action Engine & Follow-Up Tracker
-- Deterministic rules identifying workflow gaps (e.g. uninitiated scheduling, missing uploads, pending specialist review, overdue follow-ups).
-- Log contact attempts (Phone call, ASHA home visit, SMS) and close care cycles.
-
-### 8. Bilingual Simulated Patient Reminders (English & Hindi)
-- Operational reminder generator supporting English and **हिन्दी (Hindi)** templates for screening appointments, document requests, and follow-up notices.
-- Prominently tagged: *"Demo notification — not actually sent"*.
+1. **Patients Directory (`/patients`):** Master registry with search, 10 operational filter modes (`needs_attention`, `report_missing`, `unable_to_contact`, etc.), and 6-point record completeness scorecard.
+2. **Care Journeys (`/journeys`):** Overview directory displaying progression percentage (0–100%) and current step; opens the interactive **Care Journey Digital Twin** upon selecting a patient.
+3. **Specialist Reviews (`/reviews`):** Dedicated tele-ophthalmology reading queue with review workspace; strictly requires `Specialist` role and records clinician-attributed directives.
+4. **Follow-Ups Hub (`/followups`):** Real-time worklist tracking pending, scheduled, completed, and unreachable patients; logs contact attempts (phone, SMS, WhatsApp, ASHA visit); dispatches bilingual simulated reminders.
+5. **Clinical Documents (`/documents`):** Secured document archive with binary signature validation, sanitized storage keys, and authenticated download endpoints.
+6. **Continuity Insights (`/analytics`):** Real-time metrics computed dynamically from database records (closure rate, turnaround days, facility distribution), Care Gap Radar, and Data Reconciliation Queue.
 
 ---
 
-## 🎬 Guided Demo Story — Mohammad Farooq (RX-1003 Hero)
+## 4. Quick Start: Local Docker Compose (Recommended)
 
-RetinaX Care includes an interactive guided walkthrough built around **Mohammad Farooq (RX-1003)**:
+Run the entire full-stack application with a single command:
 
-1. **Step 1 (Identify Gap):** Care coordinator opens dashboard and sees **Awaiting Specialist Review: 3**. Clicks metric to filter worklist.
-2. **Step 2 (Inspect Journey):** Opens RX-1003. Timeline shows: Screening completed ✓, Report uploaded ✓, Specialist review PENDING. System explains: *"Screening report is available, but specialist review has not yet been recorded."*
-3. **Step 3 (Specialist Review):** Ophthalmologist reviews fundus report and manually enters clinical assessment and 6-month revisit instruction.
-4. **Step 4 (Operational Task Creation):** RetinaX Care automatically generates a follow-up coordination task for the coordinator based on the clinician's instruction.
-5. **Step 5 (Patient Engagement):** Coordinator previews and triggers a simulated SMS notification in Hindi.
-6. **Step 6 (Close Care Loop):** Once follow-up is attended, coordinator completes the task and changes status to **Care Loop Completed**.
-
-*Secondary benchmark:* **Gurpreet Singh (RX-1005)** is available to demonstrate an already closed annual care loop.
-
----
-
-## 🏛️ System Architecture
-
-```
-RetinaX_Healthathon/
-├── README.md                      # Comprehensive project documentation
-├── requirements.txt               # Lightweight Python dependencies (Flask, Werkzeug)
-├── server.py                      # Flask REST API backend & workflow rules engine
-├── .gitignore                     # Safety exclusions (PHI, weights, datasets)
-│
-├── frontend/                      # Clean, responsive single-page application
-│   ├── index.html                 # Semantic HTML structure & multi-view modals
-│   ├── styles.css                 # Medical design tokens, dark/light themes, custom UI
-│   └── app.js                     # State management, filtering, bilingual reminders
-│
-├── data/
-│   └── synthetic_patients.json    # 12 diverse synthetic patients (100% de-identified)
-│
-├── uploads/                       # Document repository for mock PDF/image records
-│
-├── tests_runner.py                # Automated unit and integration test suite
-└── audit_compliance.py            # Static code & UI compliance scanner
-```
-
----
-
-## ⚡ Quickstart Guide
-
-### 1. Install Dependencies
 ```bash
-pip install -r requirements.txt
+# 1. Clone repository
+git clone https://github.com/Shrestha-ijarwal/RetinaX_Healthathon.git
+cd RetinaX_Healthathon
+
+# 2. Configure environment
+cp .env.example .env
+
+# 3. Start all services
+docker compose build
+docker compose up -d
+
+# 4. Verify running health
+docker compose ps
 ```
 
-### 2. Start RetinaX Care
-```bash
-python server.py
+- **Frontend Application:** `http://localhost:3000`
+- **FastAPI Backend & Health:** `http://localhost:8000/health`
+- **Interactive OpenAPI Documentation:** `http://localhost:8000/api/v1/docs`
+- **MinIO Storage Console:** `http://localhost:9001`
+
+---
+
+## 5. Native Local Development (Without Docker)
+
+### 5.1 Backend
+```powershell
+Set-Location "C:\Users\sijar\Downloads\RetinaX_Healthathon"
+$env:PYTHONPATH="C:\Users\sijar\Downloads\RetinaX_Healthathon"
+
+# Install backend packages
+pip install -r backend/requirements.txt
+
+# Run migrations
+python -m alembic upgrade head
+
+# Seed synthetic cohort & demonstration accounts
+python backend/app/db/seed.py
+
+# Start FastAPI server
+uvicorn backend.app.main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-### 3. Open in Browser
-Navigate to:
-```
-http://127.0.0.1:5000
+### 5.2 Frontend
+```powershell
+Set-Location "C:\Users\sijar\Downloads\RetinaX_Healthathon\frontend"
+npm.cmd install
+npm.cmd run dev
 ```
 
 ---
 
-## 🔒 Synthetic Data & Privacy Safeguards
+## 6. Demonstration Accounts & Roles
 
-- **100% Synthetic Cohort:** All 12 demo patients are entirely fictional with synthetic clinical profiles.
-- **Zero Protected Health Information (PHI):** No real clinical records or identifiable patient data are utilized.
-- **Transparent Distinction:** The UI strictly separates `SYSTEM WORKFLOW STATUS` from `CLINICIAN-ENTERED INFORMATION`.
+Switch between roles anytime via the top-right profile popover menu:
+
+| Role | Email | Password | Full Name | Permitted Capabilities |
+|---|---|---|---|---|
+| **Specialist** | `specialist@retinax.care` | `Specialist@2026` | Dr. Suresh Chandran, MS | Access specialist review queue, record qualitative clinical assessments, submit attributed follow-up directives. |
+| **Care Coordinator** | `coordinator@retinax.care` | `Coordinator@2026` | Ananya Sharma | View cohort, register synthetic patients, log contact attempts, dispatch simulated bilingual reminders. *(Blocked from submitting specialist reviews)* |
+| **Administrator** | `admin@retinax.care` | `Admin@2026` | Rajiv Menon | Inspect immutable audit logs, reset demonstration cohort, manage platform configuration. |
 
 ---
 
-## 📜 Event Track Alignment
-Built specifically for **Health-a-thon 2026** under the **Diabetes Care · RSSDI** track to address diabetic retinopathy screening dropouts and maintain care continuity.
+## 7. Automated Test Suite & Compliance Audit
+
+Execute the complete 22-test automated verification suite:
+
+```powershell
+Set-Location "C:\Users\sijar\Downloads\RetinaX_Healthathon"
+$env:PYTHONPATH="C:\Users\sijar\Downloads\RetinaX_Healthathon"
+python -m pytest backend/tests/test_backend.py -v
+```
+
+**Results:** `22 passed, 0 failed (100% pass rate)`  
+- Authenticated login & session invalidation verified.
+- RBAC authorization barriers verified (Care Coordinator blocked with HTTP 403 on specialist endpoints).
+- File upload magic-byte rejection verified.
+- Zero prohibited clinical AI terms confirmed.
+
+---
+
+## 8. Documentation Index
+
+- [Architecture & Tech Stack](docs/ARCHITECTURE.md)
+- [Migration Inventory & Safety Plan](docs/MIGRATION_INVENTORY.md)
+- [Relational Data Model & ERD](docs/DATA_MODEL.md)
+- [REST API & OpenAPI Specification](docs/API.md)
+- [Security Hardening & Threat Model](docs/SECURITY.md)
+- [Deployment & AWS Guide](docs/DEPLOYMENT.md)
+- [12-Step Demonstration Script](docs/DEMO_GUIDE.md)
+- [Test Suite & QA Report](docs/TESTING.md)
+- [Known Limitations & Disclosures](docs/KNOWN_LIMITATIONS.md)
+
+---
+
+## 9. Non-Clinical Scope & Compliance Notice
+
+> **DISCLAIMER:** RetinaX Care supports operational care coordination and continuity tracking. It does not provide diagnosis, clinical risk assessment, treatment recommendations, or autonomous clinical decision-making. Clinical decisions remain the responsibility of qualified healthcare professionals. All demonstration records are synthetic and fictional.

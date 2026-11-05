@@ -460,15 +460,6 @@
         "actor": "Dr. Manjunath Shenoy (Ophthalmologist)",
         "status": "Completed",
         "note": "Review completed by ophthalmologist. Clinical note & 6-month follow-up requested."
-      },
-      {
-        "id": "evt-e5ddaf",
-        "stage": "Follow-Up Status: Pending",
-        "timestamp": "2026-10-03 16:26",
-        "source": "Care Coordination Desk",
-        "actor": "Coordinator Meera N",
-        "status": "Updated",
-        "note": "Patient acknowledged follow-up requirement."
       }
     ],
     "documents": [
@@ -732,7 +723,7 @@
       "specialist_review": "Not Started",
       "followup_status": "Unable to Contact",
       "care_loop_completed": false,
-      "next_workflow_action": "Re-engage patient via ASHA worker home visit",
+      "next_workflow_action": "Locate patient via ASHA worker to collect valid contact",
       "assigned_to": "Coordinator Pooja R",
       "due_date": "2026-10-06",
       "last_contact_date": "2026-09-10",
@@ -747,24 +738,6 @@
         "actor": "ASHA Worker Rekha",
         "status": "Completed",
         "note": "Registered during village outreach camp. Incomplete contact details recorded."
-      },
-      {
-        "id": "evt-c6864f",
-        "stage": "Patient Reminder Sent",
-        "timestamp": "2026-10-03 16:27",
-        "source": "Communication Engine",
-        "actor": "Automated Care Coordinator",
-        "status": "Delivered",
-        "note": "Simulated Follow-Up Attendance reminder sent (EN). Demo notification — not actually sent."
-      },
-      {
-        "id": "evt-8b5e33",
-        "stage": "Follow-Up Status: Unable to Contact",
-        "timestamp": "2026-10-03 16:27",
-        "source": "Care Coordination Desk",
-        "actor": "Coordinator Pooja R",
-        "status": "Updated",
-        "note": "Workflow paused awaiting updated contact details."
       }
     ],
     "documents": [],
@@ -814,18 +787,7 @@
       "completion_timestamp": null,
       "notes": "Workflow paused awaiting updated contact details."
     },
-    "reminders": [
-      {
-        "id": "rem-469fd7",
-        "type": "Follow-Up Attendance",
-        "language": "en",
-        "text": "Dear Lakshmi Narayanan, this is a reminder from your care team at Primary Health Centre - Nelamangala regarding your diabetic eye follow-up on your scheduled date.",
-        "text_hi": "प्रिय Lakshmi Narayanan, Primary Health Centre - Nelamangala में आपकी देखभाल टीम द्वारा आपकी डायबिटिक नेत्र अनुवर्ती जांच (your scheduled date) के संबंध में यह अनुस्मारक है।",
-        "sent_status": "Simulated Sent (Demo notification — not actually sent)",
-        "scheduled_for": "2026-10-03 16:27",
-        "channel": "SMS / WhatsApp (Simulated Preview)"
-      }
-    ]
+    "reminders": []
   },
   {
     "id": "RX-1007",
@@ -1378,17 +1340,17 @@
       "hba1c_date": "2026-09-10",
       "current_medications": "Metformin 1000mg BD, Sitagliptin 100mg OD, Telmisartan 40mg OD",
       "last_retinal_screening": "2026-09-29",
-      "next_planned_screening": "2027-04-01"
+      "next_planned_screening": "TBD"
     },
     "workflow_status": {
-      "overall_stage": "Follow-Up Pending",
+      "overall_stage": "Awaiting Specialist Review",
       "screening_workflow": "Completed",
       "screening_appointment_date": "2026-09-29",
       "document_status": "Multiple Documents Uploaded",
-      "specialist_review": "Completed",
+      "specialist_review": "Pending Review",
       "followup_status": "Pending",
       "care_loop_completed": false,
-      "next_workflow_action": "Coordinate follow-up (Hospital Follow-Up (6 Months))",
+      "next_workflow_action": "Ophthalmologist to review multi-record dossier (4 documents)",
       "assigned_to": "Dr. Suresh Chandran (Ophthalmology)",
       "due_date": "2026-10-06",
       "last_contact_date": "2026-09-30",
@@ -1421,15 +1383,6 @@
         "actor": "Coordinator Rajesh V",
         "status": "Completed",
         "note": "Organized 4 records: Screening photos, prescription, lab report, previous discharge summary."
-      },
-      {
-        "id": "evt-a4f2be",
-        "stage": "Specialist Review Completed",
-        "timestamp": "2026-10-03 16:26",
-        "source": "Specialist Review Portal",
-        "actor": "Dr. Suresh Chandran, MS • Ophthalmology",
-        "status": "Completed",
-        "note": "Specialist review recorded by Dr. Suresh Chandran, MS (Ophthalmology, District Eye Hospital). Directive: Hospital Follow-Up (6 Months)."
       }
     ],
     "documents": [
@@ -1439,7 +1392,7 @@
         "doc_type": "Retinal Screening Report",
         "upload_date": "2026-09-29",
         "source": "Anekal Eye Unit",
-        "review_status": "Reviewed by Specialist",
+        "review_status": "Awaiting Specialist Review",
         "file_name": "retinal_manjula_sep26.pdf",
         "size_kb": 1340
       },
@@ -1475,17 +1428,13 @@
       }
     ],
     "specialist_review": {
-      "completed": true,
-      "clinician_name": "Dr. Suresh Chandran, MS",
-      "clinician_title": "Dr.",
-      "clinician_specialty": "Ophthalmology",
-      "clinician_facility": "District Eye Hospital",
-      "registration_number": "MCI-2016-849201",
-      "review_timestamp": "2026-10-03 16:26",
-      "clinical_assessment": "xyz",
-      "followup_instructions": "xyz",
-      "referral_status": "Hospital Follow-Up (6 Months)",
-      "notes": "Clinical assessment entered manually by qualified healthcare professional."
+      "completed": false,
+      "clinician_name": null,
+      "review_timestamp": null,
+      "clinical_assessment": "",
+      "followup_instructions": "",
+      "referral_status": "Awaiting Review",
+      "notes": ""
     },
     "pending_tasks": [
       {
@@ -1494,29 +1443,14 @@
         "description": "Ophthalmologist to review 2026 screening photos against 2024 baseline record and record clinical notes.",
         "assigned_to": "Dr. Suresh Chandran (Ophthalmology)",
         "due_date": "2026-10-06",
-        "status": "Completed",
-        "priority": "High",
-        "created_at": "2026-09-30",
-        "completed_at": "2026-10-03 16:26"
-      },
-      {
-        "id": "tsk-434c53",
-        "title": "Follow-Up Coordination (Hospital Follow-Up (6 Months))",
-        "description": "Coordinate patient follow-up per clinician instructions: xyz.",
-        "source": "Clinician Instruction (Dr. Suresh Chandran, MS)",
-        "entered_by": "Dr. Suresh Chandran, MS",
-        "clinician_specialty": "Ophthalmology",
-        "clinician_facility": "District Eye Hospital",
-        "assigned_to": "Care Coordinator",
-        "due_date": "2027-04-01",
         "status": "Open",
         "priority": "High",
-        "created_at": "2026-10-03"
+        "created_at": "2026-09-30"
       }
     ],
     "followup": {
       "status": "Pending",
-      "planned_date": "2027-04-01",
+      "planned_date": null,
       "responsible_staff": "Coordinator Rajesh V",
       "contact_attempts": [],
       "completion_timestamp": null,

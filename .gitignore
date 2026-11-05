@@ -54,3 +54,16 @@ sensitive/
 Thumbs.db
 .vscode/
 .idea/
+
+# Node.js / Next.js
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+
+# SQLite databases
+*.db
+*.sqlite3
+
+# Pytest test uploads
+uploads/*_screening_test.pdf
