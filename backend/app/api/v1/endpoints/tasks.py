@@ -77,6 +77,15 @@ def finish_patient_task(
     db: Session = Depends(get_db),
     current_user: User = Depends(require_coordinator)
 ):
+    expected_version = body.expected_version
+    if expected_version is None:
+        hdr_ver = request.headers.get("X-Expected-Version")
+        if hdr_ver is not None:
+            try:
+                expected_version = int(hdr_ver)
+            except ValueError:
+                pass
+
     return complete_task(
         db=db,
         patient_id=patient_id,
@@ -84,5 +93,6 @@ def finish_patient_task(
         completion_note=body.completion_note or "Task resolved by care coordinator.",
         current_user_name=current_user.full_name,
         current_user_role=current_user.role,
+        expected_version=expected_version,
         ip_address=request.client.host if request.client else ""
     )

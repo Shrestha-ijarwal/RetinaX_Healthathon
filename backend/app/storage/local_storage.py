@@ -1,6 +1,7 @@
 import os
 import uuid
 from pathlib import Path
+from typing import Optional
 from backend.app.storage.base import BaseStorageProvider
 from backend.app.core.config import settings
 from backend.app.core.security import create_access_token

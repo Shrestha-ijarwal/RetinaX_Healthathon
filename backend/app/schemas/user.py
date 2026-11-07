@@ -19,7 +19,7 @@ class UserOut(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 class TokenOut(BaseModel):
-    access_token: str
+    access_token: Optional[str] = None
     token_type: str = "bearer"
     user: UserOut
 

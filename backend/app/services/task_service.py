@@ -1,5 +1,6 @@
 import uuid
 from datetime import datetime, timezone
+from typing import Optional
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
 
@@ -33,7 +34,8 @@ def create_task(
         due_date=data.due_date,
         status="Open",
         priority=data.priority or "Medium",
-        created_at=datetime.now().strftime("%Y-%m-%d")
+        created_at=datetime.now().strftime("%Y-%m-%d"),
+        version=1
     )
     db.add(task)
 
@@ -71,18 +73,48 @@ def complete_task(
     completion_note: str,
     current_user_name: str,
     current_user_role: str,
+    expected_version: Optional[int] = None,
     ip_address: str = ""
 ) -> OperationalTask:
+    now_str = datetime.now().strftime("%Y-%m-%d %H:%M")
+
+    update_dict = {
+        "status": "Completed",
+        "completed_at": now_str,
+        "version": (expected_version + 1) if expected_version is not None else OperationalTask.version + 1
+    }
+
+    # Atomic conditional update at DB engine level
+    query = db.query(OperationalTask).filter(
+        OperationalTask.id == task_id,
+        OperationalTask.patient_id == patient_id
+    )
+    if expected_version is not None:
+        query = query.filter(OperationalTask.version == expected_version)
+
+    rows_affected = query.update(update_dict, synchronize_session=False)
+    if rows_affected == 0:
+        db.rollback()
+        existing = db.query(OperationalTask).filter(
+            OperationalTask.id == task_id,
+            OperationalTask.patient_id == patient_id
+        ).first()
+        if not existing:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Task {task_id} not found for patient {patient_id}.")
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail={
+                "error": "VERSION_CONFLICT",
+                "message": f"Operational task {task_id} has been modified concurrently.",
+                "current_version": existing.version,
+                "expected_version": expected_version
+            }
+        )
+
     task = db.query(OperationalTask).filter(
         OperationalTask.id == task_id,
         OperationalTask.patient_id == patient_id
     ).first()
-    if not task:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Task {task_id} not found for patient {patient_id}.")
-
-    now_str = datetime.now().strftime("%Y-%m-%d %H:%M")
-    task.status = "Completed"
-    task.completed_at = now_str
 
     te = TimelineEvent(
         id=f"evt-{uuid.uuid4().hex[:8]}",
@@ -103,7 +135,7 @@ def complete_task(
         user_role=current_user_role,
         resource_type="OperationalTask",
         resource_id=task_id,
-        details={"title": task.title, "note": completion_note},
+        details={"title": task.title, "note": completion_note, "version": task.version},
         ip_address=ip_address
     )
 

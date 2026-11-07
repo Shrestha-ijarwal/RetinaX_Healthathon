@@ -50,6 +50,7 @@ def list_reminders(
     return results
 
 @router.post("/{patient_id}", response_model=ReminderOut, status_code=status.HTTP_201_CREATED)
+@router.post("/{patient_id}/dispatch", response_model=ReminderOut, status_code=status.HTTP_201_CREATED)
 def trigger_simulated_reminder(
     patient_id: str,
     data: ReminderCreate,

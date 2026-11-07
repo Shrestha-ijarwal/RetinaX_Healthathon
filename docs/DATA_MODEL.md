@@ -59,12 +59,17 @@ erDiagram
         int id PK
         string patient_id FK, UK
         boolean completed
-        string clinician_name
+        string review_status
+        string assigned_specialist
         string clinician_specialty
         string registration_number
-        text clinical_assessment
-        text followup_instructions
-        string referral_status
+        string review_completed_at
+        boolean report_available
+        text operational_notes
+        text clinician_instruction
+        string task_owner
+        string operational_task_status
+        string reconciliation_status
     }
 
     DOCUMENTS {
@@ -149,13 +154,17 @@ erDiagram
 - `id` (Integer, Primary Key)
 - `patient_id` (VARCHAR(32), Foreign Key `patients.id` ON DELETE CASCADE, Unique, Indexed)
 - `completed` (Boolean, Default False)
-- `clinician_name` (VARCHAR(128), Nullable) — Attributed specialist name
+- `review_status` (VARCHAR(64), Default `awaiting_specialist_review`) — e.g., `awaiting_specialist_review`, `review_completed`, `followup_initiated`, `followup_completed`, `record_reconciliation_required`
+- `assigned_specialist` (VARCHAR(128), Nullable) — Attributed specialist name
 - `clinician_specialty` (VARCHAR(128), Default `Ophthalmology`)
 - `registration_number` (VARCHAR(64))
-- `review_timestamp` (VARCHAR(32))
-- `clinical_assessment` (TEXT) — Qualitative clinical findings
-- `followup_instructions` (TEXT) — Care directives for the coordination desk
-- `referral_status` (VARCHAR(128)) — e.g. `Hospital Follow-Up (6 Months)`, `Routine Annual`
+- `review_completed_at` (VARCHAR(32))
+- `report_available` (Boolean, Default True)
+- `operational_notes` (TEXT) — Logistics, document legibility and reconciliation notes
+- `clinician_instruction` (TEXT) — Attributed operational directive for the care coordinator
+- `task_owner` (VARCHAR(128), Default `Care Coordinator`)
+- `operational_task_status` (VARCHAR(64), Default `Pending`)
+- `reconciliation_status` (VARCHAR(64), Default `Reconciled`)
 
 ### 2.5 `documents`
 - `id` (VARCHAR(64), Primary Key)

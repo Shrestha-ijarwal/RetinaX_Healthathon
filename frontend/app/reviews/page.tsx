@@ -12,15 +12,17 @@ export default function SpecialistReviewsPage() {
   const [reviewWorkspace, setReviewWorkspace] = useState<any | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
-  // Review Form state
-  const [clinicianName, setClinicianName] = useState('Dr. Suresh Chandran, MS');
+  // Operational Review Form state (strictly non-clinical)
+  const [assignedSpecialist, setAssignedSpecialist] = useState('Dr. Suresh Chandran, MS');
   const [clinicianTitle, setClinicianTitle] = useState('Dr.');
   const [clinicianSpecialty, setClinicianSpecialty] = useState('Ophthalmology');
   const [clinicianFacility, setClinicianFacility] = useState('District Eye Hospital');
   const [registrationNumber, setRegistrationNumber] = useState('MCI-2016-849201');
-  const [clinicalAssessment, setClinicalAssessment] = useState('');
-  const [followupInstructions, setFollowupInstructions] = useState('');
-  const [referralStatus, setReferralStatus] = useState('Hospital Follow-Up (6 Months)');
+  const [reviewStatus, setReviewStatus] = useState('followup_initiated');
+  const [operationalNotes, setOperationalNotes] = useState('');
+  const [clinicianInstruction, setClinicianInstruction] = useState('');
+  const [taskOwner, setTaskOwner] = useState('Care Coordinator');
+  const [reconciliationStatus, setReconciliationStatus] = useState('Reconciled');
 
   const currentUser = getCurrentUser();
   const isSpecialist = currentUser?.role === 'Specialist';
@@ -51,13 +53,16 @@ export default function SpecialistReviewsPage() {
       setReviewWorkspace(data);
 
       if (data.review?.completed) {
-        setClinicianName(data.review.clinician_name || clinicianName);
-        setClinicalAssessment(data.review.clinical_assessment || '');
-        setFollowupInstructions(data.review.followup_instructions || '');
-        setReferralStatus(data.review.referral_status || 'Hospital Follow-Up (6 Months)');
+        setAssignedSpecialist(data.review.assigned_specialist || assignedSpecialist);
+        setReviewStatus(data.review.review_status || 'review_completed');
+        setOperationalNotes(data.review.operational_notes || '');
+        setClinicianInstruction(data.review.clinician_instruction || '');
+        setReconciliationStatus(data.review.reconciliation_status || 'Reconciled');
       } else {
-        setClinicalAssessment('');
-        setFollowupInstructions('');
+        setOperationalNotes('');
+        setClinicianInstruction('');
+        setReviewStatus('followup_initiated');
+        setReconciliationStatus('Reconciled');
       }
     } catch (err: any) {
       alert(`Error loading review workspace: ${err.message}`);
@@ -67,28 +72,30 @@ export default function SpecialistReviewsPage() {
   async function handleSubmitReview(e: React.FormEvent) {
     e.preventDefault();
     if (!isSpecialist) {
-      alert('Permission Denied: Only users with the "Specialist" role are authorized to submit clinical reviews.');
+      alert('Permission Denied: Only users with the "Specialist" role are authorized to record specialist review directives.');
       return;
     }
-    if (!clinicalAssessment.trim() || !followupInstructions.trim()) {
-      alert('Please fill out both the clinical assessment and follow-up directives.');
+    if (!operationalNotes.trim() || !clinicianInstruction.trim()) {
+      alert('Please fill out both the operational notes and the attributed clinician instruction.');
       return;
     }
 
     setSubmitting(true);
     try {
       await api.submitSpecialistReview(selectedPatientId!, {
-        clinician_name: clinicianName.trim(),
+        assigned_specialist: assignedSpecialist.trim(),
         clinician_title: clinicianTitle,
         clinician_specialty: clinicianSpecialty,
         clinician_facility: clinicianFacility,
         registration_number: registrationNumber,
-        clinical_assessment: clinicalAssessment.trim(),
-        followup_instructions: followupInstructions.trim(),
-        referral_status: referralStatus,
-        notes: `Attributed ophthalmologist tele-review completed by ${clinicianName}.`
+        review_status: reviewStatus,
+        operational_notes: operationalNotes.trim(),
+        clinician_instruction: clinicianInstruction.trim(),
+        task_owner: taskOwner,
+        operational_task_status: reviewStatus === 'followup_completed' ? 'Completed' : 'In Progress',
+        reconciliation_status: reconciliationStatus
       });
-      alert('Specialist review successfully recorded and attributed in patient continuity record.');
+      alert('Specialist operational review and attributed directives successfully recorded.');
       setSelectedPatientId(null);
       loadQueue();
     } catch (err: any) {
@@ -98,58 +105,98 @@ export default function SpecialistReviewsPage() {
     }
   }
 
-  return (
-    <div style={{ maxWidth: 1280, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 20 }}>
-      {/* Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
-        <div>
-          <h1 style={{ fontSize: 22, fontWeight: 800, margin: 0, color: 'var(--ink)' }}>
-            Specialist Review Portal & Queue
-          </h1>
-          <div style={{ fontSize: 13, color: 'var(--muted)', marginTop: 2 }}>
-            Dedicated ophthalmology reading queue. Coordinates operational follow-up directives with strict clinician attribution.
-          </div>
-        </div>
+  const formatReviewStatus = (status: string) => {
+    switch (status) {
+      case 'awaiting_specialist_review':
+        return { label: 'Awaiting Specialist Review', bg: 'var(--amber-subtle)', color: 'var(--amber)' };
+      case 'review_scheduled':
+        return { label: 'Review Scheduled', bg: 'var(--blue-subtle)', color: 'var(--blue)' };
+      case 'review_completed':
+        return { label: 'Review Completed', bg: 'var(--emerald-subtle)', color: 'var(--emerald)' };
+      case 'awaiting_clinician_instruction':
+        return { label: 'Awaiting Clinician Directive', bg: 'var(--amber-subtle)', color: 'var(--amber)' };
+      case 'followup_initiated':
+        return { label: 'Follow-Up Initiated', bg: 'var(--indigo-subtle)', color: 'var(--indigo)' };
+      case 'followup_completed':
+        return { label: 'Follow-Up Completed', bg: 'var(--emerald-subtle)', color: 'var(--emerald)' };
+      case 'record_reconciliation_required':
+        return { label: 'Record Reconciliation Required', bg: 'var(--rose-subtle)', color: 'var(--rose)' };
+      default:
+        return { label: status, bg: 'var(--surface-subtle)', color: 'var(--muted)' };
+    }
+  };
 
-        {/* Role Notice */}
-        <div style={{ fontSize: 12, padding: '6px 12px', borderRadius: 8, background: isSpecialist ? 'var(--emerald-subtle)' : 'var(--amber-subtle)', color: isSpecialist ? 'var(--emerald)' : 'var(--amber)', border: '1px solid currentColor' }}>
-          Active Role: <strong>{currentUser?.role || 'Guest'}</strong> {isSpecialist ? '(Authorized to Sign Off)' : '(Read-Only Mode)'}
-        </div>
+  return (
+    <div style={{ padding: '24px 0', maxWidth: 1200, margin: '0 auto' }}>
+      {/* Scope Disclaimer */}
+      <div style={{
+        background: 'var(--surface-card)',
+        borderLeft: '4px solid var(--teal)',
+        padding: '12px 16px',
+        borderRadius: 8,
+        fontSize: 12,
+        color: 'var(--ink-secondary)',
+        marginBottom: 20,
+        boxShadow: '0 1px 3px rgba(0,0,0,0.05)'
+      }}>
+        <strong>Operational Care Tracking Notice:</strong> Specialist review captures verified document availability and coordinates administrative follow-up. RetinaX Care does not generate clinical diagnoses, disease severity grades, or autonomous care decisions.
       </div>
 
       {!selectedPatientId ? (
-        /* Review Queue Directory */
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-          {/* Filter & Search Bar */}
-          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-            <input
-              type="text"
-              placeholder="Search queue by patient name or ID..."
-              value={search}
-              onChange={(e) => {
-                setSearch(e.target.value);
-                loadQueue(e.target.value);
-              }}
-              style={{ flex: 1, minWidth: 260, padding: '10px 14px', borderRadius: 8, border: '1px solid var(--line)', background: 'var(--surface)', color: 'var(--ink)' }}
-            />
+        <div>
+          {/* Header & Controls */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20, flexWrap: 'wrap', gap: 12 }}>
+            <div>
+              <h1 style={{ fontSize: 24, fontWeight: 700, margin: '0 0 4px', color: 'var(--ink)' }}>
+                Specialist Review Portal
+              </h1>
+              <p style={{ margin: 0, fontSize: 13, color: 'var(--muted)' }}>
+                Screening document review, operational triage, and clinician-attributed follow-up coordination.
+              </p>
+            </div>
 
-            <select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              style={{ padding: '10px 14px', borderRadius: 8, border: '1px solid var(--line)', background: 'var(--surface)', color: 'var(--ink)' }}
-            >
-              <option value="all">All Patients</option>
-              <option value="pending">Pending Review Only</option>
-              <option value="completed">Completed Reviews</option>
-            </select>
+            <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+              <input
+                type="text"
+                placeholder="Search patient name or ID..."
+                value={search}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                  loadQueue(e.target.value);
+                }}
+                style={{
+                  padding: '8px 12px',
+                  borderRadius: 8,
+                  border: '1px solid var(--line)',
+                  fontSize: 13,
+                  width: 240,
+                  background: 'var(--surface)'
+                }}
+              />
+              <select
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                style={{
+                  padding: '8px 12px',
+                  borderRadius: 8,
+                  border: '1px solid var(--line)',
+                  fontSize: 13,
+                  background: 'var(--surface)'
+                }}
+              >
+                <option value="all">All Queue Items</option>
+                <option value="pending">Awaiting Review</option>
+                <option value="completed">Review Recorded</option>
+              </select>
+            </div>
           </div>
 
           {/* Queue Table */}
-          <div className="card" style={{ background: 'var(--surface-card)', borderRadius: 12, border: '1px solid var(--line)', overflow: 'hidden' }}>
-            <div className="table-responsive">
-              <table className="table" style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: 13 }}>
+          <div className="card" style={{ background: 'var(--surface-card)', borderRadius: 14, border: '1px solid var(--line)', overflow: 'hidden' }}>
+            <div style={{ overflowX: 'auto' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: 700 }}>
                 <thead>
-                  <tr style={{ background: 'var(--surface-subtle)', borderBottom: '2px solid var(--line)', color: 'var(--muted)' }}>
+                  <tr style={{ background: 'var(--surface-subtle)', borderBottom: '1px solid var(--line)', fontSize: 12, color: 'var(--muted)' }}>
                     <th style={{ padding: '12px 14px' }}>Patient</th>
                     <th style={{ padding: '12px 14px' }}>Facility</th>
                     <th style={{ padding: '12px 14px' }}>Review Status</th>
@@ -161,60 +208,63 @@ export default function SpecialistReviewsPage() {
                 <tbody>
                   {loading ? (
                     <tr>
-                      <td colSpan={6} style={{ padding: 24, textAlign: 'center', color: 'var(--muted)' }}>
+                      <td colSpan={6} style={{ padding: 32, textAlign: 'center', color: 'var(--muted)', fontSize: 13 }}>
                         Loading specialist review queue...
                       </td>
                     </tr>
                   ) : queue.length === 0 ? (
                     <tr>
-                      <td colSpan={6} style={{ padding: 24, textAlign: 'center', color: 'var(--muted)' }}>
-                        No patients currently match this review queue status.
+                      <td colSpan={6} style={{ padding: 32, textAlign: 'center', color: 'var(--muted)', fontSize: 13 }}>
+                        No records matching filter criteria.
                       </td>
                     </tr>
                   ) : (
-                    queue.map((item) => (
-                      <tr key={item.patient_id} style={{ borderBottom: '1px solid var(--line)' }}>
-                        <td style={{ padding: '12px 14px' }}>
-                          <span style={{ fontWeight: 700, color: 'var(--primary)' }}>{item.patient_id}</span>
-                          <span style={{ marginLeft: 8, fontWeight: 600, color: 'var(--ink)' }}>{item.patient_name}</span>
-                          <span style={{ fontSize: 11, color: 'var(--muted)', marginLeft: 6 }}>({item.patient_age}y • {item.patient_sex})</span>
-                        </td>
-                        <td style={{ padding: '12px 14px', color: 'var(--ink-secondary)', fontSize: 12 }}>
-                          {item.facility}
-                        </td>
-                        <td style={{ padding: '12px 14px' }}>
-                          <span className="badge" style={{
-                            padding: '3px 8px',
-                            borderRadius: 4,
-                            fontSize: 11,
-                            fontWeight: 600,
-                            background: item.completed ? 'var(--emerald-subtle)' : item.review_state === 'Pending Review' ? 'var(--amber-subtle)' : 'var(--surface-subtle)',
-                            color: item.completed ? 'var(--emerald)' : item.review_state === 'Pending Review' ? 'var(--amber)' : 'var(--muted)'
-                          }}>
-                            {item.review_state}
-                          </span>
-                        </td>
-                        <td style={{ padding: '12px 14px', fontSize: 12 }}>
-                          {item.screening_report_available ? (
-                            <span style={{ color: 'var(--emerald)', fontWeight: 600 }}>✓ {item.report_document_count} Report(s)</span>
-                          ) : (
-                            <span style={{ color: 'var(--muted)' }}>Pending Upload</span>
-                          )}
-                        </td>
-                        <td style={{ padding: '12px 14px', fontSize: 12, color: 'var(--ink-secondary)' }}>
-                          {item.assigned_specialist || 'Dr. Suresh Chandran'}
-                        </td>
-                        <td style={{ padding: '12px 14px', textAlign: 'right' }}>
-                          <button
-                            className={`btn btn-sm ${item.completed ? 'btn-outline' : 'btn-primary'}`}
-                            onClick={() => openReviewWorkspace(item.patient_id)}
-                            style={{ fontSize: 11, padding: '4px 12px' }}
-                          >
-                            {item.completed ? 'View Directive' : 'Open Workspace →'}
-                          </button>
-                        </td>
-                      </tr>
-                    ))
+                    queue.map((item) => {
+                      const badge = formatReviewStatus(item.review_status || item.review_state);
+                      return (
+                        <tr key={item.patient_id} style={{ borderBottom: '1px solid var(--line)' }}>
+                          <td style={{ padding: '12px 14px' }}>
+                            <div style={{ fontWeight: 600, color: 'var(--ink)', fontSize: 13 }}>{item.patient_name}</div>
+                            <div style={{ fontSize: 11, color: 'var(--muted)' }}>{item.patient_id} • {item.patient_age}y, {item.patient_sex}</div>
+                          </td>
+                          <td style={{ padding: '12px 14px', fontSize: 12, color: 'var(--ink-secondary)' }}>
+                            {item.facility}
+                          </td>
+                          <td style={{ padding: '12px 14px' }}>
+                            <span style={{
+                              display: 'inline-block',
+                              padding: '3px 8px',
+                              borderRadius: 6,
+                              fontSize: 11,
+                              fontWeight: 600,
+                              background: badge.bg,
+                              color: badge.color
+                            }}>
+                              {badge.label}
+                            </span>
+                          </td>
+                          <td style={{ padding: '12px 14px', fontSize: 12 }}>
+                            {item.screening_report_available ? (
+                              <span style={{ color: 'var(--emerald)', fontWeight: 600 }}>✓ Attached ({item.report_document_count})</span>
+                            ) : (
+                              <span style={{ color: 'var(--rose)', fontWeight: 600 }}>Missing Report</span>
+                            )}
+                          </td>
+                          <td style={{ padding: '12px 14px', fontSize: 12, color: 'var(--ink-secondary)' }}>
+                            {item.assigned_specialist || 'Unassigned'}
+                          </td>
+                          <td style={{ padding: '12px 14px', textAlign: 'right' }}>
+                            <button
+                              className={`btn btn-sm ${item.completed ? 'btn-outline' : 'btn-primary'}`}
+                              onClick={() => openReviewWorkspace(item.patient_id)}
+                              style={{ fontSize: 11, padding: '4px 12px' }}
+                            >
+                              {item.completed ? 'View Directive' : 'Open Workspace →'}
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })
                   )}
                 </tbody>
               </table>
@@ -229,26 +279,26 @@ export default function SpecialistReviewsPage() {
               ← Back to Review Queue
             </button>
             <span style={{ fontSize: 13, color: 'var(--muted)' }}>
-              Patient Review Workspace: <strong>{reviewWorkspace?.patient_name} ({reviewWorkspace?.patient_id})</strong>
+              Operational Review Workspace: <strong>{reviewWorkspace?.patient_name} ({reviewWorkspace?.patient_id})</strong>
             </span>
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
-            {/* Left Column: Attached Screening Documents & Operational Context */}
+            {/* Left Column: Screening Documentation Dossier */}
             <div className="card" style={{ background: 'var(--surface-card)', borderRadius: 14, border: '1px solid var(--line)', padding: 20 }}>
               <h2 style={{ fontSize: 16, fontWeight: 700, margin: '0 0 14px', color: 'var(--ink)' }}>
-                Screening Photography & Record Dossier
+                Screening Documentation Dossier
               </h2>
 
               <div style={{ background: 'var(--surface-subtle)', padding: 12, borderRadius: 8, fontSize: 12, marginBottom: 16 }}>
                 <div><strong>Patient:</strong> {reviewWorkspace?.patient_name} ({reviewWorkspace?.patient_age}y, {reviewWorkspace?.patient_sex})</div>
                 <div><strong>Primary Care Unit:</strong> {reviewWorkspace?.facility}</div>
-                <div><strong>Diabetes Profile:</strong> {reviewWorkspace?.diabetes_profile?.type || 'Type 2 Diabetes'}</div>
-                <div><strong>Last Documented HbA1c:</strong> {reviewWorkspace?.diabetes_profile?.last_hba1c || 'Not Recorded'}</div>
+                <div><strong>Diabetes Record:</strong> {reviewWorkspace?.diabetes_profile?.type || 'Type 2 Diabetes'}</div>
+                <div><strong>Last Recorded HbA1c:</strong> {reviewWorkspace?.diabetes_profile?.last_hba1c || 'Not Recorded'}</div>
               </div>
 
               <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--ink)', marginBottom: 8 }}>
-                Screening Document Attachments:
+                Verified Document Attachments:
               </div>
 
               {reviewWorkspace?.screening_reports?.length > 0 ? (
@@ -267,7 +317,7 @@ export default function SpecialistReviewsPage() {
                           className="btn btn-outline btn-sm"
                           style={{ fontSize: 11, textDecoration: 'none' }}
                         >
-                          View Verified PDF
+                          View PDF
                         </a>
                       </div>
                     </div>
@@ -284,7 +334,7 @@ export default function SpecialistReviewsPage() {
             <div className="card" style={{ background: 'var(--surface-card)', borderRadius: 14, border: '1px solid var(--line)', padding: 20 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
                 <h2 style={{ fontSize: 16, fontWeight: 700, margin: 0, color: 'var(--ink)' }}>
-                  Ophthalmologist Clinical Directives
+                  Specialist Review & Care Directives
                 </h2>
                 {reviewWorkspace?.review?.completed && (
                   <span className="badge" style={{ background: 'var(--emerald-subtle)', color: 'var(--emerald)', fontSize: 11, padding: '3px 8px' }}>
@@ -301,8 +351,8 @@ export default function SpecialistReviewsPage() {
                   <input
                     type="text"
                     required
-                    value={clinicianName}
-                    onChange={(e) => setClinicianName(e.target.value)}
+                    value={assignedSpecialist}
+                    onChange={(e) => setAssignedSpecialist(e.target.value)}
                     disabled={!isSpecialist}
                     style={{ width: '100%', padding: '8px 12px', borderRadius: 8, border: '1px solid var(--line)', background: isSpecialist ? 'var(--surface)' : 'var(--surface-subtle)' }}
                   />
@@ -333,31 +383,31 @@ export default function SpecialistReviewsPage() {
 
                 <div>
                   <label style={{ fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>
-                    Operational Referral / Follow-Up Classification
+                    Operational Review Status
                   </label>
                   <select
-                    value={referralStatus}
-                    onChange={(e) => setReferralStatus(e.target.value)}
+                    value={reviewStatus}
+                    onChange={(e) => setReviewStatus(e.target.value)}
                     disabled={!isSpecialist}
                     style={{ width: '100%', padding: '8px 12px', borderRadius: 8, border: '1px solid var(--line)', background: isSpecialist ? 'var(--surface)' : 'var(--surface-subtle)' }}
                   >
-                    <option value="Hospital Follow-Up (6 Months)">Hospital Follow-Up (6 Months)</option>
-                    <option value="Hospital Eye Clinic Urgent Referral">Hospital Eye Clinic Urgent Referral</option>
-                    <option value="Routine Annual Retinal Screening">Routine Annual Retinal Screening (Close Loop)</option>
-                    <option value="Optical Correction / Low Vision Referral">Optical Correction / Low Vision Referral</option>
+                    <option value="followup_initiated">Follow-Up Initiated (Coordinate Scheduled Visit)</option>
+                    <option value="followup_completed">Follow-Up Completed (Annual Screening Cycle Closed)</option>
+                    <option value="review_completed">Review Completed (Awaiting Coordinator Scheduling)</option>
+                    <option value="record_reconciliation_required">Record Reconciliation Required (Document Incomplete)</option>
                   </select>
                 </div>
 
                 <div>
                   <label style={{ fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>
-                    Qualitative Assessment (Clinician-Entered)
+                    Operational & Document Notes
                   </label>
                   <textarea
-                    rows={3}
+                    rows={2}
                     required
-                    placeholder="Enter specialist tele-ophthalmology findings manually..."
-                    value={clinicalAssessment}
-                    onChange={(e) => setClinicalAssessment(e.target.value)}
+                    placeholder="Enter notes on document legibility, identification verification, or imaging quality..."
+                    value={operationalNotes}
+                    onChange={(e) => setOperationalNotes(e.target.value)}
                     disabled={!isSpecialist}
                     style={{ width: '100%', padding: '8px 12px', borderRadius: 8, border: '1px solid var(--line)', background: isSpecialist ? 'var(--surface)' : 'var(--surface-subtle)', fontSize: 13 }}
                   />
@@ -365,14 +415,14 @@ export default function SpecialistReviewsPage() {
 
                 <div>
                   <label style={{ fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 4 }}>
-                    Clinician Follow-Up Instructions (For Care Coordinator)
+                    Attributed Clinician Directive (For Care Coordinator)
                   </label>
                   <textarea
-                    rows={2}
+                    rows={3}
                     required
-                    placeholder="Operational instructions for care coordination team..."
-                    value={followupInstructions}
-                    onChange={(e) => setFollowupInstructions(e.target.value)}
+                    placeholder="Directive for care coordination team: e.g., 'Coordinate hospital ophthalmology evaluation within 6 months. Care coordinator to monitor attendance.'"
+                    value={clinicianInstruction}
+                    onChange={(e) => setClinicianInstruction(e.target.value)}
                     disabled={!isSpecialist}
                     style={{ width: '100%', padding: '8px 12px', borderRadius: 8, border: '1px solid var(--line)', background: isSpecialist ? 'var(--surface)' : 'var(--surface-subtle)', fontSize: 13 }}
                   />
@@ -380,7 +430,7 @@ export default function SpecialistReviewsPage() {
 
                 {!isSpecialist && (
                   <div style={{ padding: 10, background: 'var(--amber-subtle)', color: 'var(--amber)', borderRadius: 8, fontSize: 11 }}>
-                    ⚠️ Note: You are logged in as <strong>{currentUser?.role}</strong>. Only users with the <strong>Specialist</strong> role can record clinical reviews. Switch to the Specialist demo account from the topbar menu to submit.
+                    ⚠️ Note: You are logged in as <strong>{currentUser?.role || 'Guest'}</strong>. Only users with the <strong>Specialist</strong> role can record specialist reviews. Switch to a Specialist account from the login screen to submit.
                   </div>
                 )}
 
@@ -393,7 +443,7 @@ export default function SpecialistReviewsPage() {
                     className="btn btn-primary"
                     disabled={!isSpecialist || submitting}
                   >
-                    {submitting ? 'Recording Review...' : 'Record Specialist Directives'}
+                    {submitting ? 'Recording Directives...' : 'Record Attributed Directives'}
                   </button>
                 </div>
               </form>

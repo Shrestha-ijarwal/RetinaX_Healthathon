@@ -49,17 +49,22 @@ class CareJourneySummaryOut(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 class SpecialistReviewSummaryOut(BaseModel):
+    review_status: str = "awaiting_specialist_review"
     completed: bool = False
-    clinician_name: Optional[str] = None
-    clinician_title: Optional[str] = None
-    clinician_specialty: Optional[str] = None
-    clinician_facility: Optional[str] = None
+    assigned_specialist: Optional[str] = None
+    clinician_title: Optional[str] = "Dr."
+    clinician_specialty: Optional[str] = "Ophthalmology"
+    clinician_facility: Optional[str] = "District Eye Hospital"
     registration_number: Optional[str] = None
-    review_timestamp: Optional[str] = None
-    clinical_assessment: Optional[str] = ""
-    followup_instructions: Optional[str] = ""
-    referral_status: Optional[str] = "Awaiting Review"
-    notes: Optional[str] = ""
+    review_scheduled_date: Optional[str] = None
+    review_completed_at: Optional[str] = None
+    report_available: bool = True
+    operational_notes: Optional[str] = ""
+    clinician_instruction: Optional[str] = ""
+    task_owner: Optional[str] = "Care Coordinator"
+    operational_task_status: Optional[str] = "Pending"
+    reconciliation_status: Optional[str] = "Reconciled"
+    last_updated_at: Optional[str] = None
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -127,8 +132,19 @@ class PatientOut(BaseModel):
     diabetes_profile: Optional[Dict[str, Any]] = {}
     workflow_status: Optional[CareJourneySummaryOut] = None
     completeness_score: Optional[int] = 0
+    version: int = 1
 
     model_config = ConfigDict(from_attributes=True)
+
+class PatientUpdate(BaseModel):
+    name: Optional[str] = None
+    age: Optional[int] = None
+    sex: Optional[str] = None
+    contact: Optional[str] = None
+    facility: Optional[str] = None
+    clinician: Optional[str] = None
+    diabetes_profile: Optional[Dict[str, Any]] = None
+    expected_version: Optional[int] = Field(None, description="Expected patient version for OCC")
 
 class PatientDetailOut(PatientOut):
     timeline: List[TimelineEventOut] = []
@@ -140,8 +156,10 @@ class PatientDetailOut(PatientOut):
 
 class CompletenessCheckOut(BaseModel):
     score_percentage: int
+    percentage: Optional[int] = None
     completed_count: int
     total_checks: int
     missing_items: List[str]
+    checklist: Optional[List[str]] = None
     is_complete: bool
     checks: Dict[str, bool]

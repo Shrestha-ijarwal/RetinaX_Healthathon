@@ -23,6 +23,7 @@ class FollowupUpdate(BaseModel):
     planned_date: Optional[str] = None
     responsible_staff: Optional[str] = None
     notes: Optional[str] = None
+    expected_version: Optional[int] = Field(None, description="Expected resource version for optimistic concurrency control (OCC)")
     contact_attempt: Optional[ContactAttemptCreate] = None
 
 class FollowupOut(BaseModel):
@@ -33,6 +34,7 @@ class FollowupOut(BaseModel):
     responsible_staff: Optional[str]
     completion_timestamp: Optional[str]
     notes: Optional[str]
+    version: int = 1
     contact_attempts: List[ContactAttemptOut] = []
 
     model_config = ConfigDict(from_attributes=True)

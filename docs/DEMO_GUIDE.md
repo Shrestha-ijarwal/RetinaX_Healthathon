@@ -45,32 +45,33 @@ RetinaX Care demonstrates how an operational platform closes this loop through 1
 1. Observe that while bilateral screening photos were taken on 2026-09-29 and uploaded to the repository, specialist review has not yet occurred.
 2. Note the **Next Operational Action**: *"Ophthalmologist to review multi-record dossier (4 documents)"*.
 
-### Step 5: Switch to the Specialist Role & Open Review Queue
-1. In the top-right profile popover, click the dropdown and select **Dr. Suresh Chandran, MS (Specialist)**.
-2. Navigate to **Specialist Reviews** (`/reviews`).
-3. Notice that the reading queue lists `RX-1011` as *"Pending Review"* with 4 attached screening documents.
-4. Click **Open Workspace →** on `RX-1011`.
+### Step 5: Log In as Specialist & Open Review Queue
+1. Navigate to `/login` (or click **Switch Account / Logout** from the top-right user menu).
+2. Click the quick judging evaluation button **Specialist (Dr. Suresh Chandran)** to auto-fill credentials, then click **Sign In**.
+3. Navigate to **Specialist Reviews** (`/reviews`).
+4. Notice that the tele-ophthalmology reading queue lists `RX-1011` as *"Awaiting Review"* with 4 attached screening documents.
+5. Click **Open Review Workspace →** on `RX-1011`.
 
-### Step 6: Review Attached Dossier & Record Clinical Directives
+### Step 6: Review Attached Dossier & Record Attributed Operational Directives
 1. On the left pane, view the attached documents and click **View Verified PDF** to open the genuine standard PDF report.
-2. On the right pane, complete the attributed directive form:
+2. On the right pane, complete the attributed operational review form:
    - Clinician Name: `Dr. Suresh Chandran, MS`
-   - Specialty: `Ophthalmology`
+   - Medical Specialty: `Ophthalmology`
    - Medical Registration: `MCI-2016-849201`
-   - Referral Classification: `Hospital Follow-Up (6 Months)`
-   - Qualitative Assessment: *"Bilateral non-proliferative microvascular changes observed. Foveal contour preserved."*
-   - Follow-up Directives: *"Schedule 6-month dilated examination at District Eye Hospital. Coordinate escort if required."*
-3. Click **Record Specialist Directives**.
-4. The review is recorded and attributed. The care journey advances to *"Specialist Review Completed"*.
+   - Operational Review Status: `Completed`
+   - Attributed Clinician Directive: *"Screening dossier reviewed. Follow-up eye examination recommended at District Eye Hospital within 6 months. Assist with transportation if needed."*
+   - Operational Task Instructions: *"Coordinate hospital visit scheduling and transport assistance with patient family."*
+3. Click **Submit Operational Review Directive**.
+4. The review is recorded and attributed to the clinician. The care journey advances to *"Specialist Review Completed"*.
 
 ### Step 7: Verify RBAC Protection (Coordinator Cannot Review)
-1. Switch roles to **Ananya Sharma (Care Coordinator)** from the topbar menu.
+1. Switch roles to **Ananya Sharma (Care Coordinator)** from `/login` or the topbar user menu.
 2. Attempt to submit a specialist review on any pending patient.
-3. Observe that the form fields are disabled in the UI, and any direct API call returns `HTTP 403 Forbidden`.
+3. Observe that the submission buttons and forms are blocked in the UI, and any direct API call returns `HTTP 403 Forbidden`.
 
 ### Step 8: Manage Operational Follow-Up Worklist
 1. Navigate to **Follow-Ups** (`/followups`).
-2. Find patient `RX-1011` in the worklist. Note the new directive: *"Hospital Follow-Up (6 Months)"*.
+2. Find patient `RX-1011` in the worklist. Note the updated directive and scheduled task.
 3. Click **Log Contact**.
 4. Record a contact attempt:
    - Method: `Phone Call`

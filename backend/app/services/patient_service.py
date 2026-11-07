@@ -65,9 +65,11 @@ def calculate_record_completeness(patient: Patient) -> Dict[str, Any]:
 
     return {
         "score_percentage": score_pct,
+        "percentage": score_pct,
         "completed_count": completed_checks,
         "total_checks": total_checks,
         "missing_items": missing_items,
+        "checklist": missing_items,
         "is_complete": len(missing_items) == 0,
         "checks": checks
     }
@@ -207,7 +209,7 @@ def create_patient_record(db: Session, data: PatientCreate, created_by: str = "C
     sr = SpecialistReview(
         patient_id=pid,
         completed=False,
-        referral_status="Awaiting Review"
+        review_status="awaiting_specialist_review"
     )
     db.add(sr)
 

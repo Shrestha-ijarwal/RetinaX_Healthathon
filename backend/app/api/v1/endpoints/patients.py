@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from backend.app.core.database import get_db
 from backend.app.models.patient import Patient
 from backend.app.models.user import User
-from backend.app.schemas.patient import PatientCreate, PatientOut, PatientDetailOut, CompletenessCheckOut
+from backend.app.schemas.patient import PatientCreate, PatientUpdate, PatientOut, PatientDetailOut, CompletenessCheckOut
 from backend.app.services.auth_service import get_current_user, require_coordinator
 from backend.app.services.patient_service import (
     get_patients_list,
@@ -44,7 +44,8 @@ def format_patient_dict(p: Patient) -> dict:
             "last_contact_date": p.journey.last_contact_date if p.journey else None,
             "last_contact_method": p.journey.last_contact_method if p.journey else None,
         } if p.journey else None,
-        "completeness_score": comp["score_percentage"]
+        "completeness_score": comp["score_percentage"],
+        "version": getattr(p, "version", 1) or 1
     }
 
 def format_patient_detail_dict(p: Patient) -> dict:
@@ -76,16 +77,21 @@ def format_patient_detail_dict(p: Patient) -> dict:
     ]
     base["specialist_review"] = {
         "completed": p.specialist_review.completed if p.specialist_review else False,
-        "clinician_name": p.specialist_review.clinician_name if p.specialist_review else None,
-        "clinician_title": p.specialist_review.clinician_title if p.specialist_review else None,
-        "clinician_specialty": p.specialist_review.clinician_specialty if p.specialist_review else None,
-        "clinician_facility": p.specialist_review.clinician_facility if p.specialist_review else None,
+        "review_status": p.specialist_review.review_status if p.specialist_review else "awaiting_specialist_review",
+        "assigned_specialist": p.specialist_review.assigned_specialist if p.specialist_review else None,
+        "clinician_title": p.specialist_review.clinician_title if p.specialist_review else "Dr.",
+        "clinician_specialty": p.specialist_review.clinician_specialty if p.specialist_review else "Ophthalmology",
+        "clinician_facility": p.specialist_review.clinician_facility if p.specialist_review else "District Eye Hospital",
         "registration_number": p.specialist_review.registration_number if p.specialist_review else None,
-        "review_timestamp": p.specialist_review.review_timestamp if p.specialist_review else None,
-        "clinical_assessment": p.specialist_review.clinical_assessment if p.specialist_review else "",
-        "followup_instructions": p.specialist_review.followup_instructions if p.specialist_review else "",
-        "referral_status": p.specialist_review.referral_status if p.specialist_review else "Awaiting Review",
-        "notes": p.specialist_review.notes if p.specialist_review else ""
+        "review_scheduled_date": p.specialist_review.review_scheduled_date if p.specialist_review else None,
+        "review_completed_at": p.specialist_review.review_completed_at if p.specialist_review else None,
+        "report_available": p.specialist_review.report_available if p.specialist_review else len(base["documents"]) > 0,
+        "operational_notes": p.specialist_review.operational_notes if p.specialist_review else "",
+        "clinician_instruction": p.specialist_review.clinician_instruction if p.specialist_review else "",
+        "task_owner": p.specialist_review.task_owner if p.specialist_review else "Care Coordinator",
+        "operational_task_status": p.specialist_review.operational_task_status if p.specialist_review else "Pending",
+        "reconciliation_status": p.specialist_review.reconciliation_status if p.specialist_review else "Reconciled",
+        "last_updated_at": p.specialist_review.last_updated_at if p.specialist_review else None
     } if p.specialist_review else None
 
     base["pending_tasks"] = [
@@ -177,6 +183,83 @@ def get_patient(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Patient {patient_id} not found."
         )
+    return format_patient_detail_dict(patient)
+
+@router.patch("/{patient_id}", response_model=Dict[str, Any])
+def update_patient_info(
+    patient_id: str,
+    data: PatientUpdate,
+    request: Request,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_coordinator)
+):
+    # Support expected_version from body or X-Expected-Version header
+    expected_version = data.expected_version
+    if expected_version is None:
+        hdr_ver = request.headers.get("X-Expected-Version")
+        if hdr_ver is not None:
+            try:
+                expected_version = int(hdr_ver)
+            except ValueError:
+                pass
+
+    update_data = {}
+    if data.name is not None:
+        update_data["name"] = data.name
+    if data.age is not None:
+        update_data["age"] = data.age
+    if data.sex is not None:
+        update_data["sex"] = data.sex
+    if data.contact is not None:
+        update_data["contact"] = data.contact
+    if data.facility is not None:
+        update_data["facility"] = data.facility
+    if data.clinician is not None:
+        update_data["clinician"] = data.clinician
+    if data.diabetes_profile is not None:
+        update_data["diabetes_profile"] = data.diabetes_profile
+
+    # Atomic conditional update at DB engine level
+    query = db.query(Patient).filter(Patient.id == patient_id)
+    if expected_version is not None:
+        query = query.filter(Patient.version == expected_version)
+        update_data["version"] = expected_version + 1
+    else:
+        update_data["version"] = Patient.version + 1
+
+    rows_affected = query.update(update_data, synchronize_session=False)
+    if rows_affected == 0:
+        db.rollback()
+        existing = db.query(Patient).filter(Patient.id == patient_id).first()
+        if not existing:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Patient {patient_id} not found."
+            )
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail={
+                "error": "VERSION_CONFLICT",
+                "message": f"Patient record {patient_id} has been modified concurrently.",
+                "current_version": existing.version,
+                "expected_version": expected_version
+            }
+        )
+
+    db.commit()
+    patient = db.query(Patient).filter(Patient.id == patient_id).first()
+
+    log_audit_event(
+        db=db,
+        action="PATIENT_UPDATED",
+        user_name=current_user.full_name,
+        user_role=current_user.role,
+        user_id=str(current_user.id),
+        resource_type="Patient",
+        resource_id=patient.id,
+        details={"version": patient.version},
+        ip_address=request.client.host if request.client else ""
+    )
     return format_patient_detail_dict(patient)
 
 @router.post("", response_model=Dict[str, Any], status_code=status.HTTP_201_CREATED)

@@ -74,12 +74,21 @@
     ],
     "specialist_review": {
       "completed": false,
-      "clinician_name": null,
-      "review_timestamp": null,
-      "clinical_assessment": "",
-      "followup_instructions": "",
-      "referral_status": "Pending Screening",
-      "notes": ""
+      "review_status": "record_reconciliation_required",
+      "assigned_specialist": null,
+      "clinician_title": "Dr.",
+      "clinician_specialty": "Ophthalmology",
+      "clinician_facility": "District Eye Hospital",
+      "registration_number": "",
+      "review_scheduled_date": null,
+      "review_completed_at": null,
+      "report_available": false,
+      "operational_notes": "Screening completed at camp; document reconciliation pending.",
+      "clinician_instruction": "",
+      "task_owner": "Care Coordinator",
+      "operational_task_status": "Pending",
+      "reconciliation_status": "Awaiting External Records",
+      "last_updated_at": "2026-10-01 10:00"
     },
     "pending_tasks": [
       {
@@ -193,12 +202,21 @@
     "documents": [],
     "specialist_review": {
       "completed": false,
-      "clinician_name": null,
-      "review_timestamp": null,
-      "clinical_assessment": "",
-      "followup_instructions": "",
-      "referral_status": "Awaiting Document",
-      "notes": ""
+      "review_status": "record_reconciliation_required",
+      "assigned_specialist": null,
+      "clinician_title": "Dr.",
+      "clinician_specialty": "Ophthalmology",
+      "clinician_facility": "District Eye Hospital",
+      "registration_number": "",
+      "review_scheduled_date": null,
+      "review_completed_at": null,
+      "report_available": false,
+      "operational_notes": "Screening completed at camp; document reconciliation pending.",
+      "clinician_instruction": "",
+      "task_owner": "Care Coordinator",
+      "operational_task_status": "Pending",
+      "reconciliation_status": "Awaiting External Records",
+      "last_updated_at": "2026-10-01 10:00"
     },
     "pending_tasks": [
       {
@@ -335,12 +353,21 @@
     ],
     "specialist_review": {
       "completed": false,
-      "clinician_name": null,
-      "review_timestamp": null,
-      "clinical_assessment": "",
-      "followup_instructions": "",
-      "referral_status": "Unreviewed",
-      "notes": ""
+      "review_status": "awaiting_specialist_review",
+      "assigned_specialist": null,
+      "clinician_title": "Dr.",
+      "clinician_specialty": "Ophthalmology",
+      "clinician_facility": "District Eye Hospital",
+      "registration_number": "",
+      "review_scheduled_date": "2026-11-10",
+      "review_completed_at": null,
+      "report_available": true,
+      "operational_notes": "Screening report uploaded; awaiting specialist review assignment.",
+      "clinician_instruction": "",
+      "task_owner": "Care Coordinator",
+      "operational_task_status": "Pending",
+      "reconciliation_status": "Reconciled",
+      "last_updated_at": "2026-10-01 10:00"
     },
     "pending_tasks": [
       {
@@ -486,12 +513,21 @@
     ],
     "specialist_review": {
       "completed": true,
-      "clinician_name": "Dr. Manjunath Shenoy, MS (Ophthalmology)",
-      "review_timestamp": "2026-09-24 16:30",
-      "clinical_assessment": "Clinically visible microvascular changes noted in right eye. No high-risk proliferative features or center-involving edema documented on visual review.",
-      "followup_instructions": "Repeat dilated fundus examination at hospital ophthal unit in 6 months. Maintain strict glycemic control with treating physician.",
-      "referral_status": "Routine Hospital Follow-Up (6 Months)",
-      "notes": "Clinical assessment entered manually by healthcare professional."
+      "review_status": "followup_initiated",
+      "assigned_specialist": "Dr. Manjunath Shenoy, MS (Ophthalmology)",
+      "clinician_title": "Dr.",
+      "clinician_specialty": "Ophthalmology",
+      "clinician_facility": "District Eye Hospital",
+      "registration_number": "MCI-2016-849201",
+      "review_scheduled_date": null,
+      "review_completed_at": "2026-09-24 16:30",
+      "report_available": true,
+      "operational_notes": "Operational review completed. Screening report legibility confirmed.",
+      "clinician_instruction": "Attributed clinician directive: Coordinate hospital follow-up within 6 months.",
+      "task_owner": "Care Coordinator",
+      "operational_task_status": "In Progress",
+      "reconciliation_status": "Reconciled",
+      "last_updated_at": "2026-09-24 16:30"
     },
     "pending_tasks": [
       {
@@ -617,7 +653,7 @@
         "source": "Specialist Review Portal",
         "actor": "Dr. Rashmi Desai (Ophthalmologist)",
         "status": "Completed",
-        "note": "Clinical assessment manually recorded: No diabetic retinopathy changes observed."
+        "note": "Specialist operational review completed. Annual screening follow-up logged per clinician instruction."
       },
       {
         "id": "evt-507",
@@ -662,12 +698,21 @@
     ],
     "specialist_review": {
       "completed": true,
-      "clinician_name": "Dr. Rashmi Desai, DO, DNB",
-      "review_timestamp": "2026-08-18 14:00",
-      "clinical_assessment": "Clear media, normal optic discs and maculae bilaterally. No microaneurysms or vascular changes identified upon manual review.",
-      "followup_instructions": "Routine annual screening in 12 months (August 2027). Continue routine diabetes monitoring with primary care physician.",
-      "referral_status": "Routine Annual Re-screening",
-      "notes": "Clinical assessment entered manually by healthcare professional."
+      "review_status": "followup_completed",
+      "assigned_specialist": "Dr. Rashmi Desai, DO, DNB",
+      "clinician_title": "Dr.",
+      "clinician_specialty": "Ophthalmology",
+      "clinician_facility": "District Eye Hospital",
+      "registration_number": "MCI-2016-849201",
+      "review_scheduled_date": null,
+      "review_completed_at": "2026-08-18 14:00",
+      "report_available": true,
+      "operational_notes": "Operational review completed. Screening report legibility confirmed.",
+      "clinician_instruction": "Attributed clinician directive: Routine annual screening follow-up in 12 months.",
+      "task_owner": "Care Coordinator",
+      "operational_task_status": "Completed",
+      "reconciliation_status": "Reconciled",
+      "last_updated_at": "2026-08-18 14:00"
     },
     "pending_tasks": [],
     "followup": {
@@ -743,12 +788,21 @@
     "documents": [],
     "specialist_review": {
       "completed": false,
-      "clinician_name": null,
-      "review_timestamp": null,
-      "clinical_assessment": "",
-      "followup_instructions": "",
-      "referral_status": "Incomplete Record",
-      "notes": ""
+      "review_status": "awaiting_screening",
+      "assigned_specialist": null,
+      "clinician_title": "Dr.",
+      "clinician_specialty": "Ophthalmology",
+      "clinician_facility": "District Eye Hospital",
+      "registration_number": "",
+      "review_scheduled_date": null,
+      "review_completed_at": null,
+      "report_available": false,
+      "operational_notes": "Patient awaiting retinal screening appointment.",
+      "clinician_instruction": "",
+      "task_owner": "Care Coordinator",
+      "operational_task_status": "Pending",
+      "reconciliation_status": "Reconciled",
+      "last_updated_at": "2026-10-01 10:00"
     },
     "pending_tasks": [
       {
@@ -846,12 +900,21 @@
     ],
     "specialist_review": {
       "completed": false,
-      "clinician_name": null,
-      "review_timestamp": null,
-      "clinical_assessment": "",
-      "followup_instructions": "",
-      "referral_status": "Not Started",
-      "notes": ""
+      "review_status": "awaiting_screening",
+      "assigned_specialist": null,
+      "clinician_title": "Dr.",
+      "clinician_specialty": "Ophthalmology",
+      "clinician_facility": "District Eye Hospital",
+      "registration_number": "",
+      "review_scheduled_date": null,
+      "review_completed_at": null,
+      "report_available": false,
+      "operational_notes": "Patient awaiting retinal screening appointment.",
+      "clinician_instruction": "",
+      "task_owner": "Care Coordinator",
+      "operational_task_status": "Pending",
+      "reconciliation_status": "Reconciled",
+      "last_updated_at": "2026-10-01 10:00"
     },
     "pending_tasks": [
       {
@@ -970,7 +1033,7 @@
         "source": "Specialist Portal",
         "actor": "Dr. Jayashree Nayak (Ophthalmologist)",
         "status": "Completed",
-        "note": "Specialist review recorded. Clinician recommended in-person slit lamp & dilated fundus evaluation at retina clinic on Oct 20."
+        "note": "Specialist operational review recorded. Clinician directed follow-up at district hospital on Oct 20."
       },
       {
         "id": "evt-807",
@@ -1006,12 +1069,21 @@
     ],
     "specialist_review": {
       "completed": true,
-      "clinician_name": "Dr. Jayashree Nayak, MS (Ophthal)",
-      "review_timestamp": "2026-09-15 10:30",
-      "clinical_assessment": "Bilateral microvascular abnormalities observed. Macular assessment recommended via dilated biomicroscopy at hospital retina clinic.",
-      "followup_instructions": "Refer patient to District Hospital Retina Clinic for dilated evaluation within 4-6 weeks. Advise patient regarding strict glycemic and blood pressure monitoring.",
-      "referral_status": "Referred to District Hospital Retina Clinic",
-      "notes": "Clinical assessment entered manually by healthcare professional."
+      "review_status": "followup_initiated",
+      "assigned_specialist": "Dr. Jayashree Nayak, MS (Ophthal)",
+      "clinician_title": "Dr.",
+      "clinician_specialty": "Ophthalmology",
+      "clinician_facility": "District Eye Hospital",
+      "registration_number": "MCI-2016-849201",
+      "review_scheduled_date": null,
+      "review_completed_at": "2026-09-15 10:30",
+      "report_available": true,
+      "operational_notes": "Operational review completed. Screening report legibility confirmed.",
+      "clinician_instruction": "Attributed clinician directive: Coordinate priority appointment at District Hospital within 4-6 weeks.",
+      "task_owner": "Care Coordinator",
+      "operational_task_status": "In Progress",
+      "reconciliation_status": "Reconciled",
+      "last_updated_at": "2026-09-15 10:30"
     },
     "pending_tasks": [
       {
@@ -1136,12 +1208,21 @@
     ],
     "specialist_review": {
       "completed": true,
-      "clinician_name": "Dr. Suresh Chandran, MS (Ophthalmology)",
-      "review_timestamp": "2026-08-02 15:45",
-      "clinical_assessment": "Mild background vascular changes observed. In-person follow-up evaluation in 6 weeks recommended.",
-      "followup_instructions": "Patient to attend eye clinic for follow-up review by mid-September 2026.",
-      "referral_status": "Hospital Follow-Up Recommended",
-      "notes": "Clinical assessment entered manually by healthcare professional."
+      "review_status": "followup_initiated",
+      "assigned_specialist": "Dr. Suresh Chandran, MS (Ophthalmology)",
+      "clinician_title": "Dr.",
+      "clinician_specialty": "Ophthalmology",
+      "clinician_facility": "District Eye Hospital",
+      "registration_number": "MCI-2016-849201",
+      "review_scheduled_date": null,
+      "review_completed_at": "2026-08-02 15:45",
+      "report_available": true,
+      "operational_notes": "Operational review completed. Screening report legibility confirmed.",
+      "clinician_instruction": "Attributed clinician directive: Coordinate hospital follow-up within 6 months.",
+      "task_owner": "Care Coordinator",
+      "operational_task_status": "In Progress",
+      "reconciliation_status": "Reconciled",
+      "last_updated_at": "2026-08-02 15:45"
     },
     "pending_tasks": [
       {
@@ -1261,7 +1342,7 @@
         "source": "Specialist Portal",
         "actor": "Dr. Manjunath Shenoy (Ophthalmologist)",
         "status": "Completed",
-        "note": "Specialist reviewed images: Normal retinal vasculature, age-related lens changes. Annual routine follow-up recommended."
+        "note": "Specialist operational review completed. Routine annual follow-up scheduled."
       }
     ],
     "documents": [
@@ -1278,12 +1359,21 @@
     ],
     "specialist_review": {
       "completed": true,
-      "clinician_name": "Dr. Manjunath Shenoy, MS (Ophthalmology)",
-      "review_timestamp": "2026-09-22 11:00",
-      "clinical_assessment": "Fundus examination normal bilaterally. Mild early nuclear sclerotic lens changes consistent with age. No evidence of retinal vascular lesions.",
-      "followup_instructions": "Routine annual follow-up in 12 months. Continue regular diabetes and blood pressure check-ups.",
-      "referral_status": "Routine Annual Re-screening",
-      "notes": "Clinical assessment entered manually by healthcare professional."
+      "review_status": "followup_completed",
+      "assigned_specialist": "Dr. Manjunath Shenoy, MS (Ophthalmology)",
+      "clinician_title": "Dr.",
+      "clinician_specialty": "Ophthalmology",
+      "clinician_facility": "District Eye Hospital",
+      "registration_number": "MCI-2016-849201",
+      "review_scheduled_date": null,
+      "review_completed_at": "2026-09-22 11:00",
+      "report_available": true,
+      "operational_notes": "Operational review completed. Screening report legibility confirmed.",
+      "clinician_instruction": "Attributed clinician directive: Routine annual screening follow-up in 12 months.",
+      "task_owner": "Care Coordinator",
+      "operational_task_status": "Completed",
+      "reconciliation_status": "Reconciled",
+      "last_updated_at": "2026-09-22 11:00"
     },
     "pending_tasks": [
       {
@@ -1429,12 +1519,21 @@
     ],
     "specialist_review": {
       "completed": false,
-      "clinician_name": null,
-      "review_timestamp": null,
-      "clinical_assessment": "",
-      "followup_instructions": "",
-      "referral_status": "Awaiting Review",
-      "notes": ""
+      "review_status": "awaiting_specialist_review",
+      "assigned_specialist": null,
+      "clinician_title": "Dr.",
+      "clinician_specialty": "Ophthalmology",
+      "clinician_facility": "District Eye Hospital",
+      "registration_number": "",
+      "review_scheduled_date": "2026-11-10",
+      "review_completed_at": null,
+      "report_available": true,
+      "operational_notes": "Screening report uploaded; awaiting specialist review assignment.",
+      "clinician_instruction": "",
+      "task_owner": "Care Coordinator",
+      "operational_task_status": "Pending",
+      "reconciliation_status": "Reconciled",
+      "last_updated_at": "2026-10-01 10:00"
     },
     "pending_tasks": [
       {
@@ -1571,12 +1670,21 @@
     ],
     "specialist_review": {
       "completed": false,
-      "clinician_name": null,
-      "review_timestamp": null,
-      "clinical_assessment": "",
-      "followup_instructions": "",
-      "referral_status": "Unreviewed",
-      "notes": ""
+      "review_status": "awaiting_specialist_review",
+      "assigned_specialist": null,
+      "clinician_title": "Dr.",
+      "clinician_specialty": "Ophthalmology",
+      "clinician_facility": "District Eye Hospital",
+      "registration_number": "",
+      "review_scheduled_date": "2026-11-10",
+      "review_completed_at": null,
+      "report_available": true,
+      "operational_notes": "Screening report uploaded; awaiting specialist review assignment.",
+      "clinician_instruction": "",
+      "task_owner": "Care Coordinator",
+      "operational_task_status": "Pending",
+      "reconciliation_status": "Reconciled",
+      "last_updated_at": "2026-10-01 10:00"
     },
     "pending_tasks": [
       {

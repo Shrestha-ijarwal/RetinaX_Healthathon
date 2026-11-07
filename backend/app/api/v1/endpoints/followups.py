@@ -6,9 +6,9 @@ from backend.app.core.database import get_db
 from backend.app.models.patient import Patient
 from backend.app.models.followup import Followup
 from backend.app.models.user import User
-from backend.app.schemas.followup import FollowupUpdate, FollowupOut
+from backend.app.schemas.followup import FollowupUpdate, FollowupOut, ContactAttemptCreate
 from backend.app.services.auth_service import get_current_user, require_coordinator
-from backend.app.services.followup_service import update_followup_status
+from backend.app.services.followup_service import update_followup_status, record_contact_attempt
 
 router = APIRouter()
 
@@ -56,7 +56,8 @@ def list_followups_worklist(
                 } if fu.contact_attempts else None
             ),
             "care_loop_completed": j.care_loop_completed if j else False,
-            "specialist_referral": p.specialist_review.referral_status if p.specialist_review else "Awaiting Review"
+            "specialist_directive": p.specialist_review.clinician_instruction if p.specialist_review else "Awaiting Directive",
+            "review_status": p.specialist_review.review_status if p.specialist_review else "awaiting_specialist_review"
         })
 
     return worklist
@@ -102,7 +103,40 @@ def update_patient_followup(
     db: Session = Depends(get_db),
     current_user: User = Depends(require_coordinator)
 ):
+    expected_version = data.expected_version
+    if expected_version is None:
+        hdr_ver = request.headers.get("X-Expected-Version")
+        if hdr_ver is not None:
+            try:
+                expected_version = int(hdr_ver)
+            except ValueError:
+                pass
+
     fu = update_followup_status(
+        db=db,
+        patient_id=patient_id,
+        data=data,
+        current_user_name=current_user.full_name,
+        current_user_role=current_user.role,
+        expected_version=expected_version,
+        ip_address=request.client.host if request.client else ""
+    )
+    return {
+        "status": "success",
+        "message": f"Follow-up status successfully updated to {fu.status}.",
+        "followup_status": fu.status,
+        "planned_date": fu.planned_date
+    }
+
+@router.post("/{patient_id}/attempts", response_model=Dict[str, Any])
+def add_patient_contact_attempt(
+    patient_id: str,
+    data: ContactAttemptCreate,
+    request: Request,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_coordinator)
+):
+    ca = record_contact_attempt(
         db=db,
         patient_id=patient_id,
         data=data,
@@ -112,7 +146,7 @@ def update_patient_followup(
     )
     return {
         "status": "success",
-        "message": f"Follow-up status successfully updated to {fu.status}.",
-        "followup_status": fu.status,
-        "planned_date": fu.planned_date
+        "message": f"Contact attempt logged successfully for patient {patient_id}.",
+        "attempt_id": ca.id,
+        "result": ca.result
     }

@@ -177,24 +177,24 @@ export default function ContinuityInsightsPage() {
                 {/* Turnaround Time Telemetry */}
                 <div className="card" style={{ background: 'var(--surface-card)', borderRadius: 12, border: '1px solid var(--line)', padding: 20 }}>
                   <h2 style={{ fontSize: 16, fontWeight: 700, margin: '0 0 14px', color: 'var(--ink)' }}>
-                    ⏱️ Operational Turnaround Benchmarks (Days)
+                    ⏱️ Operational Turnaround Telemetry
                   </h2>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 12, fontSize: 13 }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid var(--line)', paddingBottom: 8 }}>
                       <span>Screening to Report Upload</span>
-                      <strong>{analytics?.avg_turnaround_days?.screening_to_report} days</strong>
+                      <strong>{typeof analytics?.avg_turnaround_days?.screening_to_report === 'object' ? analytics?.avg_turnaround_days?.screening_to_report?.display : (analytics?.avg_turnaround_days?.screening_to_report ? `${analytics?.avg_turnaround_days?.screening_to_report} days` : 'Insufficient data')}</strong>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid var(--line)', paddingBottom: 8 }}>
                       <span>Report to Specialist Review</span>
-                      <strong>{analytics?.avg_turnaround_days?.report_to_specialist_review} days</strong>
+                      <strong>{typeof analytics?.avg_turnaround_days?.report_to_specialist_review === 'object' ? analytics?.avg_turnaround_days?.report_to_specialist_review?.display : (analytics?.avg_turnaround_days?.report_to_specialist_review ? `${analytics?.avg_turnaround_days?.report_to_specialist_review} days` : 'Insufficient data')}</strong>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid var(--line)', paddingBottom: 8 }}>
                       <span>Review to First Patient Contact</span>
-                      <strong>{analytics?.avg_turnaround_days?.review_to_first_contact} days</strong>
+                      <strong>{typeof analytics?.avg_turnaround_days?.review_to_first_contact === 'object' ? analytics?.avg_turnaround_days?.review_to_first_contact?.display : (analytics?.avg_turnaround_days?.review_to_first_contact ? `${analytics?.avg_turnaround_days?.review_to_first_contact} days` : 'Insufficient data')}</strong>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: 4, fontWeight: 700, color: 'var(--primary)' }}>
                       <span>End-to-End Care Cycle</span>
-                      <strong>{analytics?.avg_turnaround_days?.overall_journey_cycle} days</strong>
+                      <strong>{typeof analytics?.avg_turnaround_days?.overall_journey_cycle === 'object' ? analytics?.avg_turnaround_days?.overall_journey_cycle?.display : (analytics?.avg_turnaround_days?.overall_journey_cycle ? `${analytics?.avg_turnaround_days?.overall_journey_cycle} days` : 'Insufficient data')}</strong>
                     </div>
                   </div>
                 </div>

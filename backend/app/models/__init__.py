@@ -9,6 +9,7 @@ from backend.app.models.followup import Followup, ContactAttempt
 from backend.app.models.document import Document
 from backend.app.models.reminder import Reminder
 from backend.app.models.audit_event import AuditEvent
+from backend.app.models.idempotency import IdempotencyRecord
 
 __all__ = [
     "Base",
@@ -22,5 +23,6 @@ __all__ = [
     "ContactAttempt",
     "Document",
     "Reminder",
-    "AuditEvent"
+    "AuditEvent",
+    "IdempotencyRecord"
 ]

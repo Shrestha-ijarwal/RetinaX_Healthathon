@@ -9,6 +9,7 @@ Strictly idempotent: can be rerun safely without creating duplicates.
 
 import json
 import logging
+import os
 import sys
 from pathlib import Path
 from sqlalchemy.orm import Session
@@ -18,6 +19,7 @@ from datetime import datetime, timezone
 ROOT_DIR = Path(__file__).resolve().parent.parent.parent.parent
 sys.path.insert(0, str(ROOT_DIR))
 
+from backend.app.core.config import settings
 from backend.app.core.database import SessionLocal, engine, Base
 from backend.app.core.security import get_password_hash
 from backend.app.models.user import User
@@ -67,7 +69,14 @@ DEMO_USERS = [
     }
 ]
 
-def seed_demo_users(db: Session) -> dict:
+def seed_demo_users(db: Session, force: bool = False) -> dict:
+    env = (os.getenv("ENVIRONMENT") or getattr(settings, "ENVIRONMENT", "development")).lower()
+    if env == "production" and not force:
+        logger.warning("DEMO SEEDING REFUSED: Demo user seeding is strictly prohibited in production mode.")
+        raise RuntimeError(
+            "CRITICAL SECURITY CONFIGURATION: Demo user account seeding is strictly disabled in production mode."
+        )
+
     created = 0
     existing = 0
     for udata in DEMO_USERS:
@@ -93,7 +102,14 @@ def seed_demo_users(db: Session) -> dict:
     db.commit()
     return {"users_created": created, "users_existing": existing}
 
-def seed_synthetic_patients(db: Session, force_reset: bool = False) -> dict:
+def seed_synthetic_patients(db: Session, force_reset: bool = False, force: bool = False) -> dict:
+    env = (os.getenv("ENVIRONMENT") or getattr(settings, "ENVIRONMENT", "development")).lower()
+    if env == "production" and not force:
+        logger.warning("DEMO SEEDING REFUSED: Synthetic patient seeding is strictly prohibited in production mode.")
+        raise RuntimeError(
+            "CRITICAL SECURITY CONFIGURATION: Synthetic patient seeding is strictly disabled in production mode."
+        )
+
     data_file = ROOT_DIR / "data" / "synthetic_patients.json"
     seed_file = ROOT_DIR / "data" / "synthetic_patients_seed.json"
 
@@ -196,21 +212,26 @@ def seed_synthetic_patients(db: Session, force_reset: bool = False) -> dict:
             )
             db.add(d)
 
-        # 5. Specialist Review
+        # 5. Specialist Review (Operational)
         sr_raw = raw.get("specialist_review", {})
         sr = SpecialistReview(
             patient_id=pid,
             completed=bool(sr_raw.get("completed", False)),
-            clinician_name=sr_raw.get("clinician_name"),
+            review_status=sr_raw.get("review_status", ("review_completed" if sr_raw.get("completed") else "awaiting_specialist_review")),
+            assigned_specialist=sr_raw.get("assigned_specialist") or sr_raw.get("clinician_name"),
             clinician_title=sr_raw.get("clinician_title", "Dr."),
             clinician_specialty=sr_raw.get("clinician_specialty", "Ophthalmology"),
-            clinician_facility=sr_raw.get("clinician_facility", ""),
+            clinician_facility=sr_raw.get("clinician_facility", "District Eye Hospital"),
             registration_number=sr_raw.get("registration_number", ""),
-            review_timestamp=sr_raw.get("review_timestamp"),
-            clinical_assessment=sr_raw.get("clinical_assessment", ""),
-            followup_instructions=sr_raw.get("followup_instructions", ""),
-            referral_status=sr_raw.get("referral_status", "Awaiting Review"),
-            notes=sr_raw.get("notes", "")
+            review_scheduled_date=sr_raw.get("review_scheduled_date"),
+            review_completed_at=sr_raw.get("review_completed_at") or sr_raw.get("review_timestamp"),
+            report_available=bool(sr_raw.get("report_available", True)),
+            operational_notes=sr_raw.get("operational_notes", ""),
+            clinician_instruction=sr_raw.get("clinician_instruction", ""),
+            task_owner=sr_raw.get("task_owner", "Care Coordinator"),
+            operational_task_status=sr_raw.get("operational_task_status", "Pending"),
+            reconciliation_status=sr_raw.get("reconciliation_status", "Reconciled"),
+            last_updated_at=sr_raw.get("last_updated_at") or sr_raw.get("review_timestamp")
         )
         db.add(sr)
 
@@ -298,6 +319,12 @@ def seed_synthetic_patients(db: Session, force_reset: bool = False) -> dict:
     }
 
 def run_seed():
+    env = (os.getenv("ENVIRONMENT") or getattr(settings, "ENVIRONMENT", "development")).lower()
+    if env == "production":
+        logger.error("SEED EXECUTION REFUSED: Direct execution of seed.py is blocked in production mode.")
+        print("\n[SECURITY ERROR] Demo seed execution is strictly blocked in production mode (ENVIRONMENT=production).\n")
+        sys.exit(1)
+
     Base.metadata.create_all(bind=engine)
     db = SessionLocal()
     try:

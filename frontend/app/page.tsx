@@ -65,8 +65,8 @@ export default function OverviewPage() {
           <Link href="/patients" className="btn btn-primary" style={{ background: '#fff', color: '#0369a1', fontWeight: 700 }}>
             Open Patient Cohort →
           </Link>
-          <Link href="/reviews" className="btn btn-outline" style={{ borderColor: '#fff', color: '#fff', fontWeight: 600 }}>
-            Specialist Queue
+          <Link href="/reviews" className="btn btn-primary" style={{ background: '#fff', color: '#0369a1', fontWeight: 700 }}>
+            Specialist Review →
           </Link>
         </div>
       </div>

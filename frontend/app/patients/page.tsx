@@ -320,10 +320,10 @@ export default function PatientsPage() {
                 </div>
                 {selectedPatient.specialist_review?.completed ? (
                   <div style={{ fontSize: 12, lineHeight: 1.5 }}>
-                    <div><strong>Reviewer:</strong> {selectedPatient.specialist_review.clinician_name} ({selectedPatient.specialist_review.clinician_specialty})</div>
-                    <div><strong>Directives:</strong> {selectedPatient.specialist_review.referral_status}</div>
-                    <div><strong>Instructions:</strong> {selectedPatient.specialist_review.followup_instructions}</div>
-                    <div style={{ color: 'var(--muted)', fontSize: 11, marginTop: 4 }}>Date: {selectedPatient.specialist_review.review_timestamp}</div>
+                    <div><strong>Reviewer:</strong> {selectedPatient.specialist_review.assigned_specialist || selectedPatient.specialist_review.clinician_name} ({selectedPatient.specialist_review.clinician_specialty})</div>
+                    <div><strong>Status:</strong> {selectedPatient.specialist_review.review_status}</div>
+                    <div><strong>Directive:</strong> {selectedPatient.specialist_review.clinician_instruction || 'Follow-up tracking active'}</div>
+                    <div style={{ color: 'var(--muted)', fontSize: 11, marginTop: 4 }}>Date: {selectedPatient.specialist_review.review_completed_at || selectedPatient.specialist_review.review_timestamp}</div>
                   </div>
                 ) : (
                   <div style={{ fontSize: 12, color: 'var(--muted)' }}>

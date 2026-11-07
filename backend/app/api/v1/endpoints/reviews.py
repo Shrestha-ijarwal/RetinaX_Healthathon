@@ -34,17 +34,19 @@ def get_specialist_review_queue(
         has_report = len(docs) > 0
         is_completed = bool(sr and sr.completed)
 
-        state = "Not Ready (Awaiting Screening)"
+        state = "awaiting_specialist_review"
         if is_completed:
-            state = "Completed"
+            state = sr.review_status if sr else "review_completed"
         elif has_report:
-            state = "Pending Review"
+            state = "awaiting_specialist_review"
         elif j and j.screening_workflow == "Completed":
-            state = "Awaiting Report Dossier"
+            state = "record_reconciliation_required"
+        else:
+            state = "awaiting_screening"
 
-        if status_filter == "pending" and state != "Pending Review":
+        if status_filter == "pending" and is_completed:
             continue
-        if status_filter == "completed" and state != "Completed":
+        if status_filter == "completed" and not is_completed:
             continue
 
         queue.append({
@@ -56,10 +58,11 @@ def get_specialist_review_queue(
             "review_state": state,
             "screening_report_available": has_report,
             "report_document_count": len(docs),
-            "assigned_specialist": (sr.clinician_name if sr and sr.clinician_name else (j.assigned_to if j else "Unassigned")),
+            "assigned_specialist": (sr.assigned_specialist if sr and sr.assigned_specialist else (j.assigned_to if j else "Unassigned")),
             "completed": is_completed,
-            "referral_status": sr.referral_status if sr else "Awaiting Review",
-            "review_timestamp": sr.review_timestamp if sr else None
+            "review_status": sr.review_status if sr else state,
+            "reconciliation_status": sr.reconciliation_status if sr else "Reconciled",
+            "review_timestamp": sr.review_completed_at if sr else None
         })
 
     return queue
@@ -97,16 +100,21 @@ def get_patient_review(
         "screening_reports": reports,
         "review": {
             "completed": sr.completed if sr else False,
-            "clinician_name": sr.clinician_name if sr else None,
+            "review_status": sr.review_status if sr else "awaiting_specialist_review",
+            "assigned_specialist": sr.assigned_specialist if sr else None,
             "clinician_title": sr.clinician_title if sr else "Dr.",
             "clinician_specialty": sr.clinician_specialty if sr else "Ophthalmology",
             "clinician_facility": sr.clinician_facility if sr else "District Eye Hospital",
             "registration_number": sr.registration_number if sr else "",
-            "review_timestamp": sr.review_timestamp if sr else None,
-            "clinical_assessment": sr.clinical_assessment if sr else "",
-            "followup_instructions": sr.followup_instructions if sr else "",
-            "referral_status": sr.referral_status if sr else "Awaiting Review",
-            "notes": sr.notes if sr else ""
+            "review_scheduled_date": sr.review_scheduled_date if sr else None,
+            "review_completed_at": sr.review_completed_at if sr else None,
+            "report_available": sr.report_available if sr else len(reports) > 0,
+            "operational_notes": sr.operational_notes if sr else "",
+            "clinician_instruction": sr.clinician_instruction if sr else "",
+            "task_owner": sr.task_owner if sr else "Care Coordinator",
+            "operational_task_status": sr.operational_task_status if sr else "Pending",
+            "reconciliation_status": sr.reconciliation_status if sr else "Reconciled",
+            "last_updated_at": sr.last_updated_at if sr else None
         } if sr else None
     }
 
@@ -118,18 +126,28 @@ def submit_specialist_review(
     db: Session = Depends(get_db),
     current_user: User = Depends(require_specialist)  # Backend-enforced Specialist RBAC!
 ):
+    expected_version = review_data.expected_version
+    if expected_version is None:
+        hdr_ver = request.headers.get("X-Expected-Version")
+        if hdr_ver is not None:
+            try:
+                expected_version = int(hdr_ver)
+            except ValueError:
+                pass
+
     review = record_specialist_review(
         db=db,
         patient_id=patient_id,
         data=review_data,
         current_user_name=current_user.full_name,
         current_user_role=current_user.role,
+        expected_version=expected_version,
         ip_address=request.client.host if request.client else ""
     )
     return {
         "status": "success",
-        "message": f"Specialist review successfully recorded and attributed to {review.clinician_name}.",
+        "message": f"Specialist operational review successfully recorded and attributed to {review.assigned_specialist}.",
         "review_id": review.id,
         "patient_id": patient_id,
-        "referral_status": review.referral_status
+        "review_status": review.review_status
     }

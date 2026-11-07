@@ -1,22 +1,35 @@
 import os
-from celery import Celery
+import logging
 from backend.app.core.config import settings
 
-celery_app = Celery(
-    "retinax_tasks",
-    broker=settings.CELERY_BROKER_URL,
-    backend=settings.CELERY_RESULT_BACKEND
-)
+logger = logging.getLogger("retinax.celery")
 
-celery_app.conf.update(
-    task_serializer="json",
-    accept_content=["json"],
-    result_serializer="json",
-    timezone="Asia/Kolkata",
-    enable_utc=True,
-    task_track_started=True,
-    task_time_limit=300,
-    broker_connection_retry_on_startup=True
-)
+try:
+    from celery import Celery
 
-celery_app.autodiscover_tasks(["backend.app.tasks"])
+    celery_app = Celery(
+        "retinax_care",
+        broker=settings.CELERY_BROKER_URL,
+        backend=settings.CELERY_RESULT_BACKEND,
+        include=["backend.app.tasks.reminder_tasks"]
+    )
+
+    celery_app.conf.update(
+        task_serializer="json",
+        accept_content=["json"],
+        result_serializer="json",
+        timezone="Asia/Kolkata",
+        enable_utc=True,
+        task_track_started=True,
+    )
+except ImportError:
+    logger.warning("Celery is not installed in the current environment; running in fallback simulation mode.")
+    class DummyCelery:
+        def task(self, *args, **kwargs):
+            def decorator(f):
+                def delay_wrapper(*a, **kw):
+                    return f(*a, **kw)
+                f.delay = delay_wrapper
+                return f
+            return decorator
+    celery_app = DummyCelery()

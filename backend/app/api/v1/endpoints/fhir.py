@@ -1,5 +1,5 @@
 from typing import List, Dict, Any, Optional
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status, Body
 from sqlalchemy.orm import Session
 
 from backend.app.core.database import get_db
@@ -8,6 +8,7 @@ from backend.app.models.operational_task import OperationalTask
 from backend.app.models.document import Document
 from backend.app.models.user import User
 from backend.app.services.auth_service import get_current_user
+from backend.app.schemas.fhir import validate_fhir_resource
 from backend.app.services.fhir_adapter import (
     to_fhir_patient,
     to_fhir_task,
@@ -25,7 +26,8 @@ def get_fhir_patient(
     patient = db.query(Patient).filter(Patient.id == patient_id).first()
     if not patient:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"FHIR Patient {patient_id} not found.")
-    return to_fhir_patient(patient)
+    res = to_fhir_patient(patient)
+    return validate_fhir_resource(res)
 
 @router.get("/Task", response_model=Dict[str, Any])
 def list_fhir_tasks(
@@ -38,7 +40,7 @@ def list_fhir_tasks(
         query = query.filter(OperationalTask.patient_id == patient_id)
     tasks = query.all()
 
-    return {
+    bundle = {
         "resourceType": "Bundle",
         "type": "searchset",
         "total": len(tasks),
@@ -49,6 +51,7 @@ def list_fhir_tasks(
             } for t in tasks
         ]
     }
+    return validate_fhir_resource(bundle)
 
 @router.get("/DocumentReference", response_model=Dict[str, Any])
 def list_fhir_documents(
@@ -61,7 +64,7 @@ def list_fhir_documents(
         query = query.filter(Document.patient_id == patient_id)
     docs = query.all()
 
-    return {
+    bundle = {
         "resourceType": "Bundle",
         "type": "searchset",
         "total": len(docs),
@@ -72,3 +75,26 @@ def list_fhir_documents(
             } for d in docs
         ]
     }
+    return validate_fhir_resource(bundle)
+
+@router.post("/validate", response_model=Dict[str, Any])
+def validate_fhir_payload(
+    payload: Dict[str, Any] = Body(...),
+    current_user: User = Depends(get_current_user)
+):
+    """
+    Validates arbitrary payload against FHIR R4 schema definitions.
+    Returns HTTP 422 with validation errors if payload is invalid.
+    """
+    try:
+        validated = validate_fhir_resource(payload)
+        return {
+            "status": "valid",
+            "message": "Resource successfully validated against FHIR R4 schema specifications.",
+            "resourceType": validated.get("resourceType")
+        }
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=f"FHIR R4 validation failure: {str(e)}"
+        )

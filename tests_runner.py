@@ -81,10 +81,10 @@ print(f"[PASS] 5. Rules-based record completeness calculated: {comp['score_perce
 spec_res = client.post(
     '/api/v1/reviews/RX-1007',
     json={
-        "clinician_name": "Coordinator Fake Specialist",
-        "clinical_assessment": "Unpermitted attempt",
-        "followup_instructions": "None",
-        "referral_status": "Hospital Follow-Up"
+        "assigned_specialist": "Coordinator Impersonator",
+        "review_status": "review_completed",
+        "operational_notes": "Unpermitted operational review submission attempt",
+        "clinician_instruction": "None"
     },
     headers=headers
 )

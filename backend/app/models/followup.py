@@ -11,6 +11,7 @@ class Followup(Base):
     planned_date = Column(String(32), nullable=True)
     responsible_staff = Column(String(128), default="")
     completion_timestamp = Column(String(32), nullable=True)
+    version = Column(Integer, default=1, nullable=False)
     notes = Column(Text, default="")
 
     patient = relationship("Patient", back_populates="followup")

@@ -5,12 +5,27 @@ from sqlalchemy.orm import Session
 from backend.app.core.database import get_db
 from backend.app.core.config import settings
 from backend.app.core.security import create_access_token
+from backend.app.core.csrf import generate_csrf_token
 from backend.app.schemas.user import UserLogin, UserOut, TokenOut
 from backend.app.services.auth_service import authenticate_user, get_current_user
 from backend.app.services.audit_service import log_audit_event
 from backend.app.models.user import User
 
 router = APIRouter()
+
+@router.get("/csrf")
+def get_csrf_token(response: Response, request: Request):
+    token = request.cookies.get("retinax_csrf_token") or generate_csrf_token()
+    is_prod = (settings.ENVIRONMENT.lower() == "production")
+    response.set_cookie(
+        key="retinax_csrf_token",
+        value=token,
+        httponly=False,
+        samesite="lax",
+        secure=is_prod,
+        path="/"
+    )
+    return {"csrf_token": token}
 
 @router.post("/login", response_model=TokenOut)
 def login(
@@ -33,14 +48,27 @@ def login(
         expires_delta=access_token_expires
     )
 
-    # Set secure HttpOnly cookie
+    # Set secure HttpOnly session cookie
+    is_prod = (settings.ENVIRONMENT.lower() == "production")
     response.set_cookie(
         key="retinax_session",
         value=access_token,
         httponly=True,
         max_age=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60,
         samesite="lax",
-        secure=False  # Set True in production over HTTPS
+        secure=is_prod,
+        path="/"
+    )
+
+    # Set CSRF token cookie
+    csrf_token = generate_csrf_token()
+    response.set_cookie(
+        key="retinax_csrf_token",
+        value=csrf_token,
+        httponly=False,
+        samesite="lax",
+        secure=is_prod,
+        path="/"
     )
 
     log_audit_event(
@@ -56,8 +84,8 @@ def login(
     )
 
     return {
-        "access_token": access_token,
-        "token_type": "bearer",
+        "access_token": None if is_prod else access_token,
+        "token_type": "cookie" if is_prod else "bearer",
         "user": user
     }
 
@@ -68,7 +96,20 @@ def logout(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    response.delete_cookie(key="retinax_session")
+    is_prod = (settings.ENVIRONMENT.lower() == "production")
+    response.delete_cookie(
+        key="retinax_session",
+        httponly=True,
+        samesite="lax",
+        secure=is_prod,
+        path="/"
+    )
+    response.delete_cookie(
+        key="retinax_csrf_token",
+        samesite="lax",
+        secure=is_prod,
+        path="/"
+    )
     log_audit_event(
         db=db,
         action="USER_LOGOUT",

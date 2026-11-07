@@ -93,14 +93,17 @@ Submits formal ophthalmologist review.
 - **Request Body:**
   ```json
   {
-    "clinician_name": "Dr. Suresh Chandran, MS",
+    "assigned_specialist": "Dr. Suresh Chandran, MS",
     "clinician_title": "Dr.",
     "clinician_specialty": "Ophthalmology",
     "clinician_facility": "District Eye Hospital",
     "registration_number": "MCI-2016-849201",
-    "clinical_assessment": "Bilateral mild non-proliferative changes verified in color fundus photos.",
-    "followup_instructions": "Review in 6 months at hospital retina clinic.",
-    "referral_status": "Hospital Follow-Up (6 Months)"
+    "review_status": "followup_initiated",
+    "operational_notes": "Screening report legibility verified. Color photographs adequate for tele-triage.",
+    "clinician_instruction": "Attributed directive: Review in 6 months at hospital retina clinic.",
+    "task_owner": "Care Coordinator",
+    "operational_task_status": "In Progress",
+    "reconciliation_status": "Reconciled"
   }
   ```
 

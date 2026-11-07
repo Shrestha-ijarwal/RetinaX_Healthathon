@@ -15,6 +15,7 @@ class Patient(Base):
     clinician = Column(String(128), default="")
     registration_date = Column(String(32), default="")
     diabetes_profile = Column(JSON, default=dict)  # type, duration, last_hba1c, hba1c_date, current_meds, etc.
+    version = Column(Integer, default=1, nullable=False)
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
 

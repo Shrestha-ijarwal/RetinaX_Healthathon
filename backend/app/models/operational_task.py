@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Text, ForeignKey
+from sqlalchemy import Column, String, Integer, Text, ForeignKey
 from sqlalchemy.orm import relationship
 from backend.app.core.database import Base
 
@@ -19,6 +19,7 @@ class OperationalTask(Base):
     priority = Column(String(32), default="Medium")  # Low, Medium, High, Urgent
     created_at = Column(String(32), default="")
     completed_at = Column(String(32), nullable=True)
+    version = Column(Integer, default=1, nullable=False)
 
     patient = relationship("Patient", back_populates="tasks")
 

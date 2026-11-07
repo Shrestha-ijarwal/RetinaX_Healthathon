@@ -113,19 +113,21 @@ npm.cmd run dev
 
 ## 6. Demonstration Accounts & Roles
 
-Switch between roles anytime via the top-right profile popover menu:
+Access the application via the dedicated authentication screen at `/login` or switch accounts via the top-right user menu:
 
 | Role | Email | Password | Full Name | Permitted Capabilities |
 |---|---|---|---|---|
-| **Specialist** | `specialist@retinax.care` | `Specialist@2026` | Dr. Suresh Chandran, MS | Access specialist review queue, record qualitative clinical assessments, submit attributed follow-up directives. |
-| **Care Coordinator** | `coordinator@retinax.care` | `Coordinator@2026` | Ananya Sharma | View cohort, register synthetic patients, log contact attempts, dispatch simulated bilingual reminders. *(Blocked from submitting specialist reviews)* |
+| **Specialist** | `specialist@retinax.care` | `Specialist@2026` | Dr. Suresh Chandran, MS | Access specialist review queue, record attributed clinician instructions, submit operational follow-up directives. |
+| **Care Coordinator** | `coordinator@retinax.care` | `Coordinator@2026` | Ananya Sharma | View cohort, register synthetic patients, log contact attempts, dispatch simulated bilingual reminders. *(Blocked from submitting specialist reviews - HTTP 403)* |
 | **Administrator** | `admin@retinax.care` | `Admin@2026` | Rajiv Menon | Inspect immutable audit logs, reset demonstration cohort, manage platform configuration. |
+
+The `/login` screen includes convenient 1-click **Demo Judging Evaluation Buttons** that automatically populate the login fields for immediate evaluation without requiring manual typing.
 
 ---
 
 ## 7. Automated Test Suite & Compliance Audit
 
-Execute the complete 22-test automated verification suite:
+Execute the complete 23-test automated verification suite:
 
 ```powershell
 Set-Location "C:\Users\sijar\Downloads\RetinaX_Healthathon"
@@ -133,11 +135,26 @@ $env:PYTHONPATH="C:\Users\sijar\Downloads\RetinaX_Healthathon"
 python -m pytest backend/tests/test_backend.py -v
 ```
 
-**Results:** `22 passed, 0 failed (100% pass rate)`  
-- Authenticated login & session invalidation verified.
-- RBAC authorization barriers verified (Care Coordinator blocked with HTTP 403 on specialist endpoints).
-- File upload magic-byte rejection verified.
-- Zero prohibited clinical AI terms confirmed.
+**Results:** `23 passed, 0 failed (100% pass rate in 5.4s)`
+- Authenticated login, password verification & session invalidation verified.
+- RBAC authorization barriers verified (Care Coordinator blocked with HTTP 403 on specialist endpoints and audit logs).
+- File upload magic-byte rejection verified (%PDF-, PNG, JPEG signatures).
+- Operational review lifecycle and attributed instructions verified.
+- Real-time database-derived turnaround metrics & care gap radar verified.
+- HL7 FHIR R4 Pydantic schema validation verified.
+- Zero prohibited clinical AI terms confirmed across 90 source files.
+
+Run the end-to-end integration test runner:
+```powershell
+python tests_runner.py
+```
+**Results:** `ALL 9 CORE OPERATIONAL TEST SUITES PASSED SUCCESSFULLY!`
+
+Run the static compliance scanner:
+```powershell
+python audit_compliance.py
+```
+**Results:** `PASS — 0 prohibited terms detected across 90 scanned files.`
 
 ---
 

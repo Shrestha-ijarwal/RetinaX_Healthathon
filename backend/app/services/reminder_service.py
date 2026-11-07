@@ -1,4 +1,5 @@
 import uuid
+import logging
 from datetime import datetime, timezone
 from typing import Dict, Any, Optional
 from sqlalchemy.orm import Session
@@ -10,17 +11,19 @@ from backend.app.models.timeline_event import TimelineEvent
 from backend.app.schemas.reminder import ReminderCreate
 from backend.app.services.audit_service import log_audit_event
 
+logger = logging.getLogger("retinax.reminders")
+
 REMINDER_TEMPLATES = {
     "Follow-Up Attendance": {
-        "en": "Dear {patient_name}, this is a reminder from your care team at {facility} regarding your diabetic eye follow-up on {date}. Please bring your previous records. Call {contact} for rescheduling.",
+        "en": "Dear {patient_name}, this is an operational reminder from your care coordinator at {facility} regarding your diabetic eye follow-up scheduled for {date}. Please bring your previous records. Call {contact} for rescheduling.",
         "hi": "प्रिय {patient_name}, {facility} में आपकी देखभाल टीम द्वारा {date} को आपकी डायबिटिक नेत्र अनुवर्ती जांच के संबंध में यह अनुस्मारक है। कृपया अपने पिछले रिकॉर्ड साथ लाएं।"
     },
     "Screening Scheduled": {
-        "en": "Dear {patient_name}, your diabetic retinal screening appointment is scheduled at {facility} on {date}. Early regular screening protects your vision. Contact: {contact}.",
-        "hi": "प्रिय {patient_name}, {facility} में {date} को आपकी डायबिटिक रेटिना जांच निर्धारित है। नियमित जांच आपकी दृष्टि की सुरक्षा करती है।"
+        "en": "Dear {patient_name}, your regular diabetic retinal screening appointment is scheduled at {facility} on {date}. Regular screening helps protect your vision. Contact desk: {contact}.",
+        "hi": "प्रिय {patient_name}, {facility} में {date} को आपकी डायबिटिक रेटिना जांच निर्धारित है। नियमित जांच दृष्टि सुरक्षा में सहायक है।"
     },
     "Document Request": {
-        "en": "Dear {patient_name}, please provide your previous eye hospital summary or lab report to the care coordinator at {facility} to complete your care record.",
+        "en": "Dear {patient_name}, please bring or submit your previous eye care summary or laboratory report to the care coordinator at {facility} to complete your continuity record.",
         "hi": "प्रिय {patient_name}, कृपया अपना पुराना नेत्र अस्पताल सारांश या लैब रिपोर्ट {facility} में केयर कोऑर्डिनेटर को उपलब्ध कराएं।"
     }
 }
@@ -44,26 +47,31 @@ def generate_and_queue_reminder(
         "your upcoming scheduled date"
     )
 
-    text_en = tmpl["en"].format(
+    base_text_en = tmpl["en"].format(
         patient_name=patient.name,
         facility=patient.facility or "Primary Health Centre",
         date=date_str,
         contact=patient.facility or "clinic desk"
     )
-    text_hi = tmpl["hi"].format(
+    base_text_hi = tmpl["hi"].format(
         patient_name=patient.name,
         facility=patient.facility or "प्राथमिक स्वास्थ्य केंद्र",
         date=date_str
     )
 
     if data.custom_note:
-        text_en += f" Note: {data.custom_note}"
-        text_hi += f" विशेष सूचना: {data.custom_note}"
+        base_text_en += f" Note: {data.custom_note}"
+        base_text_hi += f" विशेष सूचना: {data.custom_note}"
+
+    # MANDATORY NON-CLINICAL SIMULATION NOTICE
+    prefix = "[DEMO — NOT SENT TO PATIENT] "
+    text_en = f"{prefix}{base_text_en}"
+    text_hi = f"{prefix}{base_text_hi}"
 
     now_str = datetime.now().strftime("%Y-%m-%d %H:%M")
     rem_id = f"rem-{uuid.uuid4().hex[:6]}"
 
-    # State machine: starts as 'queued', then marked 'simulated' / 'sent'
+    # State machine: starts as queued in database
     reminder = Reminder(
         id=rem_id,
         patient_id=patient_id,
@@ -71,10 +79,10 @@ def generate_and_queue_reminder(
         language=data.language,
         text_en=text_en,
         text_hi=text_hi,
-        sent_status="Simulated Sent (Demo notification - not actually sent)",
+        sent_status="Queued for Celery Dispatch (Simulated)",
         scheduled_for=now_str,
         channel=data.channel or "SMS / WhatsApp (Simulated Preview)",
-        delivered_at=now_str
+        delivered_at=None
     )
     db.add(reminder)
 
@@ -82,32 +90,46 @@ def generate_and_queue_reminder(
     te = TimelineEvent(
         id=f"evt-{uuid.uuid4().hex[:8]}",
         patient_id=patient_id,
-        stage="Patient Reminder Sent",
+        stage="Patient Reminder Queued",
         timestamp=now_str,
         source="Communication Engine",
         actor=current_user_name,
-        status="Delivered",
-        note=f"Simulated {data.type} reminder sent ({data.language.upper()}). Demo notification - not actually sent."
+        status="Queued",
+        note=f"Simulated {data.type} reminder queued ({data.language.upper()}). [DEMO — NOT SENT TO PATIENT]"
     )
     db.add(te)
 
     # Audit log
     log_audit_event(
         db=db,
-        action="REMINDER_SIMULATED_DISPATCH",
+        action="REMINDER_SIMULATION_QUEUED",
         user_name=current_user_name,
         user_role=current_user_role,
         resource_type="Reminder",
         resource_id=rem_id,
         details={
+            "patient_id": patient_id,
             "type": data.type,
             "language": data.language,
-            "patient_id": patient_id,
-            "channel": reminder.channel
+            "channel": data.channel,
+            "is_simulation": True
         },
         ip_address=ip_address
     )
 
     db.commit()
     db.refresh(reminder)
+
+    # Invoke Celery Task (with fallback to local simulation execution if worker daemon is offline)
+    try:
+        from backend.app.tasks.reminder_tasks import dispatch_simulated_reminder
+        dispatch_simulated_reminder.delay(reminder.id)
+        reminder.sent_status = "Dispatched via Celery Worker (Simulated)"
+        db.commit()
+    except Exception as celery_err:
+        logger.info(f"Celery broker offline ({celery_err}); executing in-process simulation worker.")
+        from backend.app.tasks.reminder_tasks import dispatch_simulated_reminder
+        dispatch_simulated_reminder(reminder.id)
+        db.refresh(reminder)
+
     return reminder

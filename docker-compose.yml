@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # 1. PostgreSQL Relational Database
   postgres:
@@ -8,7 +6,7 @@ services:
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-retinax}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-retinax_secure_pass_2026}
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:?Error: POSTGRES_PASSWORD must be provided via environment or .env file}"
       POSTGRES_DB: ${POSTGRES_DB:-retinax_care}
     ports:
       - "5432:5432"
@@ -35,26 +33,7 @@ services:
       timeout: 5s
       retries: 5
 
-  # 3. MinIO (S3-Compatible Local Document Storage)
-  minio:
-    image: minio/minio:RELEASE.2024-10-13T13-34-11Z
-    container_name: retinax_minio
-    restart: unless-stopped
-    command: server /data --console-address ":9001"
-    environment:
-      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-retinax_admin}
-      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minio_secure_pass_2026}
-    ports:
-      - "9000:9000"
-      - "9001:9001"
-    volumes:
-      - minio_data:/data
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
-      interval: 15s
-      timeout: 5s
-      retries: 3
-
+ 
   # 4. FastAPI Backend Application
   backend:
     build:
@@ -63,16 +42,12 @@ services:
     container_name: retinax_backend
     restart: unless-stopped
     environment:
-      DATABASE_URL: postgresql+psycopg2://${POSTGRES_USER:-retinax}:${POSTGRES_PASSWORD:-retinax_secure_pass_2026}@postgres:5432/${POSTGRES_DB:-retinax_care}
+      DATABASE_URL: "postgresql+psycopg2://${POSTGRES_USER:-retinax}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-retinax_care}"
       REDIS_URL: redis://redis:6379/0
       CELERY_BROKER_URL: redis://redis:6379/0
       CELERY_RESULT_BACKEND: redis://redis:6379/1
-      SECRET_KEY: ${SECRET_KEY:-retinax-care-super-secret-key-healthathon-2026-prod-grade}
+      SECRET_KEY: "${SECRET_KEY:?Error: SECRET_KEY must be provided via environment or .env file}"
       STORAGE_BACKEND: ${STORAGE_BACKEND:-local}
-      S3_ENDPOINT_URL: http://minio:9000
-      AWS_ACCESS_KEY_ID: ${MINIO_ROOT_USER:-retinax_admin}
-      AWS_SECRET_ACCESS_KEY: ${MINIO_ROOT_PASSWORD:-minio_secure_pass_2026}
-      AWS_S3_BUCKET: retinax-care-documents
       ENVIRONMENT: production
     ports:
       - "8000:8000"
@@ -86,7 +61,6 @@ services:
         condition: service_healthy
     command: >
       sh -c "python -m alembic upgrade head &&
-             python backend/app/db/seed.py &&
              uvicorn backend.app.main:app --host 0.0.0.0 --port 8000"
 
   # 5. Celery Worker (Asynchronous Reminders & Reconciliation)
@@ -97,17 +71,25 @@ services:
     container_name: retinax_celery_worker
     restart: unless-stopped
     environment:
-      DATABASE_URL: postgresql+psycopg2://${POSTGRES_USER:-retinax}:${POSTGRES_PASSWORD:-retinax_secure_pass_2026}@postgres:5432/${POSTGRES_DB:-retinax_care}
+      DATABASE_URL: "postgresql+psycopg2://${POSTGRES_USER:-retinax}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-retinax_care}"
       REDIS_URL: redis://redis:6379/0
       CELERY_BROKER_URL: redis://redis:6379/0
       CELERY_RESULT_BACKEND: redis://redis:6379/1
-      SECRET_KEY: ${SECRET_KEY:-retinax-care-super-secret-key-healthathon-2026-prod-grade}
+      SECRET_KEY: "${SECRET_KEY:?Error: SECRET_KEY must be provided via environment or .env file}"
     depends_on:
       backend:
         condition: service_started
       redis:
         condition: service_healthy
+
     command: celery -A backend.app.tasks.celery_app.celery_app worker --loglevel=info
+
+    healthcheck:
+      test: ["CMD-SHELL", "celery -A backend.app.tasks.celery_app inspect ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
 
   # 6. Next.js Frontend Application
   frontend:
@@ -129,5 +111,4 @@ volumes:
     driver: local
   redis_data:
     driver: local
-  minio_data:
-    driver: local
+

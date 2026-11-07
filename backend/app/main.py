@@ -6,6 +6,8 @@ from fastapi.exceptions import RequestValidationError
 
 from backend.app.core.config import settings
 from backend.app.core.database import SessionLocal, engine, Base
+from backend.app.core.idempotency import IdempotencyMiddleware
+from backend.app.core.csrf import CSRFMiddleware
 from backend.app.api.v1.api import api_router
 from backend.app.db.seed import seed_demo_users
 from backend.app.api.v1.endpoints.health import health_check
@@ -16,7 +18,9 @@ async def lifespan(app: FastAPI):
     Base.metadata.create_all(bind=engine)
     db = SessionLocal()
     try:
-        seed_demo_users(db)
+        # Demo users are seeded ONLY in non-production environments (development/testing/demo)
+        if settings.ENVIRONMENT.lower() != "production":
+            seed_demo_users(db)
     finally:
         db.close()
     yield
@@ -44,7 +48,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# 2. Security Headers Middleware
+# 2. Idempotency Middleware for Safe Retries & Offline Sync
+app.add_middleware(IdempotencyMiddleware)
+
+# 3. CSRF Protection Middleware for Cookie-based Sessions
+app.add_middleware(CSRFMiddleware)
+
+# 4. Security Headers Middleware
 @app.middleware("http")
 async def add_security_headers(request: Request, call_next):
     response = await call_next(request)
@@ -56,7 +66,7 @@ async def add_security_headers(request: Request, call_next):
     response.headers["X-RetinaX-Scope"] = "Operational-Care-Continuity-Only"
     return response
 
-# 3. Validation Exception Handler
+# 5. Validation Exception Handler
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
     return JSONResponse(
@@ -68,7 +78,7 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
         }
     )
 
-# 4. Top-level Health Endpoint (for container orchestrator / ECS / health checks)
+# 6. Top-level Health Endpoint (for container orchestrator / ECS / health checks)
 @app.get("/health", tags=["Health"])
 def top_health():
     db = SessionLocal()
@@ -77,10 +87,10 @@ def top_health():
     finally:
         db.close()
 
-# 5. API V1 Router
+# 7. API V1 Router
 app.include_router(api_router, prefix=settings.API_V1_STR)
 
-# 6. Backward compatibility mount for /api routes (maps /api/* to /api/v1/*)
+# 8. Backward compatibility mount for /api routes (maps /api/* to /api/v1/*)
 app.include_router(api_router, prefix="/api")
 
 if __name__ == "__main__":

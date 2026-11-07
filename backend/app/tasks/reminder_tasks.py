@@ -18,7 +18,7 @@ def dispatch_simulated_reminder(reminder_id: str):
             return {"status": "not_found", "reminder_id": reminder_id}
 
         now_str = datetime.now().strftime("%Y-%m-%d %H:%M")
-        reminder.sent_status = "Simulated Sent (Demo notification - not actually sent)"
+        reminder.sent_status = "Simulated Sent [DEMO — NOT SENT TO PATIENT]"
         reminder.delivered_at = now_str
         db.commit()
 

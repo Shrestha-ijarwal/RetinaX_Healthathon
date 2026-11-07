@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime, timezone
+from datetime import datetime
 from typing import Optional, Dict, Any
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
@@ -19,6 +19,7 @@ def record_specialist_review(
     data: SpecialistReviewCreate,
     current_user_name: str,
     current_user_role: str,
+    expected_version: Optional[int] = None,
     ip_address: str = ""
 ) -> SpecialistReview:
     patient = db.query(Patient).filter(Patient.id == patient_id).first()
@@ -30,63 +31,94 @@ def record_specialist_review(
 
     review = db.query(SpecialistReview).filter(SpecialistReview.patient_id == patient_id).first()
     if not review:
-        review = SpecialistReview(patient_id=patient_id)
+        review = SpecialistReview(patient_id=patient_id, version=1)
         db.add(review)
+        db.flush()
 
+    eff_version = expected_version if expected_version is not None else data.expected_version
     now_str = datetime.now().strftime("%Y-%m-%d %H:%M")
 
-    # Update review with mandatory clinician attribution
-    review.completed = True
-    review.clinician_name = data.clinician_name
-    review.clinician_title = data.clinician_title or "Dr."
-    review.clinician_specialty = data.clinician_specialty or "Ophthalmology"
-    review.clinician_facility = data.clinician_facility or "District Eye Hospital"
-    review.registration_number = data.registration_number or ""
-    review.review_timestamp = now_str
-    review.clinical_assessment = data.clinical_assessment
-    review.followup_instructions = data.followup_instructions
-    review.referral_status = data.referral_status
-    review.notes = data.notes or f"Clinical review entered manually by {data.clinician_name} ({review.clinician_specialty})."
+    update_dict = {
+        "completed": True,
+        "review_status": data.review_status or "review_completed",
+        "assigned_specialist": data.assigned_specialist,
+        "clinician_title": data.clinician_title or "Dr.",
+        "clinician_specialty": data.clinician_specialty or "Ophthalmology",
+        "clinician_facility": data.clinician_facility or "District Eye Hospital",
+        "registration_number": data.registration_number or "",
+        "review_completed_at": now_str,
+        "report_available": True,
+        "operational_notes": data.operational_notes,
+        "clinician_instruction": data.clinician_instruction,
+        "task_owner": data.task_owner or "Care Coordinator",
+        "operational_task_status": data.operational_task_status or "In Progress",
+        "reconciliation_status": data.reconciliation_status or "Reconciled",
+        "last_updated_at": now_str,
+        "version": (eff_version + 1) if eff_version is not None else SpecialistReview.version + 1
+    }
 
-    # Advance Care Journey
+    # Atomic conditional update at DB engine level
+    query = db.query(SpecialistReview).filter(SpecialistReview.patient_id == patient_id)
+    if eff_version is not None:
+        query = query.filter(SpecialistReview.version == eff_version)
+
+    rows_affected = query.update(update_dict, synchronize_session=False)
+    if rows_affected == 0:
+        db.rollback()
+        existing_rev = db.query(SpecialistReview).filter(SpecialistReview.patient_id == patient_id).first()
+        current_v = existing_rev.version if existing_rev else 1
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail={
+                "error": "VERSION_CONFLICT",
+                "message": f"Specialist review record for patient {patient_id} has been modified concurrently.",
+                "current_version": current_v,
+                "expected_version": eff_version,
+                "review_status": existing_rev.review_status if existing_rev else None,
+                "last_updated_at": existing_rev.last_updated_at if existing_rev else None
+            }
+        )
+
+    review = db.query(SpecialistReview).filter(SpecialistReview.patient_id == patient_id).first()
+
+    # Advance Care Journey operationally
     journey = patient.journey
     if journey:
         journey.specialist_review = "Completed"
         journey.overall_stage = "Specialist Review Completed"
-        journey.next_workflow_action = f"Coordinate follow-up ({data.referral_status})"
+        journey.next_workflow_action = "Coordinate operational follow-up per clinician directive"
 
-        # Check if referral is annual routine and care loop can be marked completed
-        if "routine annual" in data.referral_status.lower() or "annual routine" in data.referral_status.lower():
+        if data.review_status == "followup_completed":
             journey.care_loop_completed = True
-            journey.overall_stage = "Care Loop Successfully Closed (Annual)"
+            journey.overall_stage = "Care Loop Successfully Closed"
             journey.followup_status = "Completed"
         else:
             journey.followup_status = "Pending"
 
-    # Update Document review status
+    # Update document review state
     for doc in patient.documents:
         if doc.doc_type == "Retinal Screening Report":
             doc.review_status = "Reviewed by Specialist"
 
-    # Complete any existing specialist review task
+    # Complete existing specialist review operational tasks
     for tsk in patient.tasks:
         if "review" in tsk.title.lower() and tsk.status == "Open":
             tsk.status = "Completed"
             tsk.completed_at = now_str
 
-    # Create operational follow-up task based on clinician directive
-    if data.followup_instructions:
-        task_id = f"tsk-{patient_id}-{int(datetime.now().timestamp())}"
+    # Create operational follow-up task based on attributed clinician directive
+    if data.clinician_instruction:
+        task_id = f"tsk-{patient_id}-{uuid.uuid4().hex[:6]}"
         followup_task = OperationalTask(
             id=task_id,
             patient_id=patient_id,
-            title=f"Follow-Up Coordination ({data.referral_status})",
-            description=f"Coordinate patient follow-up per clinician instructions: {data.followup_instructions}",
-            source=f"Clinician Instruction ({data.clinician_name})",
-            entered_by=data.clinician_name,
+            title=f"Follow-Up Coordination ({patient_id})",
+            description=f"Coordinate patient follow-up per clinician directive: {data.clinician_instruction}",
+            source=f"Clinician Directive ({data.assigned_specialist})",
+            entered_by=data.assigned_specialist,
             clinician_specialty=review.clinician_specialty,
             clinician_facility=review.clinician_facility,
-            assigned_to="Care Coordinator",
+            assigned_to=review.task_owner or "Care Coordinator",
             due_date=None,
             status="Open",
             priority="High",
@@ -101,9 +133,9 @@ def record_specialist_review(
         stage="Specialist Review Completed",
         timestamp=now_str,
         source="Specialist Review Portal",
-        actor=f"{data.clinician_name} ({review.clinician_specialty})",
+        actor=f"{data.assigned_specialist} ({review.clinician_specialty})",
         status="Completed",
-        note=f"Specialist review recorded by {data.clinician_name}. Directive: {data.referral_status}."
+        note=f"Specialist operational review signed off by {data.assigned_specialist}. Directive logged."
     )
     db.add(te)
 
@@ -116,9 +148,11 @@ def record_specialist_review(
         resource_type="SpecialistReview",
         resource_id=patient_id,
         details={
-            "clinician": data.clinician_name,
-            "referral_status": data.referral_status,
-            "registration": data.registration_number
+            "specialist": data.assigned_specialist,
+            "review_status": review.review_status,
+            "registration": data.registration_number,
+            "reconciliation": review.reconciliation_status,
+            "version": review.version
         },
         ip_address=ip_address
     )

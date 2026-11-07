@@ -8,9 +8,11 @@ class OperationalTaskCreate(BaseModel):
     due_date: Optional[str] = None
     priority: Optional[str] = "Medium"
     source: Optional[str] = "Operational Coordinator"
+    expected_version: Optional[int] = None
 
 class TaskCompleteRequest(BaseModel):
     completion_note: Optional[str] = "Task completed by care team."
+    expected_version: Optional[int] = Field(None, description="Expected task version for optimistic concurrency control (OCC)")
 
 class OperationalTaskOut(BaseModel):
     id: str
@@ -27,5 +29,6 @@ class OperationalTaskOut(BaseModel):
     priority: str
     created_at: str
     completed_at: Optional[str]
+    version: int = 1
 
     model_config = ConfigDict(from_attributes=True)

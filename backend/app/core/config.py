@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 from typing import List, Union
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from pydantic import AnyHttpUrl, field_validator
+from pydantic import AnyHttpUrl, field_validator, ValidationInfo
 
 BACKEND_DIR = Path(__file__).resolve().parent.parent.parent
 ROOT_DIR = BACKEND_DIR.parent
@@ -15,13 +15,42 @@ class Settings(BaseSettings):
     VERSION: str = "2.0.0"
     
     # Environment
-    ENVIRONMENT: str = "development"
-    DEBUG: bool = True
+    ENVIRONMENT: str = os.getenv("ENVIRONMENT", "development")
+    DEBUG: bool = os.getenv("DEBUG", "True").lower() in ("true", "1", "yes")
 
     # Security
-    SECRET_KEY: str = os.getenv("SECRET_KEY", "retinax-care-super-secret-key-healthathon-2026-prod-grade")
+    # In development, a distinct dev-only key is permitted. In production, an external strong key is MANDATORY.
+    SECRET_KEY: str = os.getenv("SECRET_KEY", "")
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 120
+
+    @field_validator("SECRET_KEY", mode="before")
+    @classmethod
+    def validate_secret_key(cls, v: str, info: ValidationInfo) -> str:
+        env = (info.data.get("ENVIRONMENT") or os.getenv("ENVIRONMENT", "development")).lower()
+        insecure_placeholders = {
+            "",
+            "retinax-care-super-secret-key-healthathon-2026-prod-grade",
+            "secret",
+            "changeme",
+            "default_secret",
+            "admin",
+            "password"
+        }
+        
+        if env == "production":
+            if not v or v.strip() in insecure_placeholders or len(v.strip()) < 32:
+                raise ValueError(
+                    "CRITICAL SECURITY CONFIGURATION ERROR: Production deployment requires a cryptographically "
+                    "strong, externally supplied SECRET_KEY (minimum 32 characters). Hardcoded fallback secrets "
+                    "are strictly disabled in production mode."
+                )
+            return v.strip()
+        else:
+            # Development / local demo fallback
+            if not v or v.strip() in insecure_placeholders:
+                return "development-only-session-secret-key-for-local-demo-do-not-use-in-production-32c"
+            return v.strip()
 
     # CORS
     BACKEND_CORS_ORIGINS: List[str] = [

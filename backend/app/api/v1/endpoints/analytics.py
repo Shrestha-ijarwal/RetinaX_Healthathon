@@ -18,6 +18,7 @@ from backend.app.services.audit_service import log_audit_event
 router = APIRouter()
 
 @router.get("", response_model=Dict[str, Any])
+@router.get("/overview", response_model=Dict[str, Any])
 def get_analytics(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
