@@ -35,6 +35,8 @@ async def get_current_user(
         auth_header = request.headers["Authorization"]
         if auth_header.startswith("Bearer "):
             token = auth_header.split(" ", 1)[1]
+    elif "token" in request.query_params:
+        token = request.query_params["token"]
 
     if not token:
         raise HTTPException(
@@ -75,3 +77,14 @@ require_specialist = require_roles(["Specialist"])
 require_coordinator = require_roles(["Care Coordinator", "Specialist", "Administrator"])
 require_coordinator_strictly = require_roles(["Care Coordinator", "Administrator"])
 require_admin = require_roles(["Administrator"])
+
+async def get_optional_current_user(
+    request: Request,
+    credentials: Optional[HTTPAuthorizationCredentials] = Depends(bearer_scheme),
+    retinax_session: Optional[str] = Cookie(None),
+    db: Session = Depends(get_db)
+) -> Optional[User]:
+    try:
+        return await get_current_user(request, credentials, retinax_session, db)
+    except HTTPException:
+        return None

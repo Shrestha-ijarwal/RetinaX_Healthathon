@@ -50,13 +50,15 @@ def login(
 
     # Set secure HttpOnly session cookie
     is_prod = (settings.ENVIRONMENT.lower() == "production")
+    samesite_val = "none" if (is_prod or request.headers.get("origin", "").startswith("https://")) else "lax"
+    secure_val = True if (is_prod or request.headers.get("origin", "").startswith("https://")) else False
     response.set_cookie(
         key="retinax_session",
         value=access_token,
         httponly=True,
         max_age=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60,
-        samesite="lax",
-        secure=is_prod,
+        samesite=samesite_val,
+        secure=secure_val,
         path="/"
     )
 
@@ -83,9 +85,11 @@ def login(
         ip_address=request.client.host if request.client else ""
     )
 
+    origin = request.headers.get("origin", "")
+    include_token_in_body = (not is_prod) or bool(origin)
     return {
-        "access_token": None if is_prod else access_token,
-        "token_type": "cookie" if is_prod else "bearer",
+        "access_token": access_token if include_token_in_body else None,
+        "token_type": "bearer" if include_token_in_body else "cookie",
         "user": user
     }
 

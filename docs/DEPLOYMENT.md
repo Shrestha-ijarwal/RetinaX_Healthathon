@@ -136,3 +136,47 @@ python backend/app/db/seed.py
    ```
 4. **Deploy ECS Services:**
    Create an ECS Service behind an ALB with Target Group health check path `/health`.
+
+
+---
+
+## 6. Live Hybrid Production Deployment: Vercel Frontend + Hosted Backend
+
+This configuration integrates the live deployed Vercel frontend (`https://retina-x01.vercel.app/`) with the containerized FastAPI backend.
+
+### 6.1 Backend Hosting Options (Render / Railway / Fly.io / GCP Cloud Run / AWS ECS)
+
+#### Deploying with Docker:
+- **Build Command / Dockerfile:** `backend/Dockerfile`
+- **Port:** `8000`
+- **Health Check Endpoint:** `/health`
+- **Environment Variables:**
+  ```ini
+  ENVIRONMENT=production
+  SECRET_KEY=<generate_secure_random_64_char_key>
+  DATABASE_URL=postgresql://<user>:<password>@<host>:5432/<dbname>?sslmode=require
+  CORS_ORIGINS=https://retina-x01.vercel.app
+  BACKEND_CORS_ORIGINS=["https://retina-x01.vercel.app"]
+  ```
+
+#### Initializing Database on Cloud:
+After provisioning your PostgreSQL database (e.g. Supabase, Neon, AWS RDS, or Render PostgreSQL):
+```bash
+python -m alembic upgrade head
+python backend/app/db/seed.py
+python scripts/generate_valid_synthetic_pdfs.py
+```
+
+### 6.2 Connecting the Vercel Frontend (`https://retina-x01.vercel.app`)
+
+1. Open your **Vercel Dashboard** -> Select `retina-x01` project -> **Settings** -> **Environment Variables**.
+2. Add the following variable:
+   - **Key:** `NEXT_PUBLIC_API_URL`
+   - **Value:** `https://<your-backend-domain>` (e.g., `https://retinax-api.onrender.com` or your ECS ALB domain)
+   - **Environments:** Production, Preview, Development.
+3. Trigger a redeploy:
+   - Go to **Deployments** -> Click **Redeploy** on the latest deployment.
+4. **Verification Checklist:**
+   - Navigating to `https://retina-x01.vercel.app/` loads real patient statistics from `/api/v1/analytics/overview`.
+   - Logging in as `coordinator@retinax.care` or `specialist@retinax.care` stores the session token and enables full patient directory navigation.
+   - Clicking **Download PDF** on any of the 12 patient records opens the 18 clinical dossiers seamlessly in a new browser tab with authentic medical content.

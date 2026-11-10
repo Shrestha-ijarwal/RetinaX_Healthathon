@@ -637,11 +637,12 @@ def test_concurrent_idempotent_requests_execute_only_once():
     from backend.app.models.operational_task import OperationalTask
 
     headers = get_auth_headers("coordinator@retinax.care", "Coordinator@2026")
-    idempotency_key = f"conc-idemp-{uuid.uuid4().hex[:12]}"
+    unique_suffix = uuid.uuid4().hex[:12]
+    idempotency_key = f"conc-idemp-{unique_suffix}"
     headers["X-Idempotency-Key"] = idempotency_key
     headers["Content-Type"] = "application/json"
 
-    task_title = f"Concurrent Idempotent Task {idempotency_key[:8]}"
+    task_title = f"Concurrent Idempotent Task {unique_suffix}"
     payload = {"title": task_title, "priority": "High"}
     body_bytes = json.dumps(payload, separators=(',', ':')).encode("utf-8")
 

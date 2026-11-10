@@ -52,14 +52,30 @@ class Settings(BaseSettings):
                 return "development-only-session-secret-key-for-local-demo-do-not-use-in-production-32c"
             return v.strip()
 
-    # CORS
+    # CORS: Explicit allowlist including Vercel live deployment and local dev
     BACKEND_CORS_ORIGINS: List[str] = [
+        "https://retina-x01.vercel.app",
         "http://localhost:3000",
         "http://127.0.0.1:3000",
         "http://localhost:8000",
         "http://127.0.0.1:8000",
         "http://localhost:8080",
     ]
+
+    @field_validator("BACKEND_CORS_ORIGINS", mode="before")
+    @classmethod
+    def assemble_cors_origins(cls, v: Any) -> List[str]:
+        if isinstance(v, str) and not v.startswith("["):
+            return [i.strip() for i in v.split(",") if i.strip()]
+        elif isinstance(v, list):
+            return v
+        return [
+            "https://retina-x01.vercel.app",
+            "http://localhost:3000",
+            "http://127.0.0.1:3000",
+            "http://localhost:8000",
+            "http://127.0.0.1:8000",
+        ]
 
     # Database: Supports PostgreSQL or local SQLite fallback
     DATABASE_URL: str = os.getenv(
