@@ -37,6 +37,7 @@ COPY --from=builder /usr/local/bin /usr/local/bin
 COPY backend /app/backend
 COPY data /app/data
 COPY uploads /app/uploads
+COPY scripts /app/scripts
 COPY alembic.ini /app/alembic.ini
 
 RUN mkdir -p /app/uploads && chown -R retinax:retinax /app

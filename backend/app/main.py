@@ -9,8 +9,13 @@ from backend.app.core.database import SessionLocal, engine, Base
 from backend.app.core.idempotency import IdempotencyMiddleware
 from backend.app.core.csrf import CSRFMiddleware
 from backend.app.api.v1.api import api_router
-from backend.app.db.seed import seed_demo_users
+import logging
+from backend.app.db.seed import seed_demo_users, seed_synthetic_patients
+from backend.app.models.user import User
+from backend.app.models.patient import Patient
 from backend.app.api.v1.endpoints.health import health_check
+
+logger = logging.getLogger("retinax.lifespan")
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -18,9 +23,21 @@ async def lifespan(app: FastAPI):
     Base.metadata.create_all(bind=engine)
     db = SessionLocal()
     try:
-        # Demo users are seeded ONLY in non-production environments (development/testing/demo)
-        if settings.ENVIRONMENT.lower() != "production":
+        # 1. Ensure demonstration user accounts exist for evaluation
+        user_count = db.query(User).count()
+        if user_count == 0:
+            logger.info("Database has no users. Seeding Health-a-thon evaluation accounts...")
+            seed_demo_users(db, force=True)
+        elif settings.ENVIRONMENT.lower() != "production":
             seed_demo_users(db)
+
+        # 2. Ensure synthetic patient cohort exists for evaluation
+        patient_count = db.query(Patient).count()
+        if patient_count == 0:
+            logger.info("Database has no patient records. Seeding synthetic cohort...")
+            seed_synthetic_patients(db, force_reset=False, force=True)
+    except Exception as e:
+        logger.error(f"Error during startup database initialization: {e}")
     finally:
         db.close()
     yield
