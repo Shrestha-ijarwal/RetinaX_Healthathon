@@ -73,7 +73,9 @@ export default function OverviewPage() {
 
       {error && (
         <div style={{ padding: 14, background: 'var(--red-subtle)', color: 'var(--red)', borderRadius: 10, fontSize: 13, border: '1px solid var(--red)' }}>
-          ⚠️ Backend Notice: {error}. (Ensure backend FastAPI is running on port 8000).
+          ⚠️ Backend Notice: {error}. {error.toLowerCase().includes('auth') && (
+            <span>Please <Link href="/login" style={{ textDecoration: 'underline', fontWeight: 700, color: 'inherit' }}>Sign In</Link> with evaluation credentials to open the patient cohort and specialist reviews.</span>
+          )}
         </div>
       )}
 

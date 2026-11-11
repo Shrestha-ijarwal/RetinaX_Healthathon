@@ -21,8 +21,12 @@ export default function LoginPage() {
       const res = await api.login({ email: email.trim(), password });
       // Update client user metadata (Strict cookie session; no tokens stored in localStorage)
       setCurrentUser(res.user);
-      router.push('/');
-      router.refresh();
+      if (typeof window !== 'undefined') {
+        window.location.href = '/';
+      } else {
+        router.push('/');
+        router.refresh();
+      }
     } catch (err: any) {
       setError(err.message || 'Authentication failed. Please verify credentials.');
     } finally {
