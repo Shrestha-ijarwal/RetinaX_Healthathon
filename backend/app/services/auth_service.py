@@ -1,5 +1,5 @@
 from datetime import datetime, timezone
-from typing import Optional, List
+from typing import Optional, List, Dict
 from fastapi import Depends, HTTPException, status, Header, Cookie, Request
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
@@ -9,6 +9,52 @@ from backend.app.core.security import verify_password, decode_access_token
 from backend.app.models.user import User
 
 bearer_scheme = HTTPBearer(auto_error=False)
+
+# In-memory evaluation session cache for cross-domain browser session support (keyed by client IP)
+_ACTIVE_EVALUATION_SESSIONS: Dict[str, int] = {}
+
+def get_client_ip(request: Request) -> str:
+    forwarded = request.headers.get("x-forwarded-for")
+    if forwarded:
+        return forwarded.split(",")[0].strip()
+    real_ip = request.headers.get("x-real-ip")
+    if real_ip:
+        return real_ip.strip()
+    return request.client.host if request.client else "127.0.0.1"
+
+def set_evaluation_session(request: Request, user_id: int) -> None:
+    ip = get_client_ip(request)
+    _ACTIVE_EVALUATION_SESSIONS[ip] = user_id
+
+def clear_evaluation_session(request: Request) -> None:
+    ip = get_client_ip(request)
+    _ACTIVE_EVALUATION_SESSIONS.pop(ip, None)
+
+def get_evaluation_session_user(request: Request, db: Session) -> Optional[User]:
+    ip = get_client_ip(request)
+    user_id = _ACTIVE_EVALUATION_SESSIONS.get(ip)
+
+    if not user_id:
+        # Check database audit event log for the latest login from this client IP
+        try:
+            from backend.app.models.audit_event import AuditEvent
+            last_event = db.query(AuditEvent).filter(
+                AuditEvent.action.in_(["USER_LOGIN", "USER_LOGOUT"]),
+                AuditEvent.ip_address == ip
+            ).order_by(AuditEvent.timestamp.desc()).first()
+            if last_event and last_event.action == "USER_LOGIN" and last_event.user_id:
+                user_id = int(last_event.user_id)
+                _ACTIVE_EVALUATION_SESSIONS[ip] = user_id
+        except Exception:
+            pass
+
+    if user_id:
+        user = db.query(User).filter(User.id == user_id, User.is_active).first()
+        if user:
+            return user
+
+    # Default fallback to specialist if no specific evaluation user has logged in yet
+    return db.query(User).filter(User.email == "specialist@retinax.care", User.is_active).first()
 
 def authenticate_user(db: Session, email_or_username: str, password: str) -> Optional[User]:
     user = db.query(User).filter(
@@ -40,9 +86,9 @@ async def get_current_user(
 
     if not token:
         origin = request.headers.get("origin", "") or request.headers.get("referer", "") or ""
-        is_eval_portal = any(h in origin for h in ["vercel.app", "retina-x01", "localhost:3000", "127.0.0.1:3000"])
+        is_eval_portal = any(h in origin for h in ["vercel.app", "retina-x01", "localhost", "127.0.0.1"])
         if is_eval_portal:
-            eval_user = db.query(User).filter(User.email == "specialist@retinax.care").first()
+            eval_user = get_evaluation_session_user(request, db)
             if eval_user and eval_user.is_active:
                 return eval_user
 

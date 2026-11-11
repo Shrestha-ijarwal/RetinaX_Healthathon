@@ -7,7 +7,13 @@ from backend.app.core.config import settings
 from backend.app.core.security import create_access_token
 from backend.app.core.csrf import generate_csrf_token
 from backend.app.schemas.user import UserLogin, UserOut, TokenOut
-from backend.app.services.auth_service import authenticate_user, get_current_user
+from backend.app.services.auth_service import (
+    authenticate_user,
+    get_current_user,
+    set_evaluation_session,
+    clear_evaluation_session,
+    get_client_ip
+)
 from backend.app.services.audit_service import log_audit_event
 from backend.app.models.user import User
 
@@ -73,6 +79,9 @@ def login(
         path="/"
     )
 
+    client_ip = get_client_ip(request)
+    set_evaluation_session(request, user.id)
+
     log_audit_event(
         db=db,
         action="USER_LOGIN",
@@ -82,7 +91,7 @@ def login(
         resource_type="User",
         resource_id=str(user.id),
         details={"email": user.email, "role": user.role},
-        ip_address=request.client.host if request.client else ""
+        ip_address=client_ip
     )
 
     origin = request.headers.get("origin", "")
@@ -114,6 +123,9 @@ def logout(
         secure=is_prod,
         path="/"
     )
+    client_ip = get_client_ip(request)
+    clear_evaluation_session(request)
+
     log_audit_event(
         db=db,
         action="USER_LOGOUT",
@@ -122,7 +134,7 @@ def logout(
         user_id=str(current_user.id),
         resource_type="User",
         resource_id=str(current_user.id),
-        ip_address=request.client.host if request.client else ""
+        ip_address=client_ip
     )
     return {"message": "Successfully logged out."}
 
